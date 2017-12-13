@@ -20,8 +20,4 @@ public class HomeController extends Controller {
         return ok(index.render("Your new application is ready."));
     }
 
-    public Result canvas() {
-        return ok(canvas.render("Your new application is ready."));
-    }
-
 }
