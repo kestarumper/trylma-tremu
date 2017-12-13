@@ -38,24 +38,24 @@
 3. Rysowanie planszy
 4. Rozmieszczenie pionków na planszy
 5. ROZPOCZĘCIE SESJI (gry)
-    5a) [FAZA] Select Pawn
-    5b) [FAZA] Select Move Field
-        5b1) [SCENARIO 1] wybrał pole
-        5b2) [SCENARIO 2] wybrał innego własnego pionka (pod warunkiem że nie ruszał się w tej turze)
-            5b2i) podmień aktywnego pionka na nowo wybranego
-            5b2ii) przejdź do @5b
-    5c) [FAZA] Validation Move Field
-        5c1) [SUCCESS] gracz dokonał legalnego ruchu, przejdź do @5d
-        5c2) [FAILURE] nielegalny ruch, przejdź do @5b
-    5d) [FAZA] Make Move Field
-        5d1) aktualizacja planszy po stronie serwera
-        5d2) propagacja różnicy planszy do graczy
-    5e) [FAZA] End Turn State (czyszczenie, komunikacja z serwerem, przejście do waiting)
-    5f) [FAZA] Waiting (observer)
-        5f1) Wyświetla zmiany zachodzące na planszy od innych graczy
-        5f2) Czeka na swoją turę, po czym przechodzi do @5a
-    5g) [FAZA] End Game
-        5g1) Wyświetla komunikat
-        5g2) Podpina bota, jeśli leftnął
+    1) [FAZA] Select Pawn
+    2) [FAZA] Select Move Field
+        1) [SCENARIO 1] wybrał pole
+        2) [SCENARIO 2] wybrał innego własnego pionka (pod warunkiem że nie ruszał się w tej turze)
+            1) podmień aktywnego pionka na nowo wybranego
+            2) przejdź do @5b
+    3) [FAZA] Validation Move Field
+        1) [SUCCESS] gracz dokonał legalnego ruchu, przejdź do @5d
+        2) [FAILURE] nielegalny ruch, przejdź do @5b
+    4) [FAZA] Make Move Field
+        1) aktualizacja planszy po stronie serwera
+        2) propagacja różnicy planszy do graczy
+    5) [FAZA] End Turn State (czyszczenie, komunikacja z serwerem, przejście do waiting)
+    6) [FAZA] Waiting (observer)
+        1) Wyświetla zmiany zachodzące na planszy od innych graczy
+        2) Czeka na swoją turę, po czym przechodzi do @5a
+    7) [FAZA] End Game
+        1) Wyświetla komunikat
+        2) Podpina bota, jeśli leftnął
 6. Zakończenie rozgrywki i przejście do listy rozgrywek
     
