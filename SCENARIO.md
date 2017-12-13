@@ -3,10 +3,10 @@
 2. Wyświetla się lista wolnych rozgrywek oraz przycisk umożliwiający stworzenie własnej
 3. USER wybiera rozgrywke i dołącza do lobby
 4. SYSTEM czeka na dołączenie odpowiedniej liczby graczy
-    4a) Wymagana liczba zostaje osiągnięta [SUKCES]
-        4a1) Przejście do @5
-    4b) Liczba nie została osiągnięta i OWNER usuwa rozgrywkę [FAIL]
-        4b1) Przekierowanie każdego USER'a do @2
+    1) Wymagana liczba zostaje osiągnięta [SUKCES]
+        1) Przejście do @5
+    2) Liczba nie została osiągnięta i OWNER usuwa rozgrywkę [FAIL]
+        1) Przekierowanie każdego USER'a do @2
 5. Gra rozpoczyna się
 
 #STWORZENIE ROZGRYWKI
@@ -23,8 +23,8 @@
 6. Przemianowanie USER'a na OWNER'a rozgrywki
 7. [LOBBY]
     0) Przycisk zniszczenia rozgrywki
-        a) poinformowanie dołączonych USER'ów
-        b) przejście do @2
+        1) poinformowanie dołączonych USER'ów
+        2) przejście do @2
     1) OWNER po dołączeniu odpowiedniej liczby graczy
        może wystartować grę
 8. Start rozgrywki
@@ -43,17 +43,17 @@
         1) [SCENARIO 1] wybrał pole
         2) [SCENARIO 2] wybrał innego własnego pionka (pod warunkiem że nie ruszał się w tej turze)
             1) podmień aktywnego pionka na nowo wybranego
-            2) przejdź do @5b
+            2) przejdź do @5.2
     3) [FAZA] Validation Move Field
-        1) [SUCCESS] gracz dokonał legalnego ruchu, przejdź do @5d
-        2) [FAILURE] nielegalny ruch, przejdź do @5b
+        1) [SUCCESS] gracz dokonał legalnego ruchu, przejdź do @5.4
+        2) [FAILURE] nielegalny ruch, przejdź do @5.2
     4) [FAZA] Make Move Field
         1) aktualizacja planszy po stronie serwera
         2) propagacja różnicy planszy do graczy
     5) [FAZA] End Turn State (czyszczenie, komunikacja z serwerem, przejście do waiting)
     6) [FAZA] Waiting (observer)
         1) Wyświetla zmiany zachodzące na planszy od innych graczy
-        2) Czeka na swoją turę, po czym przechodzi do @5a
+        2) Czeka na swoją turę, po czym przechodzi do @5.6
     7) [FAZA] End Game
         1) Wyświetla komunikat
         2) Podpina bota, jeśli leftnął
