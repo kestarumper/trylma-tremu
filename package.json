@@ -4,7 +4,9 @@
   "description": "Chinese checkers warcabs lempiesz challenge",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "src": "public/javascripts/src",
+    "test": "public/javascripts/test",
+    "compiled": "public/javascripts/compiled"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -23,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/kestarumper/trylma-tremu/issues"
   },
-  "homepage": "https://github.com/kestarumper/trylma-tremu#readme"
+  "homepage": "https://github.com/kestarumper/trylma-tremu#readme",
+
+  "scripts": {
+    "build": "babel public/javascripts/src -d public/javascripts/compiled"
+  }
 }
