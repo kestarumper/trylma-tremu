@@ -11,7 +11,9 @@
     <body>
         <h1>@message</h1>
         <canvas id="canvas" width="400" height="400"></canvas>
-        <script src="@routes.Assets.versioned("javascripts/konva.js")" type="text/javascript"></script>
+        <div id="container"></div>
+        <script src="@routes.Assets.versioned("javascripts/lib/konva.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/gameSessionCanvas.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/src/konvaDemo.js")" type="text/javascript"></script>
     </body>
 </html>
