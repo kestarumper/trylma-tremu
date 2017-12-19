@@ -1,6 +1,5 @@
 var width = window.innerWidth-200;
 var height = window.innerHeight-200;
-var howmanyhexagons = parseInt(document.getElementById(howmanyhexagons).value);
 
 var tween = null;
 
@@ -16,11 +15,6 @@ function addStar(layer, stage, xpos, ypos) {
         stroke: 'black',
         strokeWidth: 4,
         draggable: true,
-        // scale: {
-        //     x : scale,
-        //     y : scale
-        // },
-        // rotation: Math.random() * 180,
         shadowColor: 'black',
         shadowBlur: 10,
         shadowOffset: {
@@ -28,8 +22,26 @@ function addStar(layer, stage, xpos, ypos) {
             y : 5
         },
         shadowOpacity: 0.6,
-        // custom attribute
-        // startScale: scale
+        base: {
+            x: xpos,
+            y: ypos
+        },
+        dragBoundFunc: function(pos) {
+            var dist = Math.sqrt(
+                (this.attrs.base.x - pos.x)*(this.attrs.base.x - pos.x) +
+                (this.attrs.base.y - pos.y)*(this.attrs.base.y - pos.y)
+            );
+
+            var scale = 100 / dist;
+
+            if(scale < 1)
+                return {
+                    x: Math.round((pos.x - this.attrs.base.x) * scale + this.attrs.base.x),
+                    y: Math.round((pos.y - this.attrs.base.y) * scale + this.attrs.base.y)
+                };
+            else
+                return pos;
+        }
     });
 
     layer.add(hexagon);
@@ -43,14 +55,18 @@ var stage = new Konva.Stage({
 var layer = new Konva.Layer();
 var dragLayer = new Konva.Layer();
 
-for(var n = 0; n < howmanyhexagons; n++) {
-    addStar(layer, stage, n*50*2+50, n);
+for(var n = 0; n < 10; n++) {
+    for(var h = 0; h < 10; h++) {
+        addStar(layer, stage, n*50*2+50, h*50*2+50);
+    }
 }
 
 stage.add(layer, dragLayer);
 
 stage.on('dragstart', function(evt) {
     var shape = evt.target;
+
+    shape.setFill("blue");
     // moving to another layer will improve dragging performance
     shape.moveTo(dragLayer);
     stage.draw();
@@ -72,6 +88,7 @@ stage.on('dragstart', function(evt) {
 
 stage.on('dragend', function(evt) {
     var shape = evt.target;
+    shape.setFill("red");
     shape.moveTo(layer);
     stage.draw();
     shape.to({
@@ -82,4 +99,6 @@ stage.on('dragend', function(evt) {
         shadowOffsetX: 5,
         shadowOffsetY: 5
     });
+    shape.attrs.base.x = shape.getAbsolutePosition().x;
+    shape.attrs.base.y = shape.getAbsolutePosition().y;
 });
