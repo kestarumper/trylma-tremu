@@ -17,8 +17,6 @@ public class Point {
         return this.X;
     }
 
-    public int getY(){
-        return this.Y;
-    }
+    public int getY(){ return this.Y; }
 
 }
