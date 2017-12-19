@@ -14,7 +14,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel public/javascripts/src -d public/javascripts/compiled"
   },
   "repository": {
     "type": "git",
@@ -25,9 +25,5 @@
   "bugs": {
     "url": "https://github.com/kestarumper/trylma-tremu/issues"
   },
-  "homepage": "https://github.com/kestarumper/trylma-tremu#readme",
-
-  "scripts": {
-    "build": "babel public/javascripts/src -d public/javascripts/compiled"
-  }
+  "homepage": "https://github.com/kestarumper/trylma-tremu#readme"
 }
