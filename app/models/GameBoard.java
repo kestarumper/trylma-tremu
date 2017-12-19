@@ -24,9 +24,9 @@ public class GameBoard {
 
     public String printBoard(){
         StringBuilder board = new StringBuilder();
-        for(int i = 0; i < this.sizeOfX; i++){
-            for(int j = 0; j < this.sizeOfY; j++){
-                board.append(this.gameBoardArray[i][j].getType());
+        for(int i = 0; i < this.sizeOfY; i++){
+            for(int j = 0; j < this.sizeOfX; j++){
+                board.append(this.gameBoardArray[j][i].getType());
             }
             board.append("\n");
         }
@@ -80,14 +80,59 @@ public class GameBoard {
             tempBoard[p.getX()][p.getY()] = new YellowFIeld();
         }
 
+        tempList = generateNeutralPoints();
+
+        for(Point p : tempList){
+            tempBoard[p.getX()][p.getY()] = new BasicField();
+        }
+
         return tempBoard;
+    }
+
+    private ArrayList<Point> generateNeutralPoints() {
+        ArrayList<Point> tempList = new ArrayList<>();
+        int startX = 2 * this.sizeOfPoints;
+        int startY = this.sizeOfPoints;
+
+        for(int i = 0; i <= this.sizeOfPoints; i++){
+            for(int j = 0; j <= this.sizeOfPoints + i; j++){
+                int x = (startX - i) + (2 * j);
+                int y = startY + i;
+                tempList.add(new Point(x, y));
+            }
+        }
+
+        startX = this.sizeOfPoints + 1;
+        startY = 2 * this.sizeOfPoints + 1;
+
+        for(int i = 0; i < this.sizeOfPoints; i++){
+            for(int j = 0; j < (2 * this.sizeOfPoints - i); j++){
+                int x = startX + i + j * 2;
+                int y = startY + i;
+                tempList.add(new Point(x, y));
+            }
+        }
+
+        return tempList;
+    }
+
+    public String getField(int x, int y){
+        if(x < 0 || y < 0){
+            throw new IllegalArgumentException();
+        }
+
+        if( x >= this.sizeOfX || y >= this.sizeOfY){
+            throw new IllegalArgumentException();
+        }
+
+        return gameBoardArray[x][y].getType();
     }
 
     private ArrayList<Point> generateBluePoints(){
         ArrayList<Point> tempList = new ArrayList<>();
         for(int i = 0; i < this.sizeOfPoints; i ++){
             for(int j = 0; j <= i; j++){
-                int x = this.sizeOfX / 2 - (i) + (2 * j);
+                int x = (this.sizeOfX / 2) - i + (2 * j);
                 int y = i;
                 tempList.add(new Point(x, y));
             }
@@ -99,8 +144,8 @@ public class GameBoard {
         ArrayList<Point> tempList = new ArrayList<>();
         for(int i = 0; i < this.sizeOfPoints; i++){
             for(int j = 0; j <= i; j++){
-                int x = (2 * this.sizeOfPoints) + i;
-                int y = (this.sizeOfY - 1) - i + (2 * j);
+                int x = this.sizeOfX - this.sizeOfPoints - i + 2 * j;
+                int y = 2 * this.sizeOfPoints + i + 1;
                 tempList.add(new Point(x, y));
             }
         }
@@ -112,7 +157,7 @@ public class GameBoard {
         ArrayList<Point> tempList = new ArrayList<>();
         for(int i = 0; i < this.sizeOfPoints; i++){
             for(int j = 0; j < this.sizeOfPoints - i; j++){
-                int x = this.sizeOfX - this.sizeOfPoints * 2 + 2 * j;
+                int x = this.sizeOfX - 2 * this.sizeOfPoints + i + j * 2 + 1;
                 int y = this.sizeOfPoints + i;
                 tempList.add(new Point(x, y));
             }
@@ -125,7 +170,7 @@ public class GameBoard {
         ArrayList<Point> tempList = new ArrayList<>();
         for(int i = 0; i < this.sizeOfPoints; i++){
             for(int j = 0 ; j < this.sizeOfPoints - i; j++){
-                int x = 0 + j * 2;
+                int x = i + j * 2;
                 int y = this.sizeOfPoints + i;
                 tempList.add(new Point(x, y));
             }
@@ -138,8 +183,8 @@ public class GameBoard {
         ArrayList<Point> tempList = new ArrayList<>();
         for(int i = 0; i < this.sizeOfPoints; i++){
             for(int j = 0; j <= i; j++){
-                int x = (this.sizeOfPoints * 2) + i;
-                int y = 0 + j * 2;
+                int x = (this.sizeOfPoints - i - 1) + j * 2;
+                int y = this.sizeOfPoints * 2 + i + 1;
                 tempList.add(new Point(x, y));
             }
         }
@@ -151,7 +196,7 @@ public class GameBoard {
         ArrayList<Point> tempList = new ArrayList<>();
         for(int i = 0; i < this.sizeOfPoints; i++){
             for(int j = 0; j < this.sizeOfPoints - i; j++){
-                int x = (this.sizeOfX / 2) - this.sizeOfPoints + (j * 2);
+                int x = (this.sizeOfX / 2) - (this.sizeOfPoints - 1) + i + (j * 2);
                 int y = this.sizeOfY - this.sizeOfPoints + i;
                 tempList.add(new Point(x, y));
             }
