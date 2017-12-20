@@ -8,13 +8,13 @@
     "test": "public/javascripts/test",
     "compiled": "public/javascripts/compiled"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1"
   },
-  "devDependencies": {},
   "scripts": {
-    "build": "babel public/javascripts/src -d public/javascripts/compiled"
+    "build": "babel public/javascripts/src -d public/javascripts/dist"
   },
   "repository": {
     "type": "git",
