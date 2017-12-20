@@ -17,8 +17,8 @@ public class GameBoardTest {
 
     @Test
     public void shouldPrintMap(){
-        GameBoard board = new GameBoard(4);
-        //System.out.println(board.printBoard());
+        GameBoard board = new GameBoard(1);
+        System.out.println(board.printBoard());
         assertNotNull(board);
     }
 
