@@ -1,4 +1,5 @@
 package controllers;
+import actors.PlayerActor;
 import play.libs.streams.ActorFlow;
 import play.mvc.*;
 import akka.actor.*;
@@ -6,6 +7,7 @@ import akka.stream.*;
 import javax.inject.Inject;
 
 public class WebSocketController extends Controller {
+    // TODO: Implement
 
     private final ActorSystem actorSystem;
     private final Materializer materializer;
@@ -18,7 +20,7 @@ public class WebSocketController extends Controller {
 
     public WebSocket socket() {
         return WebSocket.Text.accept(request ->
-                ActorFlow.actorRef(MyWebSocketActor::props,
+                ActorFlow.actorRef(PlayerActor::props,
                         actorSystem, materializer
                 )
         );

@@ -2,6 +2,7 @@ package actors;
 import akka.actor.*;
 
 public class PlayerActor extends AbstractActor {
+    // TODO: Implement PlayerActor (javascript client)
 
     public static Props props(ActorRef out) {
         return Props.create(PlayerActor.class, out);
