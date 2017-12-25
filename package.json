@@ -1,0 +1,29 @@
+{
+  "name": "trylma-tremu",
+  "version": "1.0.0",
+  "description": "Chinese checkers warcabs lempiesz challenge",
+  "main": "index.js",
+  "directories": {
+    "src": "public/javascripts/src",
+    "test": "public/javascripts/test",
+    "compiled": "public/javascripts/compiled"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  },
+  "scripts": {
+    "build": "babel public/javascripts/src -d public/javascripts/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kestarumper/trylma-tremu.git"
+  },
+  "author": "Adrian Mucha & Michal Treter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kestarumper/trylma-tremu/issues"
+  },
+  "homepage": "https://github.com/kestarumper/trylma-tremu#readme"
+}
