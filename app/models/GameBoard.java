@@ -1,6 +1,7 @@
 package models;
 
 import models.Field.*;
+import models.Pawn.*;
 import models.Utility.Point;
 
 import java.util.ArrayList;
@@ -8,6 +9,12 @@ import java.util.ArrayList;
 public class GameBoard {
     protected Field[][] gameBoardArray;
     protected int sizeOfX, sizeOfY, sizeOfPoints;
+    protected ArrayList<Pawn> greenPawns;
+    protected ArrayList<Pawn> redPawns;
+    protected ArrayList<Pawn> blackPawns;
+    protected ArrayList<Pawn> whitePawns;
+    protected ArrayList<Pawn> bluePawns;
+    protected ArrayList<Pawn> yellowPawns;
 
     public GameBoard(int size){
 
@@ -45,39 +52,51 @@ public class GameBoard {
         }
 
         ArrayList<Point> tempList = generateBluePoints();
+        bluePawns = new ArrayList<>();
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new BlueField();
+            bluePawns.add(new BluePawn(new BasicPawn(p)));
         }
 
         tempList = generateBlackPoints();
+        blackPawns = new ArrayList<>();
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new BlackField();
+            blackPawns.add(new BlackPawn( new BasicPawn(p)));
         }
 
         tempList = generateGreenPoints();
+        greenPawns = new ArrayList<>();
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new GreenField();
+            greenPawns.add(new GreenPawn( new BasicPawn(p)));
         }
 
         tempList = generateRedPoints();
+        redPawns = new ArrayList<>();
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new RedField();
+            redPawns.add(new RedPawn( new BasicPawn(p)));
         }
 
         tempList = generateWhitePoints();
+        whitePawns = new ArrayList<>();
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new WhiteField();
+            whitePawns.add(new WhitePawn( new BasicPawn(p)));
         }
 
         tempList = generateYellowPoints();
+        yellowPawns = new ArrayList<>();
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new YellowFIeld();
+            yellowPawns.add(new YellowPawn( new BasicPawn(p)));
         }
 
         tempList = generateNeutralPoints();

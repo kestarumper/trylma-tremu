@@ -7,7 +7,8 @@ public class BasicPawn implements Pawn {
     protected String color;
     protected String destinationColor;
 
-    public BasicPawn(){
+    public BasicPawn(Point p){
+        this.position = p;
     }
 
     @Override
