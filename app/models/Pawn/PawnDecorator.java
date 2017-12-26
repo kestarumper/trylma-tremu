@@ -1,5 +1,6 @@
 package models.Pawn;
 
+import models.Field.Field;
 import models.Utility.Point;
 
 public abstract class PawnDecorator implements Pawn{
@@ -10,7 +11,7 @@ public abstract class PawnDecorator implements Pawn{
     }
 
     @Override
-    public Point makeMove(Point destination) {
+    public Point makeMove(Point destination, Field[][] board) {
         return null;
     }
 

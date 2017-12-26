@@ -1,8 +1,9 @@
 package models.Field;
 
-public class GreenField implements Field {
-    @Override
-    public String getType() {
-        return "GRE";
+public class GreenField extends FieldDecorator {
+    public GreenField(Field f) {
+        super(f);
+        this.decoratedField.setType("GRE");
     }
+
 }

@@ -1,5 +1,6 @@
 package ModelTests;
 
+import models.Field.BasicField;
 import models.Field.Field;
 import models.Field.UnavailableField;
 import models.GameBoard;
@@ -38,7 +39,7 @@ public class GameBoardTest {
     @Test
     public void zeroCordSHouldBeUnavilable(){
         GameBoard board = new GameBoard(2, new BasicMove());
-        Field test = new UnavailableField();
+        Field test = new UnavailableField(new BasicField());
         assertEquals(board.getField(0, 0), test.getType());
     }
 

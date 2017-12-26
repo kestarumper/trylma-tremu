@@ -1,15 +1,32 @@
 package models.Field;
 
-public class FieldDecorator implements Field {
+import models.Pawn.Pawn;
 
-    protected Field field;
+public abstract class FieldDecorator implements Field {
+
+    protected Field decoratedField;
 
     public FieldDecorator(Field f){
-        this.field = f;
+        this.decoratedField = f;
     }
 
     @Override
     public String getType() {
-        return this.field.getType();
+        return this.decoratedField.getType();
+    }
+
+    @Override
+    public void setType(String type) {
+        this.decoratedField.setType(type);
+    }
+
+    @Override
+    public Pawn getPawn() {
+        return this.decoratedField.getPawn();
+    }
+
+    @Override
+    public void placePawn(Pawn pawn) {
+        this.decoratedField.placePawn(pawn);
     }
 }

@@ -1,8 +1,9 @@
 package models.Field;
 
-public class BlackField implements Field{
-    @Override
-    public String getType() {
-        return "BCK";
+public class BlackField extends FieldDecorator{
+
+    public BlackField(Field f) {
+        super(f);
+        this.decoratedField.setType("BCK");
     }
 }

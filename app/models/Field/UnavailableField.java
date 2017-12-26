@@ -1,8 +1,9 @@
 package models.Field;
 
-public class UnavailableField implements Field {
-    @Override
-    public String getType() {
-        return "...";
+public class UnavailableField extends FieldDecorator {
+    public UnavailableField(Field f) {
+        super(f);
+        this.decoratedField.setType("UNV");
     }
+
 }

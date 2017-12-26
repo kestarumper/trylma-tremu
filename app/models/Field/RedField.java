@@ -1,8 +1,8 @@
 package models.Field;
 
-public class RedField implements Field {
-    @Override
-    public String getType() {
-        return "RED";
+public class RedField extends FieldDecorator {
+    public RedField(Field f) {
+        super(f);
+        this.decoratedField.setType("RED");
     }
 }

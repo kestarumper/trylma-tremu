@@ -1,9 +1,10 @@
 package models.Field;
 
-public class BlueField implements Field{
+public class BlueField extends FieldDecorator{
 
-    @Override
-    public String getType() {
-        return "BLE";
+    public BlueField(Field f) {
+        super(f);
+        this.decoratedField.setType("BLE");
     }
+
 }

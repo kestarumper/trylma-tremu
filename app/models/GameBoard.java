@@ -11,14 +11,6 @@ public class GameBoard {
     protected Field[][] gameBoardArray;
     protected int sizeOfX, sizeOfY, sizeOfPoints;
 
-    //Arrays of Pawns
-    protected ArrayList<Pawn> greenPawns;
-    protected ArrayList<Pawn> redPawns;
-    protected ArrayList<Pawn> blackPawns;
-    protected ArrayList<Pawn> whitePawns;
-    protected ArrayList<Pawn> bluePawns;
-    protected ArrayList<Pawn> yellowPawns;
-
     //Strategies for the board
     protected MoveStrategy pawnStrategy;
 
@@ -41,7 +33,15 @@ public class GameBoard {
         StringBuilder board = new StringBuilder();
         for(int i = 0; i < this.sizeOfY; i++){
             for(int j = 0; j < this.sizeOfX; j++){
-                board.append(this.gameBoardArray[j][i].getType());
+                if(this.gameBoardArray[j][i].getType().equals("")){
+                    board.append("███");
+                }
+                else if(this.gameBoardArray[j][i].getType().equals("UNV")){
+                    board.append("___");
+                }
+                else {
+                    board.append(this.gameBoardArray[j][i].getType());
+                }
             }
             board.append("\n");
         }
@@ -55,56 +55,50 @@ public class GameBoard {
 
         for(int i = 0; i < this.sizeOfX; i++){
             for(int j = 0; j < this.sizeOfY; j++){
-                tempBoard[i][j] = new UnavailableField();
+                tempBoard[i][j] = new UnavailableField( new BasicField() );
             }
         }
 
         ArrayList<Point> tempList = generateBluePoints();
-        bluePawns = new ArrayList<>();
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new BlueField();
-            bluePawns.add(new BluePawn(new BasicPawn(p, this.pawnStrategy)));
+            tempBoard[p.getX()][p.getY()] = new BlueField(new BasicField() );
+            tempBoard[p.getX()][p.getY()].placePawn(new BluePawn(new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateBlackPoints();
-        blackPawns = new ArrayList<>();
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new BlackField();
-            blackPawns.add(new BlackPawn( new BasicPawn(p, this.pawnStrategy)));
+            tempBoard[p.getX()][p.getY()] = new BlackField( new BasicField() );
+            tempBoard[p.getX()][p.getY()].placePawn(new BlackPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateGreenPoints();
-        greenPawns = new ArrayList<>();
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new GreenField();
-            greenPawns.add(new GreenPawn( new BasicPawn(p, this.pawnStrategy)));
+            tempBoard[p.getX()][p.getY()] = new GreenField( new BasicField() );
+            tempBoard[p.getX()][p.getY()].placePawn(new GreenPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateRedPoints();
-        redPawns = new ArrayList<>();
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new RedField();
-            redPawns.add(new RedPawn( new BasicPawn(p, this.pawnStrategy)));
+            tempBoard[p.getX()][p.getY()] = new RedField( new BasicField() );
+            tempBoard[p.getX()][p.getY()].placePawn(new RedPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateWhitePoints();
-        whitePawns = new ArrayList<>();
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new WhiteField();
-            whitePawns.add(new WhitePawn( new BasicPawn(p, this.pawnStrategy)));
+            tempBoard[p.getX()][p.getY()] = new WhiteField( new BasicField() );
+            tempBoard[p.getX()][p.getY()].placePawn(new WhitePawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateYellowPoints();
-        yellowPawns = new ArrayList<>();
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new YellowFIeld();
-            yellowPawns.add(new YellowPawn( new BasicPawn(p, this.pawnStrategy)));
+            tempBoard[p.getX()][p.getY()] = new YellowFIeld( new BasicField() );
+            tempBoard[p.getX()][p.getY()].placePawn(new YellowPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateNeutralPoints();
