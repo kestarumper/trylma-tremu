@@ -2,6 +2,7 @@ package models;
 
 import models.Field.*;
 import models.Pawn.*;
+import models.Strategies.MoveStrategy;
 import models.Utility.Point;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 public class GameBoard {
     protected Field[][] gameBoardArray;
     protected int sizeOfX, sizeOfY, sizeOfPoints;
+
+    //Arrays of Pawns
     protected ArrayList<Pawn> greenPawns;
     protected ArrayList<Pawn> redPawns;
     protected ArrayList<Pawn> blackPawns;
@@ -16,11 +19,16 @@ public class GameBoard {
     protected ArrayList<Pawn> bluePawns;
     protected ArrayList<Pawn> yellowPawns;
 
-    public GameBoard(int size){
+    //Strategies for the board
+    protected MoveStrategy pawnStrategy;
+
+    public GameBoard(int size, MoveStrategy pawnStrategy){
 
         if(size <= 0){
           throw new IllegalArgumentException();
         }
+
+        this.pawnStrategy = pawnStrategy;
 
         this.sizeOfX = (6 * size) + 1;
         this.sizeOfY = (4 * size) + 1;
@@ -56,7 +64,7 @@ public class GameBoard {
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new BlueField();
-            bluePawns.add(new BluePawn(new BasicPawn(p)));
+            bluePawns.add(new BluePawn(new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateBlackPoints();
@@ -64,7 +72,7 @@ public class GameBoard {
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new BlackField();
-            blackPawns.add(new BlackPawn( new BasicPawn(p)));
+            blackPawns.add(new BlackPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateGreenPoints();
@@ -72,7 +80,7 @@ public class GameBoard {
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new GreenField();
-            greenPawns.add(new GreenPawn( new BasicPawn(p)));
+            greenPawns.add(new GreenPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateRedPoints();
@@ -80,7 +88,7 @@ public class GameBoard {
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new RedField();
-            redPawns.add(new RedPawn( new BasicPawn(p)));
+            redPawns.add(new RedPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateWhitePoints();
@@ -88,7 +96,7 @@ public class GameBoard {
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new WhiteField();
-            whitePawns.add(new WhitePawn( new BasicPawn(p)));
+            whitePawns.add(new WhitePawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateYellowPoints();
@@ -96,7 +104,7 @@ public class GameBoard {
 
         for(Point p : tempList){
             tempBoard[p.getX()][p.getY()] = new YellowFIeld();
-            yellowPawns.add(new YellowPawn( new BasicPawn(p)));
+            yellowPawns.add(new YellowPawn( new BasicPawn(p, this.pawnStrategy)));
         }
 
         tempList = generateNeutralPoints();
