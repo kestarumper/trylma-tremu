@@ -16,13 +16,26 @@ public class BasicPawn implements Pawn {
     }
 
     @Override
-    public Point makeMove(Point destination, Field[][] board) {
-        return moveStrategy.doMove(this.position, destination, board);
+    public Boolean makeMove(Point destination, Field[][] board) {
+        Point tempPoint = moveStrategy.doMove(this.position, destination, board);
+
+        if(position.getX() != tempPoint.getX() || position.getY() != tempPoint.getY()){
+            this.position = tempPoint;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
     public void setColor(String color, String destColor) {
         this.color = color;
         this.destinationColor = destColor;
+    }
+
+    @Override
+    public String getDesiredColor() {
+        return this.destinationColor;
     }
 }

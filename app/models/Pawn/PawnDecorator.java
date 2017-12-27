@@ -11,12 +11,17 @@ public abstract class PawnDecorator implements Pawn{
     }
 
     @Override
-    public Point makeMove(Point destination, Field[][] board) {
-        return null;
+    public Boolean makeMove(Point destination, Field[][] board) {
+        return this.decoratedPawn.makeMove(destination, board);
     }
 
     @Override
     public void setColor(String color, String destColor) {
         decoratedPawn.setColor(color, destColor);
+    }
+
+    @Override
+    public String getDesiredColor(){
+        return this.decoratedPawn.getDesiredColor();
     }
 }
