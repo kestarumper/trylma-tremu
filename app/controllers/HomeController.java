@@ -6,6 +6,7 @@ import play.mvc.*;
 
 import views.html.*;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +15,8 @@ import java.util.Set;
  * to the application's home page.
  */
 public class HomeController extends Controller {
+
+    static private Set<String> used_usernames = new HashSet<>();
 
     /**
      * An action that renders an HTML page with a welcome message.
@@ -29,13 +32,22 @@ public class HomeController extends Controller {
         Map<String, String[]> map = request().body().asFormUrlEncoded();
 
         if(map.containsKey("username")) {
-            session("username", map.get("username")[0]);
+            String usr = map.get("username")[0];
+            if(used_usernames.contains(usr)) {
+                flash("loginerr", "That username is already taken");
+            } else {
+                used_usernames.add(usr);
+                session("username", usr);
+            }
+        } else {
+            flash("loginerr", "Bad request - does not contain username field.");
         }
 
         return redirect(controllers.routes.HomeController.index());
     }
 
     public Result logout() {
+        used_usernames.remove(session("username"));
         session().remove("username");
         return redirect(controllers.routes.HomeController.index());
     }

@@ -7,14 +7,14 @@ import akka.actor.Props;
 public class GameSessionActor extends AbstractActor {
     // TODO: Implement
 
-    public static Props props(ActorRef out) {
-        return Props.create(GameSessionActor.class, out);
+    public static Props props() {
+        return Props.create(GameSessionActor.class);
     }
 
-    private final ActorRef out;
+//    private final ActorRef out;
 
-    public GameSessionActor(ActorRef out) {
-        this.out = out;
+    public GameSessionActor() {
+
     }
 
     @Override

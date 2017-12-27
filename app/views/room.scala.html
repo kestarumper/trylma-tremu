@@ -1,0 +1,16 @@
+@(username : String, room: Room)
+
+@if(room == null) {
+    <h1>Room not found</h1>
+} else {
+    @main(room.getName) {
+        <div id="roomdetails" class="container" data-ws-url="@routes.RoomsController.getRoomDetail(username).webSocketURL()">
+            <h3>Owner: @username</h3>
+            <p>Mode: @room.getMode()</p>
+            <ul id="player_list" class="list-group">
+
+            </ul>
+        </div>
+        <script src='@routes.Assets.versioned("javascripts/src/ws_roomdetails.js")' type="module"></script>
+    }
+}

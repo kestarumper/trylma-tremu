@@ -4,23 +4,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jdk.nashorn.internal.ir.ObjectNode;
 import play.libs.Json;
 
-public class PlayerActor extends AbstractActor {
-    // TODO: Implement PlayerActor (javascript client)
+public class BrowserEntryPointActor extends AbstractActor {
+    // TODO: Implement BrowserEntryPointActor (javascript client)
 
     private final ActorRef browser;
-    private ActorRef currentGameSession;
+    private final ActorRef supervisor;
 
-    public static Props props(ActorRef browser) {
-        return Props.create(PlayerActor.class, browser);
+    public static Props props(ActorRef browser, ActorRef supervisor) {
+        return Props.create(BrowserEntryPointActor.class, browser, supervisor);
     }
 
-    public PlayerActor(ActorRef browser) {
+    public BrowserEntryPointActor(ActorRef browser, ActorRef supervisor) {
         this.browser = browser;
+        this.supervisor = supervisor;
         System.out.println(this.browser.toString() + " has started");
-    }
-
-    public void setCurrentGameSession(ActorRef currentGameSession) {
-        this.currentGameSession = currentGameSession;
     }
 
     @Override

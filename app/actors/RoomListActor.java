@@ -1,0 +1,36 @@
+package actors;
+
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import com.fasterxml.jackson.databind.JsonNode;
+import models.Room;
+import play.libs.Json;
+
+import java.util.Map;
+
+public class RoomListActor extends AbstractActor {
+    private final ActorRef browser;
+    private final Map<String, Room> rooms;
+
+    public static Props props(ActorRef browser, Map<String, Room> rooms) {
+        return Props.create(RoomListActor.class, browser, rooms);
+    }
+
+    public RoomListActor(ActorRef browser, Map<String, Room> rooms) {
+        this.browser = browser;
+        this.rooms = rooms;
+        System.out.println(this.getClass() + " is listing rooms(num:" + rooms.size() + ")");
+    }
+
+    @Override
+    public Receive createReceive() {
+        return receiveBuilder()
+                .match(String.class, message -> {
+                    JsonNode jn = Json.parse(message);
+                    JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
+                    browser.tell(Json.toJson(rooms), self());
+                })
+                .build();
+    }
+}

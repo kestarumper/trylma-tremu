@@ -1,5 +1,6 @@
 package controllers;
-import actors.PlayerActor;
+import actors.BrowserEntryPointActor;
+import actors.GameSessionActor;
 import play.libs.streams.ActorFlow;
 import play.mvc.*;
 import akka.actor.*;
@@ -11,17 +12,18 @@ public class WebSocketController extends Controller {
 
     private final ActorSystem actorSystem;
     private final Materializer materializer;
+    private final ActorRef gameSessionSupervisorActor;
 
     @Inject
     public WebSocketController(ActorSystem actorSystem, Materializer materializer) {
         this.actorSystem = actorSystem;
         this.materializer = materializer;
-        System.out.println("MAIN ACTOR SYSTEM: "+this.actorSystem);
+        this.gameSessionSupervisorActor = this.actorSystem.actorOf(GameSessionActor.props(), "GameSessionSupervisor");
     }
 
     public WebSocket ws() {
         return WebSocket.Text.accept(request ->
-                ActorFlow.actorRef(PlayerActor::props,
+                ActorFlow.actorRef((ActorRef browser) -> BrowserEntryPointActor.props(browser, this.gameSessionSupervisorActor),
                         actorSystem, materializer
                 )
         );

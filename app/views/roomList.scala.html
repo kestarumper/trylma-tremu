@@ -1,6 +1,22 @@
 @(username: String)
 
 <div class="container">
-    <h1>Logged in as @username</h1>
-    <h3><a href="@routes.HomeController.logout()">Disconnect</a></h3>
+    <h1>Logged in as @username <a href="@routes.HomeController.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i></a></h1>
+</div>
+<div class="container">
+    <h2>List of rooms <a href="@routes.RoomsController.newRoom()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h2>
+    <div class="list-group">
+        <a href="#" class="list-group-item active">
+            <h4 class="list-group-item-heading">First List Group Item Heading</h4>
+            <p class="list-group-item-text">List Group Item Text</p>
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">Second List Group Item Heading</h4>
+            <p class="list-group-item-text">List Group Item Text</p>
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">Third List Group Item Heading</h4>
+            <p class="list-group-item-text">List Group Item Text</p>
+        </a>
+    </div>
 </div>

@@ -6,6 +6,12 @@
 GET     /                           controllers.HomeController.index
 POST    /login                      controllers.HomeController.login
 GET     /logout                     controllers.HomeController.logout
+
+GET     /room/config                controllers.RoomsController.newRoom()
+POST    /room/create                controllers.RoomsController.create()
+GET     /roomlist                   controllers.RoomsController.getRoomList()
+GET     /room/:name                 controllers.RoomsController.room(name: String)
+GET     /room/:name/detail          controllers.RoomsController.getRoomDetail(name: String)
 # Draw canvas
 GET     /canvas                     controllers.CanvasController.index
 # An example controller showing how to use dependency injection
