@@ -12,6 +12,9 @@ public abstract class PawnDecorator implements Pawn{
 
     @Override
     public Boolean makeMove(Point destination, Field[][] board) {
+        if(destination.getX() < 0 || destination.getY() < 0 || destination.getX() >= board.length ||destination.getY() >= board[0].length){
+            return false;
+        }
         return this.decoratedPawn.makeMove(destination, board);
     }
 
