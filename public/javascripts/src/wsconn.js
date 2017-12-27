@@ -1,12 +1,14 @@
 $(document).ready(() => {
     console.log("wsconn.js init");
 
+    let WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
+
     let data = {
         type: "greet",
         value: "dupnij se lolka czlowieniu"
     };
 
-    let connection = new WebSocket($("body").data("ws-url"));
+    let connection = new WS($("body").data("ws-url"));
 
     console.log(connection);
 
@@ -15,7 +17,11 @@ $(document).ready(() => {
 
     };
     connection.onopen = function (event) {
-        connection.send(JSON.stringify(data));
+        setInterval(function () {
+            data.value = $("#messagebox").val();
+            connection.send(JSON.stringify(data));
+        }, 1000);
+        // connection.send(data);
         console.log("Sending " + JSON.stringify(data));
     };
 });

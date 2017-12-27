@@ -16,9 +16,10 @@ public class WebSocketController extends Controller {
     public WebSocketController(ActorSystem actorSystem, Materializer materializer) {
         this.actorSystem = actorSystem;
         this.materializer = materializer;
+        System.out.println("MAIN ACTOR SYSTEM: "+this.actorSystem);
     }
 
-    public WebSocket socket() {
+    public WebSocket ws() {
         return WebSocket.Text.accept(request ->
                 ActorFlow.actorRef(PlayerActor::props,
                         actorSystem, materializer

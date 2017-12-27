@@ -1,25 +1,36 @@
 package actors;
 import akka.actor.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import jdk.nashorn.internal.ir.ObjectNode;
+import play.libs.Json;
 
 public class PlayerActor extends AbstractActor {
     // TODO: Implement PlayerActor (javascript client)
 
-    public static Props props(ActorRef out) {
-        return Props.create(PlayerActor.class, out);
+    private final ActorRef browser;
+    private ActorRef currentGameSession;
+
+    public static Props props(ActorRef browser) {
+        return Props.create(PlayerActor.class, browser);
     }
 
-    private final ActorRef out;
+    public PlayerActor(ActorRef browser) {
+        this.browser = browser;
+        System.out.println(this.browser.toString() + " has started");
+    }
 
-    public PlayerActor(ActorRef out) {
-        this.out = out;
+    public void setCurrentGameSession(ActorRef currentGameSession) {
+        this.currentGameSession = currentGameSession;
     }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(String.class, message ->
-                        out.tell("I received your message: " + message, self())
-                )
+                .match(String.class, message -> {
+                    JsonNode jn = Json.parse(message);
+                    JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
+                    browser.tell("I received your message: " + jmsg.value, self());
+                })
                 .build();
     }
 }

@@ -1,8 +1,13 @@
 package controllers;
 
+import controllers.routes;
+import play.data.DynamicForm;
 import play.mvc.*;
 
 import views.html.*;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -17,7 +22,21 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
-        return ok(index.render("Your new application is ready."));
+        return ok(index.render(session("username")));
     }
 
+    public Result login() {
+        Map<String, String[]> map = request().body().asFormUrlEncoded();
+
+        if(map.containsKey("username")) {
+            session("username", map.get("username")[0]);
+        }
+
+        return redirect(controllers.routes.HomeController.index());
+    }
+
+    public Result logout() {
+        session().remove("username");
+        return redirect(controllers.routes.HomeController.index());
+    }
 }

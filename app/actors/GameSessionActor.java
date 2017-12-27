@@ -19,6 +19,10 @@ public class GameSessionActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        return receiveBuilder().build();
+        return receiveBuilder()
+                .match(String.class, message -> {
+                    getSender().tell("Oki doki", getSelf());
+                })
+                .build();
     }
 }
