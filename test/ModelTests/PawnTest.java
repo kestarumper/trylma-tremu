@@ -225,18 +225,18 @@ public class PawnTest {
     }
 
     private void printBoard(){
-        for(int i = 0; i < 7; i++){
-            for(int j = 0; j < 5; j++){
-                if(testBoard[j][i].getPawn() == null){
-                    System.out.print("[_]");
-                }
-                else {
-                    System.out.print("[X]");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println("[--------------]");
+//        for(int i = 0; i < 7; i++){
+//            for(int j = 0; j < 5; j++){
+//                if(testBoard[j][i].getPawn() == null){
+//                    System.out.print("[_]");
+//                }
+//                else {
+//                    System.out.print("[X]");
+//                }
+//            }
+//            System.out.println();
+//        }
+//        System.out.println("[--------------]");
     }
 
 }
