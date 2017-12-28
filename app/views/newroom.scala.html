@@ -1,0 +1,22 @@
+@(username : String)
+@import helper._
+
+@main("Creating: Room@"+username) {
+
+    <div class="container">
+        <form action="@routes.RoomsController.create()" method="post">
+            <div class="form-group">
+                <label for="roomname">Room name:</label>
+                <input type="roomname" name="roomname" class="form-control" id="roomname" value="Room@@@username">
+                <label for="gamemode">Game mode:</label>
+                <select class="form-control" name="gamemode" id="gamemode">
+                    <option>2-Players</option>
+                    <option>4-Players</option>
+                    <option>6-Players</option>
+                </select>
+                @CSRF.formField
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Create <i class="fa fa-plus" aria-hidden="true"></i></button>
+        </form>
+    </div>
+}

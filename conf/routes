@@ -4,12 +4,33 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
+POST    /login                      controllers.HomeController.login
+GET     /logout                     controllers.HomeController.logout
+
+# Creating room
+GET     /room/config                controllers.RoomsController.newRoom
+POST    /room/create                controllers.RoomsController.create
+
+# WebSocket streaming list of rooms
+GET     /roomlist                   controllers.RoomsController.getRoomList
+# Websocket streaming data for certain room
+GET     /room/detail/:name          controllers.RoomsController.getRoomDetail(name: String)
+
+# Http see room
+GET     /room/:name                 controllers.RoomsController.room(name: String)
+# join session user to certain room
+GET     /room/join/:name            controllers.RoomsController.joinRoom(name: String)
+# leave session user to certain room
+GET     /room/leave/:name           controllers.RoomsController.leaveRoom(name: String)
 # Draw canvas
 GET     /canvas                     controllers.CanvasController.index
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
 GET     /message                    controllers.AsyncController.message
+
+# Talking via Akka
+GET     /ws                     controllers.WebSocketController.ws
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
