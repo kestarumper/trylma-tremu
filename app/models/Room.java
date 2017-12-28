@@ -18,7 +18,7 @@ public class Room {
         return owner;
     }
 
-    public Room(String name, String owner, Mode mode) {
+    public Room(String name, String owner, Room.Mode mode) {
         this.name = name;
         this.mode = mode;
         this.owner = owner;
