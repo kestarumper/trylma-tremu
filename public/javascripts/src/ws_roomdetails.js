@@ -3,33 +3,35 @@ $(document).ready(() => {
 
     let WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
 
-    let data = {
-        type: "greet",
-        value: "dupnij se lolka czlowieniu"
-    };
-
     let connection = new WS($("#roomdetails").data("ws-url"));
-
-    console.log(connection);
 
     connection.onmessage = function (event) {
         let data = JSON.parse(event.data);
-        console.log(data);
 
         $("#player_list").empty();
         for(let i = 0; i < data.users.length; i++) {
-            $("#player_list").append(`<li class="list-group-item">${data.users[i]}</li>`);
+            $("#player_list").append(`<li class="list-group-item ${data.owner === data.users[i] ? "active" : ""}">${data.users[i]}</li>`);
         }
 
     };
     connection.onopen = function (event) {
-        connection.send(JSON.stringify(data));
+        connection.send(JSON.stringify({
+            type: "join",
+            value: $("#sessionusername").val()
+        }));
 
         setInterval(function () {
-            // data.value = $("#messagebox").val();
-            connection.send(JSON.stringify(data));
+            connection.send(JSON.stringify({
+                type: "get/detail",
+                value: ""
+            }));
         }, 5000);
-        // connection.send(data);
-        console.log("Sending " + JSON.stringify(data));
+
+        $(window).bind('unload', function(){
+            connection.send(JSON.stringify({
+                type: "leave",
+                value: $("sessionusername").val()
+            }))
+        });
     };
 });

@@ -67,9 +67,12 @@ public class RoomsController extends Controller {
                     break;
             }
 
-            Room room = new Room(roomname, mode);
+            Room room = new Room(roomname, session("username"), mode);
+
+            // add creator
             room.joinRoom(session("username"));
 
+            // associate user with it's newly created room
             rooms.put(session("username"), room);
         } else {
             flash("err", "Bad request - does not contain room fields.");
@@ -78,9 +81,20 @@ public class RoomsController extends Controller {
         return redirect(routes.RoomsController.room(session("username")));
     }
 
-    public WebSocket getRoomDetail(String username) {
+    public Result joinRoom(String roomId) {
+        // find room and add session user to it
+        rooms.get(roomId).joinRoom(session("username"));
+        return redirect(routes.RoomsController.room(roomId));
+    }
+
+    public Result leaveRoom(String roomId) {
+        rooms.get(roomId).leaveRoom(session("username"));
+        return redirect(routes.RoomsController.room(roomId));
+    }
+
+    public WebSocket getRoomDetail(String roomId) {
         return WebSocket.Text.accept(request ->
-                ActorFlow.actorRef((ActorRef browser) -> RoomDetailActor.props(browser, this.rooms.get(username)),
+                ActorFlow.actorRef((ActorRef browser) -> RoomDetailActor.props(browser, this.rooms.get(roomId)),
                         actorSystem, materializer
                 )
         );
