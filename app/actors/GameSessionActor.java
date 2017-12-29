@@ -30,6 +30,15 @@ public class GameSessionActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(String.class, message -> {
+
+                    // Otrzymana wiadomosc (String) parsuje na obiekt JsonNode
+                    JsonNode jn = Json.parse(message);
+                    // Mapowanie JsonNode na obiekt klasy JsonMsg
+                    JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
+
+                    // TODO: Process Client move request
+
+                    // Send back to client WHOLE Game Session
                     browser.tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
                 })
                 .build();
