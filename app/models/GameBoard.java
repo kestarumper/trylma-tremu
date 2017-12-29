@@ -55,7 +55,10 @@ public class GameBoard {
 
         for(int x = 0; x < this.sizeOfX; x++){
             for(int y = 0; y < this.sizeOfY; y++){
-                concreteBuilder.addField(x, y, gameBoardArray[x][y].getType());
+
+                if(!gameBoardArray[x][y].getType().equals("UNV")) {
+                    concreteBuilder.addField(x, y, gameBoardArray[x][y].getType());
+                }
 
                 if(gameBoardArray[x][y].getPawn() != null){
                     concreteBuilder.addPawn(x, y, gameBoardArray[x][y].getPawn().getColor());

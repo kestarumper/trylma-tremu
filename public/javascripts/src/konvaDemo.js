@@ -55,6 +55,8 @@ var stage = new Konva.Stage({
 var layer = new Konva.Layer();
 var dragLayer = new Konva.Layer();
 
+
+
 for(var n = 0; n < 10; n++) {
     for(var h = 0; h < 10; h++) {
         addStar(layer, stage, n*50*2+50, h*50*2+50);
