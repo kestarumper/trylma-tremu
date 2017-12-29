@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.routes;
+import models.TrylmaApp;
 import play.data.DynamicForm;
 import play.mvc.*;
 
@@ -16,7 +17,11 @@ import java.util.Set;
  */
 public class HomeController extends Controller {
 
-    static private Set<String> used_usernames = new HashSet<>();
+    private TrylmaApp trylmaApp;
+
+    public HomeController() {
+        trylmaApp = TrylmaApp.getInstance();
+    }
 
     /**
      * An action that renders an HTML page with a welcome message.
@@ -33,10 +38,10 @@ public class HomeController extends Controller {
 
         if(map.containsKey("username")) {
             String usr = map.get("username")[0];
-            if(used_usernames.contains(usr)) {
+            if(trylmaApp.getUsers().contains(usr)) {
                 flash("loginerr", "That username is already taken");
             } else {
-                used_usernames.add(usr);
+                trylmaApp.getUsers().add(usr);
                 session("username", usr);
             }
         } else {
@@ -47,7 +52,7 @@ public class HomeController extends Controller {
     }
 
     public Result logout() {
-        used_usernames.remove(session("username"));
+        trylmaApp.getUsers().remove(session("username"));
         session().remove("username");
         return redirect(controllers.routes.HomeController.index());
     }
