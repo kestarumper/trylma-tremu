@@ -31,7 +31,7 @@ public class JSONBuilder implements Builder {
             this.pawns += ",";
         }
 
-        this.pawns += "{ \"x\" : \"" + x + "\", " + "\"y\" : \"" + y +"\", \"color\" : \" " + color + "\" }";
+        this.pawns += "{ \"x\" : \"" + x + "\", " + "\"y\" : \"" + y +"\", \"color\" : \"" + color + "\" }";
     }
 
     @Override
@@ -43,7 +43,7 @@ public class JSONBuilder implements Builder {
             this.fields += ",";
         }
 
-        this.fields += "{ \"x\" : \"" + x + "\", " + "\"y\" : \"" + y +"\", \"type\" : \" " + type + "\" }";
+        this.fields += "{ \"x\" : \"" + x + "\", " + "\"y\" : \"" + y +"\", \"type\" : \"" + type + "\" }";
     }
 
     @Override

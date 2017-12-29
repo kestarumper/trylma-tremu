@@ -24,6 +24,9 @@ GET     /room/join/:name            controllers.RoomsController.joinRoom(name: S
 GET     /room/leave/:name           controllers.RoomsController.leaveRoom(name: String)
 # Draw canvas
 GET     /canvas                     controllers.CanvasController.index
+#Test board drawing
+GET     /test_canvas                controllers.BoardDrawController.index
+GET     /test_canvas_board          controllers.BoardDrawController.board
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
