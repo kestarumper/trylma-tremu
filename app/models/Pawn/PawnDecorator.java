@@ -27,4 +27,9 @@ public abstract class PawnDecorator implements Pawn{
     public String getDesiredColor(){
         return this.decoratedPawn.getDesiredColor();
     }
+
+    @Override
+    public String getColor(){
+        return this.decoratedPawn.getColor();
+    }
 }

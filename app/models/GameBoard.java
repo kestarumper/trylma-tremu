@@ -1,12 +1,9 @@
 package models;
 
-import models.Field.*;
-import models.Pawn.*;
+import models.Builders.Builder;
+import models.Field.Field;
 import models.Strategies.BoardGenerationStrategy;
 import models.Strategies.MoveStrategy;
-import models.Utility.Point;
-
-import java.util.ArrayList;
 
 public class GameBoard {
     protected Field[][] gameBoardArray;
@@ -51,6 +48,22 @@ public class GameBoard {
         }
 
         return board.toString();
+    }
+
+    public String buildMap(Builder concreteBuilder){
+        concreteBuilder.setType("map");
+
+        for(int x = 0; x < this.sizeOfX; x++){
+            for(int y = 0; y < this.sizeOfY; y++){
+                concreteBuilder.addField(x, y, gameBoardArray[x][y].getType());
+
+                if(gameBoardArray[x][y].getPawn() != null){
+                    concreteBuilder.addPawn(x, y, gameBoardArray[x][y].getPawn().getColor());
+                }
+            }
+        }
+
+        return concreteBuilder.getResult();
     }
     
     public String getField(int x, int y){

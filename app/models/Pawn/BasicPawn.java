@@ -40,4 +40,9 @@ public class BasicPawn implements Pawn {
     public String getDesiredColor() {
         return this.destinationColor;
     }
+
+    @Override
+    public String getColor() {
+        return this.color;
+    }
 }
