@@ -4,10 +4,9 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Builders.JSONBuilder;
 import models.GameSession;
-import models.Room;
+import models.Utility.Point;
 import play.Logger;
 import play.libs.Json;
 
@@ -31,15 +30,29 @@ public class GameSessionActor extends AbstractActor {
         return receiveBuilder()
                 .match(String.class, message -> {
 
-                    // Otrzymana wiadomosc (String) parsuje na obiekt JsonNode
-                    JsonNode jn = Json.parse(message);
-                    // Mapowanie JsonNode na obiekt klasy JsonMsg
-                    JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
+                        // Otrzymana wiadomosc (String) parsuje na obiekt JsonNode
+                        JsonNode jn = Json.parse(message);
+                        // Mapowanie JsonNode na obiekt klasy JsonMsg
+                        String type = jn.findPath("type").textValue();
+
+                        if(type.equals("move")){
+                            Point pointA = new Point(jn.findPath("x1").asInt(), jn.findPath("y1").asInt());
+                            Point pointB = new Point(jn.findPath("x2").asInt(), jn.findPath("y2").asInt());
+                            if(this.gameSession.getGameBoard().makeAMove(pointA, pointB)){
+                                browser.tell("{ \"type\" : \"move\", \"cond\" : true }", self());
+                            }
+                            else{
+                                browser.tell("{ \"type\" : \"move\", \"cond\" : false }", self());
+                            }
+                        }
+                        else{
+                            // Send back to client WHOLE Game Session
+                            browser.tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
+                        }
 
                     // TODO: Process Client move request
 
-                    // Send back to client WHOLE Game Session
-                    browser.tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
+
                 })
                 .build();
     }

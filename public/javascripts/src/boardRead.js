@@ -1,9 +1,9 @@
 var width = window.innerWidth-200;
 var height = window.innerHeight-200;
-const OFFSETX = 24;
-const OFFSETY = 30;
-const XWIDTH = 24;
-const YWIDTH = 40;
+const OFFSETX = 45;
+const OFFSETY = 45;
+const XWIDTH = 32;
+const YWIDTH = 55;
 
 function addField(layer, stage, xpos, ypos, color) {
     var scale = Math.random();
@@ -17,7 +17,7 @@ function addField(layer, stage, xpos, ypos, color) {
         x: xpos,
         y: ypos,
         sides: 6,
-        radius: 24,
+        radius: 34,
         fill: color,
         stroke: stroke,
         strokeWidth: 4,
@@ -48,7 +48,7 @@ function addPawn(layer, stage, xpos, ypos, color) {
     var circle = new Konva.Circle({
         x: xpos,
         y: ypos,
-        radius: 16,
+        radius: 24,
         fill: color,
         stroke: stroke,
         strokeWidth: 4,
@@ -104,8 +104,16 @@ function decodeColor(clr){
 var fieldsLayer = new Konva.Layer();
 var pawnsLayer = new Konva.Layer();
 var tempLayer = new Konva.Layer();
+var initialized = false;
 
-var globalJsonVar;
+var moves = {
+    'type' : "move",
+    'x1' : -1,
+    'y1' : -1,
+    'x2' : -1,
+    'y2' : -1
+};
+
 
 $(document).ready(() => {
     console.log("wsconn.js init");
@@ -125,7 +133,8 @@ $(document).ready(() => {
         let data = JSON.parse(event.data);
         console.log(data);
 
-        if(data.type === 'map'){
+        if(data.type === 'map' && !initialized){
+            stage.destroyChildren()
             console.log('succ');
             var index = 0;
             var fields = data.fields;
@@ -137,11 +146,23 @@ $(document).ready(() => {
             for(index = 0; index < pawns.length; index++){
                 addPawn(pawnsLayer, stage, (pawns[index].x * XWIDTH) + OFFSETX, (pawns[index].y * YWIDTH) + OFFSETY, decodeColor(pawns[index].color));
             }
+            stage.add(fieldsLayer);
+            stage.add(pawnsLayer);
+            stage.add(tempLayer);
+            initialized = true;
         }
 
-        stage.add(pawnsLayer);
+        if(data.type === 'move'){
+            console.log(data);
+            if(!data.cond){
+                console.log("jamnik");
+                initialized = false;
+                connection.send(JSON.stringify({'type' : "repaint"}));
+            }
+        }
 
     };
+
 
     connection.onopen = function (event) {
         connection.send(JSON.stringify(data));
@@ -219,13 +240,6 @@ $(document).ready(() => {
             }
             previousShape = undefined;
 
-            var moves = {
-                'x1' : -1,
-                'y1' : -1,
-                'x2' : -1,
-                'y2' : -1
-            };
-
             moves.x2 = Math.round((e.target.x() - OFFSETX) / XWIDTH);
             moves.y2 = Math.round((e.target.y() - OFFSETY) / YWIDTH);
             moves.x1 = Math.round((cordsPawn.x - OFFSETX) / XWIDTH);
@@ -240,6 +254,7 @@ $(document).ready(() => {
                 x: cordsField.x - e.target.x(),
                 y: cordsField.y - e.target.y()
             });
+
             pawnsLayer.draw();
             fieldsLayer.draw();
             tempLayer.draw();

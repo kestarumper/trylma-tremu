@@ -2,8 +2,10 @@ package models;
 
 import models.Builders.Builder;
 import models.Field.Field;
+import models.Pawn.Pawn;
 import models.Strategies.BoardGenerationStrategy;
 import models.Strategies.MoveStrategy;
+import models.Utility.Point;
 
 public class GameBoard {
     protected Field[][] gameBoardArray;
@@ -28,6 +30,16 @@ public class GameBoard {
         gameBoardArray = boardGenerator
                 .generateGameBoard(this.sizeOfPoints, this.sizeOfX, this.sizeOfY, this.pawnStrategy);
 
+    }
+
+    public boolean makeAMove(Point start, Point end){
+        Pawn tempPawn = this.gameBoardArray[start.getX()][start.getY()].getPawn();
+
+        if(tempPawn != null) {
+            return tempPawn.makeMove(end, this.gameBoardArray);
+        }
+
+        return false;
     }
 
     public String printBoard(){
