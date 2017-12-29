@@ -4,10 +4,12 @@
     <h1>Room not found</h1>
 } else {
     @main(room.getName) {
-        <div id="container" data-ws-url="@routes.BoardDrawController.board(sessionId).webSocketURL()"></div>
-        <script src="@routes.Assets.versioned("javascripts/lib/konva.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.versioned("javascripts/lib/require.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.versioned("javascripts/lib/jquery-3.2.1.min.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.versioned("javascripts/src/boardRead.js")" type="text/javascript"></script>
+        <div class="container">
+            <div id="container" data-ws-url="@routes.BoardDrawController.board(sessionId).webSocketURL()"></div>
+            <script src="@routes.Assets.versioned("javascripts/lib/konva.js")" type="text/javascript"></script>
+            <script src="@routes.Assets.versioned("javascripts/lib/require.js")" type="text/javascript"></script>
+            <script src="@routes.Assets.versioned("javascripts/lib/jquery-3.2.1.min.js")" type="text/javascript"></script>
+            <script src="@routes.Assets.versioned("javascripts/src/boardRead.js")" type="text/javascript"></script>
+        </div>
     }
 }
