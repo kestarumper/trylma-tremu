@@ -102,32 +102,47 @@ var dragLayer = new Konva.Layer();
 
 var globalJsonVar;
 
-function GetMap(){
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET",'test_canvas_board',false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
-}
+$(document).ready(() => {
+    console.log("wsconn.js init");
 
-globalJsonVar = JSON.parse(GetMap());
+    let WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
 
-console.log(globalJsonVar);
+    let data = {
+        type: "greet",
+        value: "dupnij se lolka czlowieniu"
+    };
 
-if(globalJsonVar.type === 'map'){
-    console.log('succ');
-    var index = 0;
-    var fields = globalJsonVar.fields;
-    for(index = 0; index < fields.length; index++){
-        addField(layer, stage, (fields[index].x * 24) + 24, (fields[index].y * 40) + 30, decodeColor(fields[index].type));
-    }
+    let connection = new WS($("#container").data("ws-url"));
 
-    var pawns = globalJsonVar.pawns;
-    for(index = 0; index < pawns.length; index++){
-        addPawn(layer, stage, (pawns[index].x * 24) + 24, (pawns[index].y * 40) + 30, decodeColor(pawns[index].color));
-    }
-}
+    console.log(connection);
 
+    connection.onmessage = function (event) {
+        let data = JSON.parse(event.data);
+        console.log(data);
 
+        if(data.type === 'map'){
+            console.log('succ');
+            var index = 0;
+            var fields = data.fields;
+            for(index = 0; index < fields.length; index++){
+                addField(layer, stage, (fields[index].x * 24) + 24, (fields[index].y * 40) + 30, decodeColor(fields[index].type));
+            }
 
+            var pawns = data.pawns;
+            for(index = 0; index < pawns.length; index++){
+                addPawn(layer, stage, (pawns[index].x * 24) + 24, (pawns[index].y * 40) + 30, decodeColor(pawns[index].color));
+            }
+        }
 
-stage.add(layer);
+        stage.add(layer);
+
+    };
+    connection.onopen = function (event) {
+        connection.send(JSON.stringify(data));
+
+        setInterval(function () {
+            // data.value = $("#messagebox").val();
+            connection.send(JSON.stringify(data));
+        }, 5000);
+    };
+});

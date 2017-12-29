@@ -19,9 +19,9 @@ $(document).ready(() => {
         $("#room_list").empty();
         for(let user in data) {
             $("#room_list").append(`
-                <a href="/room/${data[user].owner}" class="list-group-item">
-                    <h4 class="list-group-item-heading">${data[user].name}</h4>
-                    <p class="list-group-item-text">${data[user].mode}</p>
+                <a href="/room/${data[user].room.owner}" class="list-group-item">
+                    <h4 class="list-group-item-heading">${data[user].room.name}</h4>
+                    <p class="list-group-item-text">${data[user].room.mode}</p>
                 </a>
             `);
         }

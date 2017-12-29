@@ -11,7 +11,7 @@ import java.util.Set;
 public class TrylmaApp {
     private static volatile TrylmaApp instance;
 
-    private Map<String, Room> rooms;
+    private Map<String, GameSession> gameSessions;
 
     private Set<String> users = new HashSet<>();
 
@@ -27,7 +27,7 @@ public class TrylmaApp {
     }
 
     private TrylmaApp() {
-        rooms = new HashMap<>();
+        gameSessions = new HashMap<>();
         Logger.info("Creating SINGLETON TrylmaApp");
     }
 
@@ -35,7 +35,7 @@ public class TrylmaApp {
         return users;
     }
 
-    public Map<String, Room> getRooms() {
-        return rooms;
+    public Map<String, GameSession> getGameSessions() {
+        return gameSessions;
     }
 }

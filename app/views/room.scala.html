@@ -1,16 +1,17 @@
-@(username : String, room: Room)
+@(sessionId : String, room: Room)
 
 @if(room == null) {
     <h1>Room not found</h1>
 } else {
     @main(room.getName) {
-        <div id="roomdetails" class="container" data-ws-url="@routes.RoomsController.getRoomDetail(username).webSocketURL()">
-            <input type="hidden" value="@username" id="owner"/>
-            <input type="hidden" value='@session.get("username")' id="sessionusername"/>
-            <h3>Owner: @username</h3>
+        <div id="roomdetails" class="container" data-ws-url="@routes.RoomsController.getRoomDetail(sessionId).webSocketURL()">
+            <input type="hidden" value="@sessionId" id="owner"/>
+            <input type="hidden" value='@session.get("sessionId")' id="sessionsessionId"/>
+            <h3>Owner: @sessionId</h3>
             <p>Mode: @room.getMode</p>
-            <a href="@routes.RoomsController.joinRoom(username)"><button>Join</button></a>
-            <a href="@routes.RoomsController.leaveRoom(username)"><button>Leave</button></a>
+            <a href="@routes.RoomsController.joinRoom(sessionId)"><button>Join</button></a>
+            <a href="@routes.RoomsController.leaveRoom(sessionId)"><button>Leave</button></a>
+            <a href="@routes.BoardDrawController.index(sessionId)"><button>Enter game</button></a>
             <ul id="player_list" class="list-group">
                 <!-- Dynamically filled with WebSocket JS -->
             </ul>

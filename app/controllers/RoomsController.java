@@ -6,6 +6,10 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import controllers.routes;
+import models.GameBoard;
+import models.GameBoardGenerators.SixPlayerBoard;
+import models.GameSession;
+import models.PawnMove.BasicMove;
 import models.Room;
 import models.TrylmaApp;
 import play.Logger;
@@ -40,7 +44,7 @@ public class RoomsController extends Controller {
         if(session("username") == null) {
             return forbidden("You have to be logged to view this page.");
         }
-        return ok(room.render(username, trylmaApp.getRooms().get(username)));
+        return ok(room.render(username, trylmaApp.getGameSessions().get(username).getRoom()));
     }
 
     public Result newRoom() {
@@ -72,13 +76,15 @@ public class RoomsController extends Controller {
             }
 
             Room room = new Room(roomname, session("username"), mode);
+            GameBoard gameBoard = new GameBoard(mode.getNum(), new BasicMove(), new SixPlayerBoard());
+            GameSession gameSession = new GameSession(gameBoard, room);
 
             // add creator
             room.joinRoom(session("username"));
-
             // associate user with it's newly created room
-            trylmaApp.getRooms().put(session("username"), room);
-            Logger.info("{} created new room '{}'", session("username"), room.getName());
+            trylmaApp.getGameSessions().put(session("username"), gameSession);
+
+            Logger.info("{} created new game session for room '{}'", session("username"), room.getName());
         } else {
             flash("err", "Bad request - does not contain room fields.");
         }
@@ -86,24 +92,24 @@ public class RoomsController extends Controller {
         return redirect(routes.RoomsController.room(session("username")));
     }
 
-    public Result joinRoom(String roomId) {
+    public Result joinRoom(String sessionId) {
         // find room and add session user to it
-        Room room = trylmaApp.getRooms().get(roomId);
+        Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
         room.joinRoom(session("username"));
         Logger.info("{} joins room {} of {}", session("username"), room.getName(), room.getOwner());
-        return redirect(routes.RoomsController.room(roomId));
+        return redirect(routes.RoomsController.room(sessionId));
     }
 
-    public Result leaveRoom(String roomId) {
-        Room room = trylmaApp.getRooms().get(roomId);
+    public Result leaveRoom(String sessionId) {
+        Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
         room.leaveRoom(session("username"));
         Logger.info("{} leaves room {} of {}", session("username"), room.getName(), room.getOwner());
-        return redirect(routes.RoomsController.room(roomId));
+        return redirect(routes.RoomsController.room(sessionId));
     }
 
-    public WebSocket getRoomDetail(String roomId) {
+    public WebSocket getRoomDetail(String sessionId) {
         return WebSocket.Text.accept(request ->
-                ActorFlow.actorRef((ActorRef browser) -> RoomDetailActor.props(browser, trylmaApp.getRooms().get(roomId)),
+                ActorFlow.actorRef((ActorRef browser) -> RoomDetailActor.props(browser, trylmaApp.getGameSessions().get(sessionId).getRoom()),
                         actorSystem, materializer
                 )
         );
@@ -111,7 +117,7 @@ public class RoomsController extends Controller {
 
     public WebSocket getRoomList() {
         return WebSocket.Text.accept(request ->
-                ActorFlow.actorRef((ActorRef browser) -> RoomListActor.props(browser, trylmaApp.getRooms()),
+                ActorFlow.actorRef((ActorRef browser) -> RoomListActor.props(browser, trylmaApp.getGameSessions()),
                         actorSystem, materializer
                 )
         );
