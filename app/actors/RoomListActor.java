@@ -6,6 +6,7 @@ import akka.actor.Props;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Room;
+import play.Logger;
 import play.libs.Json;
 
 import java.util.Map;
@@ -22,7 +23,7 @@ public class RoomListActor extends AbstractActor {
     public RoomListActor(ActorRef browser, Map<String, Room> rooms) {
         this.browser = browser;
         this.rooms = rooms;
-        System.out.println(this.getClass() + " is listing rooms(num:" + rooms.size() + ")");
+        Logger.info("{} is listing rooms(num: {})", this.getClass(), rooms.size());
     }
 
     @Override

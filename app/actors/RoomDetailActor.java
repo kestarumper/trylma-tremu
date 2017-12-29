@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Room;
+import play.Logger;
 import play.libs.Json;
 
 public class RoomDetailActor extends AbstractActor {
@@ -20,7 +21,7 @@ public class RoomDetailActor extends AbstractActor {
     public RoomDetailActor(ActorRef browser, Room room) {
         this.browser = browser;
         this.room = room;
-        System.out.println(this.getClass() + " for room: " + room.getName() + "[" + room.getMode() + "]");
+        Logger.info("{} for room: {}[{}]", this.getClass(), room.getName(), room.getMode());
     }
 
     @Override
