@@ -1,5 +1,6 @@
 package controllers;
 
+import akka.actor.ActorSystem;
 import controllers.routes;
 import models.TrylmaApp;
 import models.User;
@@ -9,6 +10,7 @@ import play.mvc.*;
 
 import views.html.*;
 
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,9 +21,12 @@ import java.util.Set;
  */
 public class HomeController extends Controller {
 
+    private final ActorSystem actorSystem;
     private TrylmaApp trylmaApp;
 
-    public HomeController() {
+    @Inject
+    public HomeController(ActorSystem actorSystem) {
+        this.actorSystem = actorSystem;
         trylmaApp = TrylmaApp.getInstance();
     }
 

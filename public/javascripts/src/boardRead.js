@@ -120,11 +120,6 @@ $(document).ready(() => {
 
     let WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
 
-    let data = {
-        type: "greet",
-        value: "dupnij se lolka czlowieniu"
-    };
-
     let connection = new WS($("#container").data("ws-url"));
 
     console.log(connection);
@@ -165,6 +160,11 @@ $(document).ready(() => {
 
 
     connection.onopen = function (event) {
+        let data = {
+            type: "WebSocketInit",
+            username: $("#username").val()
+        };
+
         connection.send(JSON.stringify(data));
 
         var cordsPawn = { "x" : 0, "y" : 0};

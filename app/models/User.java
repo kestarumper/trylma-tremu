@@ -1,14 +1,18 @@
 package models;
 
+import akka.actor.ActorRef;
+
 import java.util.Objects;
 
 public class User {
     private final String name;
     private final String csrf;
+    private ActorRef actorRef;
 
     public User(String name, String csrf) {
         this.name = name;
         this.csrf = csrf;
+        this.actorRef = null;
     }
 
     public String getName() {
@@ -17,6 +21,14 @@ public class User {
 
     public String getCsrf() {
         return csrf;
+    }
+
+    public void setActorRef(ActorRef actorRef) {
+        this.actorRef = actorRef;
+    }
+
+    public void tell(Object msg, ActorRef sender) {
+        actorRef.tell(msg, sender);
     }
 
     @Override

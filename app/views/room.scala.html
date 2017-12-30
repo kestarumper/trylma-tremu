@@ -6,7 +6,7 @@
     @main(room.getName) {
         <div id="roomdetails" class="container" data-ws-url="@routes.RoomsController.getRoomDetail(sessionId).webSocketURL()">
             <input type="hidden" value="@sessionId" id="owner"/>
-            <input type="hidden" value='@session.get("sessionId")' id="sessionsessionId"/>
+            <input type="hidden" value='@session.get("username")' id="username"/>
             <h3>Owner: @sessionId</h3>
             <p>Mode: @room.getMode</p>
             <a href="@routes.RoomsController.joinRoom(sessionId)"><button>Join</button></a>

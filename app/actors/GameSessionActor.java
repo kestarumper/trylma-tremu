@@ -6,9 +6,13 @@ import akka.actor.Props;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Builders.JSONBuilder;
 import models.GameSession;
+import models.User;
 import models.Utility.Point;
 import play.Logger;
 import play.libs.Json;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameSessionActor extends AbstractActor {
 
@@ -23,6 +27,15 @@ public class GameSessionActor extends AbstractActor {
         this.browser = browser;
         this.gameSession = gameSession;
         Logger.info("{} started", this.getClass());
+    }
+
+    private void tellEveryUserInRoom(Object msg) {
+        Map<String, User> users = gameSession.getRoom().getUsers();
+
+        for(User u : users.values()) {
+            // do what you have to do here
+            u.tell(msg, self());
+        }
     }
 
     @Override
@@ -45,9 +58,15 @@ public class GameSessionActor extends AbstractActor {
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : false }", self());
                             }
                         }
-                        else{
+                        else {
+                            if(type.equals("WebSocketInit")) {
+                                String username = jn.findPath("username").asText();
+                                gameSession.getRoom().getUsers().get(username).setActorRef(browser);
+                                Logger.info("Pairing {} with WebSocket {}", username, browser);
+                            }
+
                             // Send back to client WHOLE Game Session
-                            browser.tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
+                            tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
                         }
 
                     // TODO: Process Client move request

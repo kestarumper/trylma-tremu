@@ -19,7 +19,7 @@ $(document).ready(() => {
     connection.onopen = function (event) {
         connection.send(JSON.stringify({
             type: "join",
-            value: $("#sessionusername").val()
+            value: $("#username").val()
         }));
 
         setInterval(function () {
@@ -32,7 +32,7 @@ $(document).ready(() => {
         $(window).bind('unload', function(){
             connection.send(JSON.stringify({
                 type: "leave",
-                value: $("sessionusername").val()
+                value: $("username").val()
             }))
         });
     };

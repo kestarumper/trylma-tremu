@@ -5,6 +5,7 @@
 } else {
     @main(room.getName) {
         <div class="container">
+            <input type="hidden" value='@session.get("username")' id="username"/>
             <div id="container" data-ws-url="@routes.BoardDrawController.board(sessionId).webSocketURL()"></div>
             <script src="@routes.Assets.versioned("javascripts/lib/konva.js")" type="text/javascript"></script>
             <script src="@routes.Assets.versioned("javascripts/lib/require.js")" type="text/javascript"></script>
