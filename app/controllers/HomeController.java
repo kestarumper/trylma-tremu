@@ -2,6 +2,8 @@ package controllers;
 
 import controllers.routes;
 import models.TrylmaApp;
+import models.User;
+import play.Logger;
 import play.data.DynamicForm;
 import play.mvc.*;
 
@@ -30,19 +32,26 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
+        trylmaApp.validateUserSession(session());
         return ok(index.render(session("username")));
     }
 
     public Result login() {
         Map<String, String[]> map = request().body().asFormUrlEncoded();
 
-        if(map.containsKey("username")) {
-            String usr = map.get("username")[0];
-            if(trylmaApp.getUsers().contains(usr)) {
+        Logger.info("LOGIN {}", map);
+
+        if(map.containsKey("username") && map.containsKey("csrfToken")) {
+            String username = map.get("username")[0];
+            String csrf = map.get("csrfToken")[0];
+            User user = new User(username, csrf);
+            if(trylmaApp.getUsers().containsKey(username)) {
                 flash("loginerr", "That username is already taken");
             } else {
-                trylmaApp.getUsers().add(usr);
-                session("username", usr);
+                Logger.info("PUT {}", user);
+                trylmaApp.getUsers().put(username, user);
+                session("username", username);
+                session("csrf", csrf);
             }
         } else {
             flash("loginerr", "Bad request - does not contain username field.");
@@ -54,6 +63,7 @@ public class HomeController extends Controller {
     public Result logout() {
         trylmaApp.getUsers().remove(session("username"));
         session().remove("username");
+        session().remove("csrf");
         return redirect(controllers.routes.HomeController.index());
     }
 }
