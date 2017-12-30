@@ -44,6 +44,12 @@ public class RoomsController extends Controller {
         if(session("username") == null) {
             return forbidden("You have to be logged to view this page.");
         }
+        trylmaApp.validateUserSession(session());
+
+        if(trylmaApp.getGameSessions().get(username) == null) {
+            return notFound("Room your are accessing does not exist");
+        }
+
         return ok(room.render(username, trylmaApp.getGameSessions().get(username).getRoom()));
     }
 
@@ -51,10 +57,16 @@ public class RoomsController extends Controller {
         if(session("username") == null) {
             return forbidden("You have to be logged to create new room.");
         }
+        trylmaApp.validateUserSession(session());
         return ok(newroom.render(session("username")));
     }
 
     public Result create() {
+        if(session("username") == null) {
+            return forbidden("You have to be logged to create new room.");
+        }
+        trylmaApp.validateUserSession(session());
+
         Map<String, String[]> map = request().body().asFormUrlEncoded();
 
         if(map.containsKey("roomname") && map.containsKey("gamemode")) {
@@ -93,6 +105,10 @@ public class RoomsController extends Controller {
     }
 
     public Result joinRoom(String sessionId) {
+        if(session("username") == null) {
+            return forbidden("You have to be logged to create new room.");
+        }
+        trylmaApp.validateUserSession(session());
         // find room and add session user to it
         Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
         room.joinRoom(session("username"));
@@ -101,6 +117,11 @@ public class RoomsController extends Controller {
     }
 
     public Result leaveRoom(String sessionId) {
+        if(session("username") == null) {
+            return forbidden("You have to be logged to create new room.");
+        }
+        trylmaApp.validateUserSession(session());
+
         Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
         room.leaveRoom(session("username"));
         Logger.info("{} leaves room {} of {}", session("username"), room.getName(), room.getOwner());
@@ -108,6 +129,11 @@ public class RoomsController extends Controller {
     }
 
     public WebSocket getRoomDetail(String sessionId) {
+        if(session("username") == null) {
+            return null;
+        }
+        trylmaApp.validateUserSession(session());
+
         return WebSocket.Text.accept(request ->
                 ActorFlow.actorRef((ActorRef browser) -> RoomDetailActor.props(browser, trylmaApp.getGameSessions().get(sessionId).getRoom()),
                         actorSystem, materializer
@@ -116,6 +142,10 @@ public class RoomsController extends Controller {
     }
 
     public WebSocket getRoomList() {
+        if(session("username") == null) {
+            return null;
+        }
+        trylmaApp.validateUserSession(session());
         return WebSocket.Text.accept(request ->
                 ActorFlow.actorRef((ActorRef browser) -> RoomListActor.props(browser, trylmaApp.getGameSessions()),
                         actorSystem, materializer

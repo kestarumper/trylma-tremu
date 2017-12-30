@@ -1,11 +1,10 @@
 package models;
 
 import play.Logger;
+import play.mvc.Http;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 // Singleton
 public class TrylmaApp {
@@ -13,7 +12,7 @@ public class TrylmaApp {
 
     private Map<String, GameSession> gameSessions;
 
-    private Set<String> users = new HashSet<>();
+    private Map<String, User> users;
 
     public static TrylmaApp getInstance() {
         if (instance == null) { // first time lock
@@ -28,11 +27,29 @@ public class TrylmaApp {
 
     private TrylmaApp() {
         gameSessions = new HashMap<>();
+        users = new HashMap<>();
         Logger.info("Creating SINGLETON TrylmaApp");
     }
 
-    public Set<String> getUsers() {
+    public Map<String, User> getUsers() {
         return users;
+    }
+
+    public void validateUserSession(Http.Session s) {
+        Logger.info("Session for user: {} - {}", s.get("username"), s.get("csrf"));
+
+        if(users.containsKey(s.get("username"))) {
+            // check if saved in hashmap is the same
+            if(!users.get(s.get("username")).getCsrf().equals(s.get("csrf"))) {
+                Logger.error("CSRF Mismatch({}) - {} != {}", s.get("username"), users.get(s.get("username")).getCsrf(), s.get("csrf"));
+                s.remove("username");
+                s.remove("csrf");
+            }
+        } else if(s.get("username") != null){
+            Logger.error("User {} not found in server", s.get("username"));
+            s.remove("username");
+            s.remove("csrf");
+        }
     }
 
     public Map<String, GameSession> getGameSessions() {
