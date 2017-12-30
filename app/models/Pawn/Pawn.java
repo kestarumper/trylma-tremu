@@ -8,4 +8,6 @@ public interface Pawn {
     public void setColor(String color, String destColor);
     public String getDesiredColor();
     public String getColor();
+    public boolean isOnColor();
+    public void setOnColor();
 }

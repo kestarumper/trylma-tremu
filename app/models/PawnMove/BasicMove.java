@@ -8,15 +8,10 @@ import models.Utility.Point;
 import static java.lang.Math.abs;
 
 public class BasicMove implements MoveStrategy {
-    protected Boolean isOnColor;
-
-    public BasicMove(){
-        this.isOnColor = false;
-    }
 
     @Override
     public Point doMove(Point start, Point desired, Field[][] board) {
-        if(isOnColor){
+        if(board[start.getX()][start.getY()].getPawn().isOnColor()){
             return doMoveOnColor(start, desired, board);
         }
         else{
@@ -40,7 +35,7 @@ public class BasicMove implements MoveStrategy {
                 //Normal move on cross plan
                 if(board[desired.getX()][desired.getY()].getPawn() == null){
                         if(hasColorChanged(start, desired, board)){
-                            this.isOnColor = true;
+                            board[start.getX()][start.getY()].getPawn().setOnColor();
                         }
                         return desired;
 
@@ -50,7 +45,7 @@ public class BasicMove implements MoveStrategy {
                 //Longer move on cross plan
                 if(hasPawnInMiddle(start, desired, board)){
                     if(hasColorChanged(start, desired, board)){
-                        this.isOnColor = true;
+                        board[start.getX()][start.getY()].getPawn().setOnColor();
                     }
                     return desired;
                 }
@@ -62,7 +57,7 @@ public class BasicMove implements MoveStrategy {
                 //Short move on X plane
                 if(board[desired.getX()][desired.getY()].getPawn() == null){
                         if(hasColorChanged(start, desired, board)){
-                            this.isOnColor = true;
+                            board[start.getX()][start.getY()].getPawn().setOnColor();
                         }
                         return desired;
                 }
@@ -72,7 +67,7 @@ public class BasicMove implements MoveStrategy {
                 //Long move on X plane
                 if(hasPawnInMiddle(start, desired, board)){
                     if(hasColorChanged(start, desired, board)){
-                        this.isOnColor = true;
+                        board[start.getX()][start.getY()].getPawn().setOnColor();
                     }
                     return desired;
                 }

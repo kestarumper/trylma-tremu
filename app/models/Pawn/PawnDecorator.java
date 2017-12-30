@@ -32,4 +32,14 @@ public abstract class PawnDecorator implements Pawn{
     public String getColor(){
         return this.decoratedPawn.getColor();
     }
+
+    @Override
+    public boolean isOnColor() {
+        return this.decoratedPawn.isOnColor();
+    }
+
+    @Override
+    public void setOnColor() {
+        this.decoratedPawn.setOnColor();
+    }
 }

@@ -9,10 +9,12 @@ public class BasicPawn implements Pawn {
     protected String color;
     protected String destinationColor;
     protected MoveStrategy moveStrategy;
+    protected boolean isOnColor;
 
     public BasicPawn(Point p, MoveStrategy strategy){
         this.position = p;
         this.moveStrategy = strategy;
+        this.isOnColor = false;
     }
 
     @Override
@@ -44,5 +46,15 @@ public class BasicPawn implements Pawn {
     @Override
     public String getColor() {
         return this.color;
+    }
+
+    @Override
+    public boolean isOnColor() {
+        return this.isOnColor;
+    }
+
+    @Override
+    public void setOnColor() {
+        this.isOnColor = true;
     }
 }
