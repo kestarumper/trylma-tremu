@@ -1,6 +1,5 @@
 import akka.actor.ActorSystem;
 import controllers.AsyncController;
-import controllers.CountController;
 import org.junit.Test;
 import play.mvc.Result;
 import scala.concurrent.ExecutionContextExecutor;
@@ -22,14 +21,6 @@ public class UnitTest {
     public void simpleCheck() {
         int a = 1 + 1;
         assertThat(a).isEqualTo(2);
-    }
-
-    // Unit test a controller
-    @Test
-    public void testCount() {
-        final CountController controller = new CountController(() -> 49);
-        Result result = controller.count();
-        assertThat(contentAsString(result)).isEqualTo("49");
     }
 
     // Unit test a controller with async return

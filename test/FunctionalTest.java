@@ -1,8 +1,16 @@
+import org.junit.Before;
 import org.junit.Test;
+import play.Application;
+import play.api.test.FakeRequest;
+import play.mvc.Http;
 import play.test.WithApplication;
 import play.twirl.api.Content;
 
+import java.util.Collections;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * A functional test starts a Play application for every test.
@@ -17,8 +25,8 @@ public class FunctionalTest extends WithApplication {
         // because it makes use of assets metadata that is configured from
         // the application.
 
-        Content html = views.html.index.render("Your new application is ready.");
+        Content html = views.html.index.render(null);
         assertThat("text/html").isEqualTo(html.contentType());
-        assertThat(html.body()).contains("Your new application is ready.");
+        assertThat(html.body()).contains("Trylma Tremu");
     }
 }
