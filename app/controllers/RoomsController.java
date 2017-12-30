@@ -6,12 +6,9 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import controllers.routes;
-import models.GameBoard;
+import models.*;
 import models.GameBoardGenerators.SixPlayerBoard;
-import models.GameSession;
 import models.PawnMove.BasicMove;
-import models.Room;
-import models.TrylmaApp;
 import play.Logger;
 import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
@@ -87,12 +84,15 @@ public class RoomsController extends Controller {
                     break;
             }
 
-            Room room = new Room(roomname, session("username"), mode);
+            User user = trylmaApp.getUsers().get(session("username"));
+            Room room = new Room(roomname, user, mode);
+
             GameBoard gameBoard = new GameBoard(mode.getNum(), new BasicMove(), new SixPlayerBoard());
+
             GameSession gameSession = new GameSession(gameBoard, room);
 
             // add creator
-            room.joinRoom(session("username"));
+            room.joinRoom(user);
             // associate user with it's newly created room
             trylmaApp.getGameSessions().put(session("username"), gameSession);
 
@@ -110,8 +110,9 @@ public class RoomsController extends Controller {
         }
         trylmaApp.validateUserSession(session());
         // find room and add session user to it
+        User user = trylmaApp.getUsers().get(session("username"));
         Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
-        room.joinRoom(session("username"));
+        room.joinRoom(user);
         Logger.info("{} joins room {} of {}", session("username"), room.getName(), room.getOwner());
         return redirect(routes.RoomsController.room(sessionId));
     }
@@ -122,8 +123,9 @@ public class RoomsController extends Controller {
         }
         trylmaApp.validateUserSession(session());
 
+        User user = trylmaApp.getUsers().get(session("username"));
         Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
-        room.leaveRoom(session("username"));
+        room.leaveRoom(user);
         Logger.info("{} leaves room {} of {}", session("username"), room.getName(), room.getOwner());
         return redirect(routes.RoomsController.room(sessionId));
     }

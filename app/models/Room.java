@@ -1,7 +1,8 @@
 package models;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 public class Room {
     public static enum Mode {
@@ -12,7 +13,7 @@ public class Room {
         private final String name;
         private final int num;
 
-        private Mode(String name, int num) {
+        Mode(String name, int num) {
             this.name = name;
             this.num = num;
         }
@@ -26,31 +27,30 @@ public class Room {
         }
     }
     private String name;
-    private String owner;
+    private User owner;
     private Mode mode;
-    private Set<String> users;
+    private Map<String, User> users;
 
-    public String getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public Room(String name, String owner, Room.Mode mode) {
+    public Room(String name, User owner, Room.Mode mode) {
         this.name = name;
         this.mode = mode;
         this.owner = owner;
-
-        users = new HashSet<>();
+        users = new HashMap<>();
     }
 
-    public void joinRoom(String user) {
-        if(!users.contains(user)) {
-            users.add(user);
+    public void joinRoom(User user) {
+        if(!users.containsKey(user.getName())) {
+            users.put(user.getName(), user);
         }
     }
 
-    public void leaveRoom(String user) {
-        if(users.contains(user)) {
-            users.remove(user);
+    public void leaveRoom(User user) {
+        if(users.containsKey(user.getName())) {
+            users.remove(user.getName());
         }
     }
 
@@ -62,7 +62,7 @@ public class Room {
         return name;
     }
 
-    public Set<String> getUsers() {
+    public Map<String, User> getUsers() {
         return users;
     }
 }

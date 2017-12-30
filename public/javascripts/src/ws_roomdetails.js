@@ -8,9 +8,11 @@ $(document).ready(() => {
     connection.onmessage = function (event) {
         let data = JSON.parse(event.data);
 
+        console.log(data);
+
         $("#player_list").empty();
-        for(let i = 0; i < data.users.length; i++) {
-            $("#player_list").append(`<li class="list-group-item ${data.owner === data.users[i] ? "active" : ""}">${data.users[i]}</li>`);
+        for(let user in data.users) {
+            $("#player_list").append(`<li class="list-group-item ${data.owner.name === data.users[user].name ? "active" : ""}">${data.users[user].name}</li>`);
         }
 
     };
