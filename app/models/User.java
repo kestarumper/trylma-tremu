@@ -28,7 +28,9 @@ public class User {
     }
 
     public void tell(Object msg, ActorRef sender) {
-        actorRef.tell(msg, sender);
+        if(actorRef != null) {
+            actorRef.tell(msg, sender);
+        }
     }
 
     @Override

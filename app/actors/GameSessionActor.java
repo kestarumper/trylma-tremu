@@ -53,6 +53,7 @@ public class GameSessionActor extends AbstractActor {
                             Point pointB = new Point(jn.findPath("x2").asInt(), jn.findPath("y2").asInt());
                             if(this.gameSession.getGameBoard().makeAMove(pointA, pointB)){
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : true }", self());
+                                tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
                             }
                             else{
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : false }", self());
