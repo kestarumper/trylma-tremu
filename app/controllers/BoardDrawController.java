@@ -36,6 +36,9 @@ public class BoardDrawController extends Controller {
     }
 
     public Result index(String sessionId){
+        if(trylmaApp.getGameSessions().get(sessionId) == null) {
+            return notFound("That game session does not exist");
+        }
         return ok(board.render(sessionId, trylmaApp.getGameSessions().get(sessionId).getRoom()));
     }
 
