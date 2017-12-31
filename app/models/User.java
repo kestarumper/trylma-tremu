@@ -12,6 +12,7 @@ public class User {
     private boolean isMoving;
     private String color;
     private Point currentPawn;
+    private Point lastMove;
 
     public User(String name, String csrf) {
         this.name = name;
@@ -49,6 +50,7 @@ public class User {
     public void setActivity(boolean activity){
         this.isMoving = activity;
         this.currentPawn = null;
+        this.lastMove = null;
     }
 
     public void setPawn(Point newPawn){
@@ -72,6 +74,14 @@ public class User {
 
     public boolean getActivity(){
         return this.isMoving;
+    }
+
+    public void setLastMove(Point move){
+        this.lastMove = move;
+    }
+
+    public Point getLastMove(){
+        return this.lastMove;
     }
 
     @Override

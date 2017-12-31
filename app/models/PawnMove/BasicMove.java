@@ -10,6 +10,7 @@ import static java.lang.Math.abs;
 
 public class BasicMove implements MoveStrategy {
     protected boolean firstPawn;
+    protected boolean hasFirstMoved;
 
     @Override
     public Point doMove(Point start, Point desired, Field[][] board, User currentUser) {
@@ -19,17 +20,36 @@ public class BasicMove implements MoveStrategy {
         else{
             this.firstPawn = false;
         }
+        if(currentUser.getLastMove() == null){
+            this.hasFirstMoved = false;
+        }
 
-        if(board[desired.getX()][desired.getY()].getPawn() == null) {
-            if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
-                return doMoveOnColor(start, desired, board);
-            } else {
-                return doMoveNormal(start, desired, board);
+        if(currentUser.getLastMove() != null) {
+            if(desired.getX() != currentUser.getLastMove().getX() || desired.getY() != currentUser.getLastMove().getY()) {
+                if (board[desired.getX()][desired.getY()].getPawn() == null) {
+                    if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
+                        return doMoveOnColor(start, desired, board);
+                    } else {
+                        return doMoveNormal(start, desired, board);
+                    }
+                } else {
+                    return start;
+                }
             }
         }
         else{
-            return start;
+            if (board[desired.getX()][desired.getY()].getPawn() == null) {
+                if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
+                    return doMoveOnColor(start, desired, board);
+                } else {
+                    return doMoveNormal(start, desired, board);
+                }
+            } else {
+                return start;
+            }
         }
+
+        return start;
     }
 
     protected Point doMoveOnColor(Point start, Point desired, Field[][] board){
@@ -50,11 +70,12 @@ public class BasicMove implements MoveStrategy {
                         if(hasColorChanged(start, desired, board)){
                             board[start.getX()][start.getY()].getPawn().setOnColor();
                         }
+                        this.hasFirstMoved = true;
                         return desired;
 
                 }
             }
-            else if(abs(start.getX() - desired.getX()) == 4){
+            else if(abs(start.getX() - desired.getX()) == 4 && !this.hasFirstMoved){
                 //Longer move on cross plan
                 if(hasPawnInMiddle(start, desired, board)){
                     if(hasColorChanged(start, desired, board)){
@@ -72,16 +93,18 @@ public class BasicMove implements MoveStrategy {
                         if(hasColorChanged(start, desired, board)){
                             board[start.getX()][start.getY()].getPawn().setOnColor();
                         }
+                        this.hasFirstMoved = true;
                         return desired;
                 }
 
             }
-            else if(abs(start.getX() - desired.getX()) == 2 && abs(start.getY() - desired.getY()) == 2){
+            else if(abs(start.getX() - desired.getX()) == 2 && abs(start.getY() - desired.getY()) == 2 && !this.hasFirstMoved){
                 //Long move on X plane
                 if(hasPawnInMiddle(start, desired, board)){
                     if(hasColorChanged(start, desired, board)){
                         board[start.getX()][start.getY()].getPawn().setOnColor();
                     }
+
                     return desired;
                 }
             }
@@ -95,6 +118,7 @@ public class BasicMove implements MoveStrategy {
         String color = board[desired.getX()][desired.getY()].getType();
 
         if(tempPawn.getDesiredColor().equals(color)){
+            //Decrement user pawn needed to transport to win
             return true;
         }
 
