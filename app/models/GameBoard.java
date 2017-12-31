@@ -7,9 +7,12 @@ import models.Strategies.BoardGenerationStrategy;
 import models.Strategies.MoveStrategy;
 import models.Utility.Point;
 
+import java.util.Queue;
+
 public class GameBoard {
     protected Field[][] gameBoardArray;
     protected int sizeOfX, sizeOfY, sizeOfPoints;
+    protected Queue<String> colors;
 
     //Strategies for the board
     protected MoveStrategy pawnStrategy;
@@ -29,14 +32,21 @@ public class GameBoard {
         this.sizeOfPoints = size;
         gameBoardArray = boardGenerator
                 .generateGameBoard(this.sizeOfPoints, this.sizeOfX, this.sizeOfY, this.pawnStrategy);
+        this.colors = boardGenerator.getColors();
 
     }
 
-    public boolean makeAMove(Point start, Point end){
+    public Queue<String> getInGameColors(){
+        return this.colors;
+    }
+
+    public boolean makeAMove(Point start, Point end, String playerColor){
         Pawn tempPawn = this.gameBoardArray[start.getX()][start.getY()].getPawn();
 
         if(tempPawn != null) {
-            return tempPawn.makeMove(end, this.gameBoardArray);
+            if(playerColor.equals(tempPawn.getColor())) {
+                return tempPawn.makeMove(end, this.gameBoardArray);
+            }
         }
 
         return false;

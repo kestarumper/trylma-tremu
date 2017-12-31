@@ -7,11 +7,13 @@ public class GameSession {
     private GameBoard gameBoard;
     private Room room;
     private Queue<User> playerQueue;
+    private Queue<String> colors;
 
     public GameSession(GameBoard gameBoard, Room room) {
         this.gameBoard = gameBoard;
         this.room = room;
         this.playerQueue = new LinkedList<>();
+        this.colors = gameBoard.getInGameColors();
     }
 
     public GameBoard getGameBoard() {
@@ -35,8 +37,10 @@ public class GameSession {
         if(!playerQueue.contains(u)) {
             if (playerQueue.size() == 0) {
                 u.setActivity(true);
+                u.setColor(this.colors.remove());
                 playerQueue.add(u);
             } else {
+                u.setColor(this.colors.remove());
                 playerQueue.add(u);
             }
             System.out.println("Added user: " + u.getName() + " to room: " + room.getName());

@@ -52,7 +52,10 @@ public class GameSessionActor extends AbstractActor {
                             Point pointA = new Point(jn.findPath("x1").asInt(), jn.findPath("y1").asInt());
                             Point pointB = new Point(jn.findPath("x2").asInt(), jn.findPath("y2").asInt());
 
-                            if(this.gameSession.getGameBoard().makeAMove(pointA, pointB)){
+                            String username = jn.findPath("username").asText();
+                            User tempUser = gameSession.getRoom().getUsers().get(username);
+
+                            if(this.gameSession.getGameBoard().makeAMove(pointA, pointB, tempUser.getColor())){
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : true }", self());
                                 tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
                             }
