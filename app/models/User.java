@@ -54,6 +54,9 @@ public class User {
     public void setPawn(Point newPawn){
         this.currentPawn = newPawn;
     }
+    public Point getCurrentPawn(){
+        return this.currentPawn;
+    }
 
     public boolean isTheSamePawn(Point newPawn){
         if(this.currentPawn != null) {

@@ -1,6 +1,7 @@
 package models.Pawn;
 
 import models.Field.Field;
+import models.User;
 import models.Utility.Point;
 
 public abstract class PawnDecorator implements Pawn{
@@ -11,11 +12,11 @@ public abstract class PawnDecorator implements Pawn{
     }
 
     @Override
-    public Boolean makeMove(Point destination, Field[][] board) {
+    public Boolean makeMove(Point destination, Field[][] board, User currentUser) {
         if(destination.getX() < 0 || destination.getY() < 0 || destination.getX() >= board.length ||destination.getY() >= board[0].length){
             return false;
         }
-        return this.decoratedPawn.makeMove(destination, board);
+        return this.decoratedPawn.makeMove(destination, board, currentUser);
     }
 
     @Override

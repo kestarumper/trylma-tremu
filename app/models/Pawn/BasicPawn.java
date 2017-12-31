@@ -2,6 +2,7 @@ package models.Pawn;
 
 import models.Field.Field;
 import models.Strategies.MoveStrategy;
+import models.User;
 import models.Utility.Point;
 
 public class BasicPawn implements Pawn {
@@ -18,8 +19,8 @@ public class BasicPawn implements Pawn {
     }
 
     @Override
-    public Boolean makeMove(Point destination, Field[][] board) {
-        Point tempPoint = moveStrategy.doMove(this.position, destination, board);
+    public Boolean makeMove(Point destination, Field[][] board, User currentUser) {
+        Point tempPoint = moveStrategy.doMove(this.position, destination, board, currentUser);
 
         if(position.getX() != tempPoint.getX() || position.getY() != tempPoint.getY()){
             board[this.position.getX()][this.position.getY()].placePawn(null);

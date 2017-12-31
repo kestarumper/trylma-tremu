@@ -47,7 +47,7 @@ public class GameBoard {
         if(tempPawn != null) {
             if(currentUser.getColor().equals(tempPawn.getColor())) {
                 if(currentUser.isTheSamePawn(start)){
-                    condition = tempPawn.makeMove(end, this.gameBoardArray);
+                    condition = tempPawn.makeMove(end, this.gameBoardArray, currentUser);
                 }
             }
         }
