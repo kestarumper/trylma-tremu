@@ -1,6 +1,7 @@
 package models;
 
 import akka.actor.ActorRef;
+import models.Utility.Point;
 
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ public class User {
     private ActorRef actorRef;
     private boolean isMoving;
     private String color;
+    private Point currentPawn;
 
     public User(String name, String csrf) {
         this.name = name;
@@ -46,6 +48,23 @@ public class User {
 
     public void setActivity(boolean activity){
         this.isMoving = activity;
+        this.currentPawn = null;
+    }
+
+    public void setPawn(Point newPawn){
+        this.currentPawn = newPawn;
+    }
+
+    public boolean isTheSamePawn(Point newPawn){
+        if(this.currentPawn != null) {
+            if (this.currentPawn.getX() == newPawn.getX() && this.currentPawn.getY() == newPawn.getY()) {
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+        return false;
     }
 
     public boolean getActivity(){

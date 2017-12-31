@@ -40,16 +40,22 @@ public class GameBoard {
         return this.colors;
     }
 
-    public boolean makeAMove(Point start, Point end, String playerColor){
+    public boolean makeAMove(Point start, Point end, User currentUser){
         Pawn tempPawn = this.gameBoardArray[start.getX()][start.getY()].getPawn();
+        boolean condition = false;
 
         if(tempPawn != null) {
-            if(playerColor.equals(tempPawn.getColor())) {
-                return tempPawn.makeMove(end, this.gameBoardArray);
+            if(currentUser.getColor().equals(tempPawn.getColor())) {
+                if(currentUser.isTheSamePawn(start)){
+                    condition = tempPawn.makeMove(end, this.gameBoardArray);
+                }
             }
         }
+        if(condition){
+            currentUser.setPawn(end);
+        }
 
-        return false;
+        return condition;
     }
 
     public String printBoard(){

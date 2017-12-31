@@ -55,7 +55,7 @@ public class GameSessionActor extends AbstractActor {
                             String username = jn.findPath("username").asText();
                             User tempUser = gameSession.getRoom().getUsers().get(username);
 
-                            if(this.gameSession.getGameBoard().makeAMove(pointA, pointB, tempUser.getColor())){
+                            if(this.gameSession.getGameBoard().makeAMove(pointA, pointB, tempUser)){
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : true }", self());
                                 tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
                             }
