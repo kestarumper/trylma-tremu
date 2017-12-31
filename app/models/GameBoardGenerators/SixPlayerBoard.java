@@ -7,6 +7,8 @@ import models.Strategies.MoveStrategy;
 import models.Utility.Point;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class SixPlayerBoard implements BoardGenerationStrategy{
 
@@ -69,6 +71,18 @@ public class SixPlayerBoard implements BoardGenerationStrategy{
         }
 
         return tempBoard;
+    }
+
+    @Override
+    public Queue<String> getColors() {
+        Queue<String> tempQueue = new LinkedList<>();
+        tempQueue.add("BLE");
+        tempQueue.add("GRE");
+        tempQueue.add("BCK");
+        tempQueue.add("RED");
+        tempQueue.add("YEL");
+        tempQueue.add("WHT");
+        return tempQueue;
     }
 
     private ArrayList<Point> generateNeutralPoints(int size) {

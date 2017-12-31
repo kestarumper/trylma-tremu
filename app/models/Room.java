@@ -1,14 +1,20 @@
 package models;
 
+import models.GameBoardGenerators.FourPlayerBoard;
+import models.GameBoardGenerators.SixPlayerBoard;
+import models.GameBoardGenerators.ThreePlayerBoard;
+import models.GameBoardGenerators.TwoPlayerBoard;
+import models.Strategies.BoardGenerationStrategy;
+
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class Room {
     public static enum Mode {
-        PLAYERS2("Two players", 2),
-        PLAYERS4("Four players", 4),
-        PLAYERS6("Six players", 6);
+        PLAYERS2("Two players", 3),
+        PLAYERS3("Three players", 3),
+        PLAYERS4("Four players", 3),
+        PLAYERS6("Six players", 3);
 
         private final String name;
         private final int num;
@@ -24,6 +30,20 @@ public class Room {
 
         public int getNum() {
             return num;
+        }
+
+        public BoardGenerationStrategy getStrategy(){
+            switch(this){
+                case PLAYERS2:
+                    return new TwoPlayerBoard();
+                case PLAYERS4:
+                    return new FourPlayerBoard();
+                case PLAYERS6:
+                    return new SixPlayerBoard();
+                case PLAYERS3:
+                    return new ThreePlayerBoard();
+            }
+            return new SixPlayerBoard();
         }
     }
     private String name;

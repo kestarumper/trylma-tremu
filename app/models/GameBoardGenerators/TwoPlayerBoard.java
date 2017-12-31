@@ -7,6 +7,8 @@ import models.Strategies.MoveStrategy;
 import models.Utility.Point;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class TwoPlayerBoard implements BoardGenerationStrategy{
     @Override
@@ -64,6 +66,14 @@ public class TwoPlayerBoard implements BoardGenerationStrategy{
         }
 
         return tempBoard;
+    }
+
+    @Override
+    public Queue<String> getColors() {
+        Queue<String> tempQueue = new LinkedList<>();
+        tempQueue.add("BLE");
+        tempQueue.add("RED");
+        return tempQueue;
     }
 
     private ArrayList<Point> generateNeutralPoints(int size) {

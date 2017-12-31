@@ -82,12 +82,15 @@ public class RoomsController extends Controller {
                 case "6-Players":
                     mode = Room.Mode.PLAYERS6;
                     break;
+                case "3-Players":
+                    mode = Room.Mode.PLAYERS3;
+                    break;
             }
 
             User user = trylmaApp.getUsers().get(session("username"));
             Room room = new Room(roomname, user, mode);
 
-            GameBoard gameBoard = new GameBoard(mode.getNum(), new BasicMove(), new SixPlayerBoard());
+            GameBoard gameBoard = new GameBoard(mode.getNum(), new BasicMove(), mode.getStrategy());
 
             GameSession gameSession = new GameSession(gameBoard, room);
 

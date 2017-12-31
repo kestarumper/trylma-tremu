@@ -11,11 +11,15 @@ public class BasicMove implements MoveStrategy {
 
     @Override
     public Point doMove(Point start, Point desired, Field[][] board) {
-        if(board[start.getX()][start.getY()].getPawn().isOnColor()){
-            return doMoveOnColor(start, desired, board);
+        if(board[desired.getX()][desired.getY()].getPawn() == null) {
+            if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
+                return doMoveOnColor(start, desired, board);
+            } else {
+                return doMoveNormal(start, desired, board);
+            }
         }
         else{
-            return doMoveNormal(start, desired, board);
+            return start;
         }
     }
 

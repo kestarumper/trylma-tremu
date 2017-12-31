@@ -9,6 +9,7 @@ public class User {
     private final String csrf;
     private ActorRef actorRef;
     private boolean isMoving;
+    private String color;
 
     public User(String name, String csrf) {
         this.name = name;
@@ -23,6 +24,14 @@ public class User {
 
     public String getCsrf() {
         return csrf;
+    }
+
+    public void setColor(String color){
+        this.color = color;
+    }
+
+    public String getColor(){
+        return this.color;
     }
 
     public void setActorRef(ActorRef actorRef) {
