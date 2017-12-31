@@ -8,11 +8,13 @@ public class User {
     private final String name;
     private final String csrf;
     private ActorRef actorRef;
+    private boolean isMoving;
 
     public User(String name, String csrf) {
         this.name = name;
         this.csrf = csrf;
         this.actorRef = null;
+        this.isMoving = false;
     }
 
     public String getName() {
@@ -31,6 +33,14 @@ public class User {
         if(actorRef != null) {
             actorRef.tell(msg, sender);
         }
+    }
+
+    public void setActivity(boolean activity){
+        this.isMoving = activity;
+    }
+
+    public boolean getActivity(){
+        return this.isMoving;
     }
 
     @Override

@@ -51,6 +51,7 @@ public class GameSessionActor extends AbstractActor {
                         if(type.equals("move")){
                             Point pointA = new Point(jn.findPath("x1").asInt(), jn.findPath("y1").asInt());
                             Point pointB = new Point(jn.findPath("x2").asInt(), jn.findPath("y2").asInt());
+
                             if(this.gameSession.getGameBoard().makeAMove(pointA, pointB)){
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : true }", self());
                                 tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
@@ -59,16 +60,36 @@ public class GameSessionActor extends AbstractActor {
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : false }", self());
                             }
                         }
-                        else {
-                            if(type.equals("WebSocketInit")) {
-                                String username = jn.findPath("username").asText();
-                                gameSession.getRoom().getUsers().get(username).setActorRef(browser);
-                                Logger.info("Pairing {} with WebSocket {}", username, browser);
-                            }
 
-                            // Send back to client WHOLE Game Session
-                            tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
+                        if(type.equals("repaint")){
+                            browser.tell(this.gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
                         }
+
+                        if(type.equals("WebSocketInit")) {
+                            String username = jn.findPath("username").asText();
+                            User tempUser = gameSession.getRoom().getUsers().get(username);
+                            tempUser.setActorRef(browser);
+                            gameSession.addToQueue(tempUser);
+                            Logger.info("Pairing {} with WebSocket {}", username, browser);
+                        }
+
+                        if(type.equals("pass")){
+                            this.gameSession.passToNext();
+                            tellEveryUserInRoom("{ \"type\" : \"refresh\" }");
+                        }
+
+                        if(type.equals("status")){
+                            String username = jn.findPath("username").asText();
+                            User tempUser = gameSession.getRoom().getUsers().get(username);
+
+                            browser.tell("{ \"type\" : \"status\", \"canMove\" : "
+                                    + tempUser.getActivity()
+                                    + "}", self());
+                        }
+
+                        // Send back to client WHOLE Game Session
+                        tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
+
 
                     // TODO: Process Client move request
 

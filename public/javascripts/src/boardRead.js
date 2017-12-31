@@ -38,7 +38,7 @@ function addField(layer, stage, xpos, ypos, color) {
     layer.add(hexagon);
 }
 
-function addPawn(layer, stage, xpos, ypos, color) {
+function addPawn(layer, stage, xpos, ypos, color, movable) {
     var scale = Math.random();
     var stroke = 'black';
     if(color === 'black'){
@@ -52,7 +52,7 @@ function addPawn(layer, stage, xpos, ypos, color) {
         fill: color,
         stroke: stroke,
         strokeWidth: 4,
-        draggable: true,
+        draggable: movable,
         shadowColor: 'black',
         shadowBlur: 10,
         shadowOffset: {
@@ -105,6 +105,7 @@ var fieldsLayer = new Konva.Layer();
 var pawnsLayer = new Konva.Layer();
 var tempLayer = new Konva.Layer();
 var initialized = false;
+var isMoving = false;
 
 var moves = {
     'type' : "move",
@@ -124,6 +125,15 @@ $(document).ready(() => {
 
     console.log(connection);
 
+    connection.onopen = function (event) {
+        let data = {
+            type: "WebSocketInit",
+            username: $("#username").val()
+        };
+
+        connection.send(JSON.stringify(data));
+    };
+
     connection.onmessage = function (event) {
         let data = JSON.parse(event.data);
         console.log(data);
@@ -131,7 +141,7 @@ $(document).ready(() => {
         if(data.type === 'map' && !initialized){
             stage.destroyChildren()
             console.log('succ');
-            var index = 0;
+
             var fields = data.fields;
             for(index = 0; index < fields.length; index++){
                 addField(fieldsLayer, stage, (fields[index].x * XWIDTH) + OFFSETX, (fields[index].y * YWIDTH) + OFFSETY, decodeColor(fields[index].type));
@@ -145,27 +155,56 @@ $(document).ready(() => {
             stage.add(pawnsLayer);
             stage.add(tempLayer);
             initialized = true;
+            connection.send(JSON.stringify({'type' : "status", username: $("#username").val()}));
+
+        };
+
+        connection.onclose = function (event) {
+            location.reload(true);
+        };
+
+        if(data.type === 'map' && initialized){
+            console.log("repainting");
+            fieldsLayer.remove();
+            stage.destroyChildren();
+
+            var pawns = data.pawns;
+            for(index = 0; index < pawns.length; index++){
+                addPawn(pawnsLayer, stage, (pawns[index].x * XWIDTH) + OFFSETX, (pawns[index].y * YWIDTH) + OFFSETY, decodeColor(pawns[index].color), isMoving);
+            }
+            stage.add(fieldsLayer);
+            stage.add(pawnsLayer);
+            stage.add(tempLayer);
         }
 
         if(data.type === 'move'){
             console.log(data);
             if(!data.cond){
                 console.log("jamnik");
-                initialized = false;
                 connection.send(JSON.stringify({'type' : "repaint"}));
             }
         }
 
+        if(data.type === 'refresh'){
+            connection.send(JSON.stringify({'type' : "status", username: $("#username").val()}));
+        }
+
+        if(data.type === 'status'){
+            isMoving = data.canMove;
+            connection.send(JSON.stringify({'type' : "repaint"}));
+        }
+
+        if(isMoving){
+            $("#passButton").prop('disabled', false);
+        }
+
     };
 
-
-    connection.onopen = function (event) {
-        let data = {
-            type: "WebSocketInit",
-            username: $("#username").val()
-        };
-
-        connection.send(JSON.stringify(data));
+        $("#passButton").click(function(){
+            $("#passButton").prop('disabled', true);
+            isMoving = false;
+            connection.send(JSON.stringify({'type' : "pass"}));
+        });
 
         var cordsPawn = { "x" : 0, "y" : 0};
         stage.on("dragstart", function(e){
@@ -287,5 +326,5 @@ $(document).ready(() => {
         //     // data.value = $("#messagebox").val();
         //     connection.send(JSON.stringify(data));
         // }, 5000);
-    };
+
 });
