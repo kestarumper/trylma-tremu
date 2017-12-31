@@ -23,6 +23,7 @@ public class BasicPawn implements Pawn {
         Point tempPoint = moveStrategy.doMove(this.position, destination, board, currentUser);
 
         if(position.getX() != tempPoint.getX() || position.getY() != tempPoint.getY()){
+            currentUser.setLastMove(this.position);
             board[this.position.getX()][this.position.getY()].placePawn(null);
             this.position = tempPoint;
             board[this.position.getX()][this.position.getY()].placePawn(this);

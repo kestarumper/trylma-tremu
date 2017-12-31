@@ -27,6 +27,7 @@ public class GameSession {
     public void passToNext(){
         User tempUser = this.playerQueue.remove();
         tempUser.setActivity(false);
+        tempUser.setLastMove(null);
         this.playerQueue.add(tempUser);
 
         tempUser = this.playerQueue.element();
