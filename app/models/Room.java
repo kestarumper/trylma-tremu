@@ -1,5 +1,6 @@
 package models;
 
+import akka.actor.ActorRef;
 import models.GameBoardGenerators.FourPlayerBoard;
 import models.GameBoardGenerators.SixPlayerBoard;
 import models.GameBoardGenerators.ThreePlayerBoard;
@@ -84,5 +85,12 @@ public class Room {
 
     public Map<String, User> getUsers() {
         return users;
+    }
+
+    public void tell(Object msg, ActorRef self) {
+        for(User u : users.values()) {
+            // do what you have to do here
+            u.tell(msg, self);
+        }
     }
 }

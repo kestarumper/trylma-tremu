@@ -55,4 +55,8 @@ public class TrylmaApp {
     public Map<String, GameSession> getGameSessions() {
         return gameSessions;
     }
+
+    public void destroyGameSession(User user) {
+        gameSessions.remove(user.getName());
+    }
 }

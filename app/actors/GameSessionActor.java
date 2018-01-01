@@ -29,15 +29,6 @@ public class GameSessionActor extends AbstractActor {
         Logger.info("{} started", this.getClass());
     }
 
-    private void tellEveryUserInRoom(Object msg) {
-        Map<String, User> users = gameSession.getRoom().getUsers();
-
-        for(User u : users.values()) {
-            // do what you have to do here
-            u.tell(msg, self());
-        }
-    }
-
     @Override
     public Receive createReceive() {
         return receiveBuilder()
@@ -57,7 +48,7 @@ public class GameSessionActor extends AbstractActor {
 
                             if(this.gameSession.getGameBoard().makeAMove(pointA, pointB, tempUser)){
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : true }", self());
-                                tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
+                                gameSession.getRoom().tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
                             }
                             else{
                                 browser.tell("{ \"type\" : \"move\", \"cond\" : false }", self());
@@ -78,7 +69,8 @@ public class GameSessionActor extends AbstractActor {
 
                         if(type.equals("pass")){
                             this.gameSession.passToNext();
-                            tellEveryUserInRoom("{ \"type\" : \"refresh\" }");
+                            // tell the room
+                            gameSession.getRoom().tell("{ \"type\" : \"refresh\" }", self());
                         }
 
                         if(type.equals("status")){
@@ -90,8 +82,8 @@ public class GameSessionActor extends AbstractActor {
                                     + "}", self());
                         }
 
-                        // Send back to client WHOLE Game Session
-                        tellEveryUserInRoom(gameSession.getGameBoard().buildMap(new JSONBuilder()));
+                        // Send back to room WHOLE Game Session
+                        gameSession.getRoom().tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
 
 
                     // TODO: Process Client move request

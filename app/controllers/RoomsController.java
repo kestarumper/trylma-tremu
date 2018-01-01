@@ -129,6 +129,12 @@ public class RoomsController extends Controller {
         User user = trylmaApp.getUsers().get(session("username"));
         Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
         room.leaveRoom(user);
+
+        // destroy game session if owner left
+        if(!room.getUsers().containsKey(room.getOwner().getName())) {
+            trylmaApp.destroyGameSession(room.getOwner());
+        }
+
         Logger.info("{} leaves room {} of {}", session("username"), room.getName(), room.getOwner());
         return redirect(routes.RoomsController.room(sessionId));
     }
