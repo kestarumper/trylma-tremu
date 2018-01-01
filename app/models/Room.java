@@ -63,12 +63,23 @@ public class Room {
         users = new HashMap<>();
     }
 
+
+    /**
+     * Adds {@link User} to certain {@link Room}.
+     * User is added by putting him in {@link HashMap}
+     * @param user
+     */
     public void joinRoom(User user) {
         if(!users.containsKey(user.getName())) {
             users.put(user.getName(), user);
         }
     }
 
+    /**
+     * Adds {@link User} to certain {@link Room}.
+     * User is added by putting him in {@link HashMap}
+     * @param user
+     */
     public void leaveRoom(User user) {
         if(users.containsKey(user.getName())) {
             users.remove(user.getName());
@@ -87,6 +98,14 @@ public class Room {
         return users;
     }
 
+
+    /**
+     * Sends message msg to every {@link User} in {@link Room}
+     * which are handled by Actors
+     * @param msg
+     * @param self
+     * @see ActorRef
+     */
     public void tell(Object msg, ActorRef self) {
         for(User u : users.values()) {
             // do what you have to do here
