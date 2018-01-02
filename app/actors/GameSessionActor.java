@@ -74,8 +74,14 @@ public class GameSessionActor extends AbstractActor {
 
                         if(type.equals("pass")){
                             this.gameSession.passToNext();
+                            String username = jn.findPath("username").asText();
+                            User tempUser = gameSession.getRoom().getUsers().get(username);
                             // tell the room
                             gameSession.getRoom().tell("{ \"type\" : \"refresh\" }", self());
+                            if(tempUser.isWinner()){
+                                tempUser.tell("{ \"type\" : \"finish\" }", self());
+                            }
+
                         }
 
                         if(type.equals("status")){

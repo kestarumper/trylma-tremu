@@ -1,6 +1,9 @@
 package models;
 
 import akka.actor.ActorRef;
+import models.States.PlayerContext;
+import models.States.PlayerMovingState;
+import models.States.PlayerWinState;
 import models.Utility.Point;
 
 import java.util.Objects;
@@ -9,16 +12,17 @@ public class User {
     protected final String name;
     protected final String csrf;
     protected ActorRef actorRef;
-    protected boolean isMoving;
+    protected PlayerContext stateContext;
     protected String color;
     protected Point currentPawn;
     protected Point lastMove;
+    protected int pawnsLeft;
 
     public User(String name, String csrf) {
         this.name = name;
         this.csrf = csrf;
         this.actorRef = null;
-        this.isMoving = false;
+        this.stateContext = new PlayerContext();
     }
 
     public String getName() {
@@ -47,10 +51,41 @@ public class User {
         }
     }
 
-    public void setActivity(boolean activity){
-        this.isMoving = activity;
+    public void setPawnsNumber(int number){
+        this.pawnsLeft = number;
+    }
+
+    public void decrementPawns(){
+        this.pawnsLeft -= 1;
+    }
+
+    public int getPawnsLeft(){
+        return this.pawnsLeft;
+    }
+
+    public void changeActivity(){
+        this.stateContext.toggleFocus();
         this.currentPawn = null;
         this.lastMove = null;
+    }
+
+    public boolean getActivity(){
+        if(this.stateContext.getState() instanceof PlayerMovingState){
+            return true;
+        }
+        return false;
+    }
+
+    public void setAsWinner(){
+        this.stateContext.setAsWinner();
+    }
+
+    public boolean isWinner(){
+        if(this.stateContext.getState() instanceof PlayerWinState){
+            return true;
+        }
+
+        return false;
     }
 
     public void setPawn(Point newPawn){
@@ -70,10 +105,6 @@ public class User {
             return true;
         }
         return false;
-    }
-
-    public boolean getActivity(){
-        return this.isMoving;
     }
 
     public void setLastMove(Point move){

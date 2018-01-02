@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Room {
     public static enum Mode {
-        PLAYERS2("Two players", 3),
+        PLAYERS2("Two players", 2),
         PLAYERS3("Three players", 3),
         PLAYERS4("Four players", 3),
         PLAYERS6("Six players", 3);
