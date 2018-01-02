@@ -1,14 +1,13 @@
 package controllers;
 
+import actors.GameSessionActor;
 import actors.RoomDetailActor;
 import actors.RoomListActor;
 import actors.VirtualBrowserActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
-import controllers.routes;
 import models.*;
-import models.GameBoardGenerators.SixPlayerBoard;
 import models.PawnMove.BasicMove;
 import play.Logger;
 import play.libs.streams.ActorFlow;
@@ -19,10 +18,7 @@ import views.html.newroom;
 import views.html.room;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class RoomsController extends Controller {
     private TrylmaApp trylmaApp;
@@ -92,8 +88,9 @@ public class RoomsController extends Controller {
             Room room = new Room(roomname, user, mode);
 
             GameBoard gameBoard = new GameBoard(mode.getNum(), new BasicMove(), mode.getStrategy());
-
             GameSession gameSession = new GameSession(gameBoard, room);
+            ActorRef gameSessionActor = actorSystem.actorOf(GameSessionActor.props(gameSession));
+            gameSession.setGameSessionActor(gameSessionActor);
 
             // add creator
             room.joinRoom(user);

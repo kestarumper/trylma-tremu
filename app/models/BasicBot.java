@@ -10,6 +10,6 @@ public class BasicBot extends User {
 
     public String action() {
         // TODO: make bot decide and return what to do
-        return "{ \"type\" : \"move\" }";
+        return "{ \"type\" : \"pass\" }";
     }
 }

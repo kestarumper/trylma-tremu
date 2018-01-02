@@ -1,5 +1,7 @@
 package models;
 
+import akka.actor.ActorRef;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -8,12 +10,21 @@ public class GameSession {
     private Room room;
     private Queue<User> playerQueue;
     private Queue<String> colors;
+    private ActorRef gameSessionActor;
 
     public GameSession(GameBoard gameBoard, Room room) {
         this.gameBoard = gameBoard;
         this.room = room;
         this.playerQueue = new LinkedList<>();
         this.colors = gameBoard.getInGameColors();
+    }
+
+    public void setGameSessionActor(ActorRef gameSessionActor) {
+        this.gameSessionActor = gameSessionActor;
+    }
+
+    public void tell(Object msg, ActorRef sender) {
+        gameSessionActor.tell(msg, sender);
     }
 
     public GameBoard getGameBoard() {

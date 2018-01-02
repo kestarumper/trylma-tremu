@@ -9,6 +9,12 @@ import models.GameSession;
 import play.Logger;
 import play.libs.Json;
 
+
+/**
+ * Similar to {@link BrowserEntryPointActor}, except it acts as
+ * an emulated version of browser JavaScript.
+ * Simulates user's inputs and processes {@link GameSessionActor} outputs.
+ */
 public class VirtualBrowserActor extends AbstractActor {
     private final GameSession gameSession;
     private final BasicBot bot;
@@ -46,10 +52,9 @@ public class VirtualBrowserActor extends AbstractActor {
                     Logger.info("{} received: {}", bot.getName(), message);
 
                     // TODO: Interpret input as browser
-
-                    bot.action();
-
-//                    sender().tell("{ \"type\" : \"HelloImBot\" }", self());
+                    if(bot.getActivity()) {
+                        sender().tell(bot.action(), self());
+                    }
                 })
                 .build();
     }

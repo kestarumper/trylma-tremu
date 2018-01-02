@@ -1,5 +1,6 @@
 package controllers;
 
+import actors.BrowserEntryPointActor;
 import actors.GameSessionActor;
 import actors.RoomListActor;
 import akka.actor.ActorRef;
@@ -44,7 +45,7 @@ public class BoardDrawController extends Controller {
 
     public WebSocket board(String sessionId) {
         return WebSocket.Text.accept(request ->
-                ActorFlow.actorRef((ActorRef browser) -> GameSessionActor.props(browser, trylmaApp.getGameSessions().get(sessionId)),
+                ActorFlow.actorRef((ActorRef browser) -> BrowserEntryPointActor.props(browser, trylmaApp.getGameSessions().get(sessionId)),
                         actorSystem, materializer
                 )
         );

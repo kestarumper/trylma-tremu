@@ -12,17 +12,20 @@ import models.Utility.Point;
 import play.Logger;
 import play.libs.Json;
 
-public class GameSessionActor extends AbstractActor {
 
-    private ActorRef browser;
+/**
+ * Is reponsible for conducting game flow.
+ * Interprets messages sent from {@link BrowserEntryPointActor} or
+ * {@link VirtualBrowserActor} and propagates messages to every user in room.
+ */
+public class GameSessionActor extends AbstractActor {
     private final GameSession gameSession;
 
-    public static Props props(ActorRef browser, GameSession gameSession) {
-        return Props.create(GameSessionActor.class, browser, gameSession);
+    public static Props props(GameSession gameSession) {
+        return Props.create(GameSessionActor.class, gameSession);
     }
 
-    public GameSessionActor(ActorRef browser, GameSession gameSession) {
-        this.browser = browser;
+    public GameSessionActor(GameSession gameSession) {
         this.gameSession = gameSession;
         Logger.info("{} started", this.getClass());
     }
@@ -31,6 +34,7 @@ public class GameSessionActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(String.class, message -> {
+                        ActorRef browser = sender();
 
                         // Otrzymana wiadomosc (String) parsuje na obiekt JsonNode
                         JsonNode jn = Json.parse(message);
