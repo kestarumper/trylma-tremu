@@ -80,17 +80,6 @@ public class GameSessionActor extends AbstractActor {
                                     + "}", self());
                         }
 
-//                        if(type.equals("replaceWithBot")) {
-//                            String username = jn.findPath("username").asText();
-//                            User tempUser = gameSession.getRoom().getUsers().get(username);
-//
-//                            BasicBot bot = new BasicBot(tempUser.getName(), tempUser.getCsrf());
-//                            ActorRef virtualBrowser = getContext().actorOf(VirtualBrowserActor.props(gameSession, bot));
-//
-//                            this.browser = virtualBrowser;
-//                            gameSession.replaceUserWithBot(tempUser, bot);
-//                        }
-
                         // Send back to room WHOLE Game Session
                         gameSession.getRoom().tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
 

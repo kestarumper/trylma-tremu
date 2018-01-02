@@ -24,26 +24,6 @@ public class GameSession {
         return room;
     }
 
-//    public void replaceUserWithBot(User user, BasicBot bot) {
-//        if(room.getUsers().containsKey(user.getName())) {
-//            room.leaveRoom(user);
-//        }
-//        room.joinRoom(bot);
-//
-//        Queue<User> tempQueue = new LinkedList<>();
-//        User current;
-//        while(playerQueue.size() > 0) {
-//            current = playerQueue.remove();
-//            if(current == user) {
-//                // Replace user in queue with bot
-//                tempQueue.add(bot);
-//            } else {
-//                tempQueue.add(current);
-//            }
-//        }
-//        playerQueue = tempQueue;
-//    }
-
     public void passToNext(){
         User tempUser = this.playerQueue.remove();
         tempUser.setActivity(false);
