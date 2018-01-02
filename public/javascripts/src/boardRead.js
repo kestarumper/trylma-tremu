@@ -179,10 +179,9 @@ $(document).ready(() => {
         }
 
         if(data.type === 'move'){
-            console.log(data);
             if(!data.cond){
                 console.log("jamnik");
-                connection.send(JSON.stringify({'type' : "repaint"}));
+                connection.send(JSON.stringify({'type' : "repaint", username: $("#username").val()}));
             }
         }
 
@@ -192,7 +191,7 @@ $(document).ready(() => {
 
         if(data.type === 'status'){
             isMoving = data.canMove;
-            connection.send(JSON.stringify({'type' : "repaint"}));
+            connection.send(JSON.stringify({'type' : "repaint", username: $("#username").val()}));
         }
 
         if(isMoving){

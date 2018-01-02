@@ -112,4 +112,12 @@ public class Room {
             u.tell(msg, self);
         }
     }
+
+    public void update(Object msg, ActorRef self, User demandingUser){
+        for(User u : users.values()){
+            if(!u.getName().equals(demandingUser.getName())){
+               u.tell(msg, self);
+            }
+        }
+    }
 }
