@@ -8,8 +8,18 @@ public class BasicBot extends User {
         super(name.concat("Bot"), csrf);
     }
 
-    public String action() {
+    public String action(GameBoard gameBoard) {
         // TODO: make bot decide and return what to do
+
+//        var moves = {
+//                'type' : "move",
+//                'x1' : -1,
+//                'y1' : -1,
+//                'x2' : -1,
+//                'y2' : -1,
+//                username: $("#username").val()
+//};
+
         return "{ \"type\" : \"pass\" }";
     }
 }

@@ -53,7 +53,7 @@ public class VirtualBrowserActor extends AbstractActor {
 
                     // TODO: Interpret input as browser
                     if(bot.getActivity()) {
-                        sender().tell(bot.action(), self());
+                        sender().tell(bot.action(gameSession.getGameBoard()), self());
                     }
                 })
                 .build();
