@@ -47,6 +47,8 @@ public class VirtualBrowserActor extends AbstractActor {
 
                     // TODO: Interpret input as browser
 
+                    bot.action();
+
 //                    sender().tell("{ \"type\" : \"HelloImBot\" }", self());
                 })
                 .build();
