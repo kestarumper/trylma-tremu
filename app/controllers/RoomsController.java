@@ -2,6 +2,7 @@ package controllers;
 
 import actors.RoomDetailActor;
 import actors.RoomListActor;
+import actors.VirtualBrowserActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
@@ -136,6 +137,29 @@ public class RoomsController extends Controller {
         }
 
         Logger.info("{} leaves room {} of {}", session("username"), room.getName(), room.getOwner());
+        return redirect(routes.RoomsController.room(sessionId));
+    }
+
+    public Result addBot(String sessionId) {
+        if(session("username") == null) {
+            return forbidden("You have to be logged to create new bot.");
+        }
+        trylmaApp.validateUserSession(session());
+        // find room and add session user to it
+        User user = trylmaApp.getUsers().get(session("username"));
+        BasicBot bot = new BasicBot(user.getName(), user.getCsrf());
+
+        GameSession gameSession = trylmaApp.getGameSessions().get(sessionId);
+        Room room = gameSession.getRoom();
+
+        // create virtual browser that will resemble normal user
+        ActorRef virtualBrowser = actorSystem.actorOf(VirtualBrowserActor.props(gameSession, bot));
+        bot.setActorRef(virtualBrowser);
+        gameSession.addToQueue(bot);
+
+        room.joinRoom(bot);
+
+        Logger.info("{} joins room {} of {}", bot.getName(), room.getName(), room.getOwner());
         return redirect(routes.RoomsController.room(sessionId));
     }
 

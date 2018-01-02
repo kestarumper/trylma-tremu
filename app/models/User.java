@@ -6,13 +6,13 @@ import models.Utility.Point;
 import java.util.Objects;
 
 public class User {
-    private final String name;
-    private final String csrf;
-    private ActorRef actorRef;
-    private boolean isMoving;
-    private String color;
-    private Point currentPawn;
-    private Point lastMove;
+    protected final String name;
+    protected final String csrf;
+    protected ActorRef actorRef;
+    protected boolean isMoving;
+    protected String color;
+    protected Point currentPawn;
+    protected Point lastMove;
 
     public User(String name, String csrf) {
         this.name = name;

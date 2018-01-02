@@ -4,6 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.fasterxml.jackson.databind.JsonNode;
+import models.BasicBot;
 import models.Builders.JSONBuilder;
 import models.GameSession;
 import models.User;
@@ -11,12 +12,9 @@ import models.Utility.Point;
 import play.Logger;
 import play.libs.Json;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class GameSessionActor extends AbstractActor {
 
-    private final ActorRef browser;
+    private ActorRef browser;
     private final GameSession gameSession;
 
     public static Props props(ActorRef browser, GameSession gameSession) {
@@ -81,6 +79,17 @@ public class GameSessionActor extends AbstractActor {
                                     + tempUser.getActivity()
                                     + "}", self());
                         }
+
+//                        if(type.equals("replaceWithBot")) {
+//                            String username = jn.findPath("username").asText();
+//                            User tempUser = gameSession.getRoom().getUsers().get(username);
+//
+//                            BasicBot bot = new BasicBot(tempUser.getName(), tempUser.getCsrf());
+//                            ActorRef virtualBrowser = getContext().actorOf(VirtualBrowserActor.props(gameSession, bot));
+//
+//                            this.browser = virtualBrowser;
+//                            gameSession.replaceUserWithBot(tempUser, bot);
+//                        }
 
                         // Send back to room WHOLE Game Session
                         gameSession.getRoom().tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());

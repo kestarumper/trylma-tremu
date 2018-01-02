@@ -22,6 +22,9 @@ GET     /room/:name                 controllers.RoomsController.room(name: Strin
 GET     /room/join/:name            controllers.RoomsController.joinRoom(name: String)
 # leave session user to certain room
 GET     /room/leave/:name           controllers.RoomsController.leaveRoom(name: String)
+# add bot to room
+GET     /room/addbot/:name          controllers.RoomsController.addBot(name: String)
+
 #
 GET     /room/game/:name            controllers.BoardDrawController.index(name: String)
 GET     /room/game/detail/:name     controllers.BoardDrawController.board(name: String)

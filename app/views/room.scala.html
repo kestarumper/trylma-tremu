@@ -9,6 +9,7 @@
             <input type="hidden" value='@session.get("username")' id="username"/>
             <h3>Owner: @sessionId</h3>
             <p>Mode: @room.getMode</p>
+            <a href="@routes.RoomsController.addBot(sessionId)"><button>Add Bot</button></a>
             <a href="@routes.RoomsController.joinRoom(sessionId)"><button>Join</button></a>
             <a href="@routes.RoomsController.leaveRoom(sessionId)"><button>Leave</button></a>
             <a href="@routes.BoardDrawController.index(sessionId)"><button>Enter game</button></a>
