@@ -159,7 +159,7 @@ public class RoomsController extends Controller {
 
         room.joinRoom(bot);
 
-        Logger.info("{} joins room {} of {}", bot.getName(), room.getName(), room.getOwner());
+        Logger.info("{} joins room {} of {}", bot.getName(), room.getName(), room.getOwner().getName());
         return redirect(routes.RoomsController.room(sessionId));
     }
 

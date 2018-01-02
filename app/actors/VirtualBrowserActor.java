@@ -43,7 +43,7 @@ public class VirtualBrowserActor extends AbstractActor {
 //                    JsonNode jn = Json.parse(message);
 //                    JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
 
-                    Logger.info("Bot received: {}", message);
+                    Logger.info("{} received: {}", bot.getName(), message);
 
                     // TODO: Interpret input as browser
 
