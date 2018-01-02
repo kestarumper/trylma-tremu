@@ -46,14 +46,23 @@ public class VirtualBrowserActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(String.class, message -> {
-//                    JsonNode jn = Json.parse(message);
-//                    JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
+                    JsonNode jn = Json.parse(message);
+                    JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
 
                     Logger.info("{} received: {}", bot.getName(), message);
 
-                    // TODO: Interpret input as browser
-                    if(bot.getActivity()) {
-                        sender().tell(bot.action(gameSession.getGameBoard()), self());
+                    if(jmsg.type.equals("status")) {
+                        if(bot.getActivity()) {
+                            sender().tell(bot.action(gameSession.getGameBoard()), self());
+                        }
+                    }
+
+                    if(jmsg.type.equals("move")) {
+                        if(jn.findPath("cond").asBoolean()) {
+                            sender().tell("{ \"type\" : \"pass\" }", self());
+                        } else {
+                            sender().tell(bot.action(gameSession.getGameBoard()), self());
+                        }
                     }
                 })
                 .build();
