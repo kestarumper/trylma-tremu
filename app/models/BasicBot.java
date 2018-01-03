@@ -23,12 +23,14 @@ public class BasicBot extends User {
     private void initializeBot(){
         this.botPawns = calculateSelfPawns();
         this.fieldsToAcheive = calculateFieldsToAcheive();
-
     }
 
-    private ArrayList<Field> calculateAvailableMoves() {
-        // TODO: wszystkie mozliwe ruchy dookoła
-        return null;
+    private ArrayList<Field> calculateAvailableMoves(Pawn pawn) {
+        ArrayList<Field> result = new ArrayList<>();
+
+
+
+        return result;
     }
 
     private double calculateDistance(Field candidate, Field destination) {
@@ -40,26 +42,6 @@ public class BasicBot extends User {
         //TODO: oblicz dystans dla kazdego i zwroc najlepszego
 
         return null;
-    }
-
-    public String action(GameBoard gameBoard) {
-        // TODO: make bot decide and return what to do
-        if(!initialized){
-            initializeBot();
-            this.initialized = true;
-        }
-
-
-//        var moves = {
-//                'type' : "move",
-//                'x1' : -1,
-//                'y1' : -1,
-//                'x2' : -1,
-//                'y2' : -1,
-//                username: $("#username").val()
-//};
-
-        return "{ \"type\" : \"pass\" }";
     }
 
     private ArrayList<Pawn> calculateSelfPawns(){
@@ -100,5 +82,25 @@ public class BasicBot extends User {
         }
 
         return tempArray;
+    }
+
+    public String action(GameBoard gameBoard) {
+        // TODO: make bot decide and return what to do
+        if(!initialized){
+            initializeBot();
+            this.initialized = true;
+        }
+
+
+//        var moves = {
+//                'type' : "move",
+//                'x1' : -1,
+//                'y1' : -1,
+//                'x2' : -1,
+//                'y2' : -1,
+//                username: $("#username").val()
+//};
+
+        return "{ \"type\" : \"pass\" }";
     }
 }
