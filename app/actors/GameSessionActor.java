@@ -7,10 +7,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.BasicBot;
 import models.Builders.JSONBuilder;
 import models.GameSession;
+import models.TrylmaApp;
 import models.User;
 import models.Utility.Point;
 import play.Logger;
 import play.libs.Json;
+import scala.util.Try;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,6 +24,7 @@ import play.libs.Json;
  */
 public class GameSessionActor extends AbstractActor {
     private final GameSession gameSession;
+    private TrylmaApp trylmaApp;
 
     public static Props props(GameSession gameSession) {
         return Props.create(GameSessionActor.class, gameSession);
@@ -27,6 +32,7 @@ public class GameSessionActor extends AbstractActor {
 
     public GameSessionActor(GameSession gameSession) {
         this.gameSession = gameSession;
+        this.trylmaApp = TrylmaApp.getInstance();
         Logger.info("{} started", this.getClass());
     }
 
@@ -67,9 +73,17 @@ public class GameSessionActor extends AbstractActor {
                             String username = jn.findPath("username").asText();
                             User tempUser = gameSession.getRoom().getUsers().get(username);
                             tempUser.setActorRef(browser);
-                            gameSession.addToQueue(tempUser);
-                            tempUser.tell(this.gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
-                            Logger.info("Pairing {} with WebSocket {}", username, browser);
+                            //Wywal uzyktownikowi utabele wynikow jesli jest juz wygral xd
+                            if(gameSession.getWonUsers().contains(username)){
+                                String response = generateWinnersResponse();
+                                tempUser.tell(response, self());
+                            }
+                            else {
+                                gameSession.addToQueue(tempUser);
+                                tempUser.tell(this.gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
+                                tempUser.tell("{ \"type\" : \"color\", \"color\" : \"" + tempUser.getColor() + "\" }", self());
+                                Logger.info("Pairing {} with WebSocket {}", username, browser);
+                            }
                         }
 
                         if(type.equals("pass")){
@@ -78,8 +92,9 @@ public class GameSessionActor extends AbstractActor {
                             User tempUser = gameSession.getRoom().getUsers().get(username);
                             // tell the room
                             gameSession.getRoom().tell("{ \"type\" : \"refresh\" }", self());
-                            if(tempUser.isWinner()){
-                                tempUser.tell("{ \"type\" : \"finish\" }", self());
+                            if(tempUser.isWinner() || this.gameSession.isGameOver()){
+                                String response = generateWinnersResponse();
+                                tempUser.tell(response, self());
                             }
 
                         }
@@ -88,9 +103,24 @@ public class GameSessionActor extends AbstractActor {
                             String username = jn.findPath("username").asText();
                             User tempUser = gameSession.getRoom().getUsers().get(username);
 
-                            browser.tell("{ \"type\" : \"status\", \"canMove\" : "
-                                    + tempUser.getActivity()
-                                    + "}", self());
+                            if(!gameSession.isGameOver()) {
+                                browser.tell("{ \"type\" : \"status\", \"canMove\" : "
+                                        + tempUser.getActivity()
+                                        + "}", self());
+                            }
+                            else{
+                                String res = generateWinnersResponse();
+                                browser.tell(res, self());
+                            }
+                        }
+
+                        if(type.equals("exit")){
+                            String username = jn.findPath("username").asText();
+                            User tempUser = gameSession.getRoom().getUsers().get(username);
+                            gameSession.getRoom().leaveRoom(tempUser);
+                            if(gameSession.getRoom().getUsers().size() == 0){
+                                trylmaApp.destroyGameSession(gameSession.getRoom().getOwner());
+                            }
                         }
 
                         // Send back to room WHOLE Game Session
@@ -102,5 +132,25 @@ public class GameSessionActor extends AbstractActor {
 
                 })
                 .build();
+    }
+
+    private String generateWinnersResponse(){
+        String res = "{ \"type\" : \"finish\", \"users\" : [";
+        ArrayList<User> tempList = this.gameSession.getWonUsers();
+        boolean first = true;
+
+        for(User u : tempList){
+            if(first){
+                first = false;
+            }
+            else{
+                res += ",";
+            }
+
+            res += " \"" + u.getName() + "\"";
+        }
+
+        res += " ] }";
+        return res;
     }
 }
