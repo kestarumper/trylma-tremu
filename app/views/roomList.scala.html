@@ -1,7 +1,7 @@
 @(username: String)
 
 <div class="container">
-    <h1>Logged in as @username <a href="@routes.HomeController.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i></a></h1>
+    <h1 id="loggedInAs">Logged in as @username <a href="@routes.HomeController.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i></a></h1>
 </div>
 <div id="roomlist" class="container" data-ws-url="@routes.RoomsController.getRoomList.webSocketURL()">
     <h2>List of rooms <a href="@routes.RoomsController.newRoom()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></h2>
