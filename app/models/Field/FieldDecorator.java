@@ -1,6 +1,7 @@
 package models.Field;
 
 import models.Pawn.Pawn;
+import models.Utility.Point;
 
 public abstract class FieldDecorator implements Field {
 
@@ -28,5 +29,10 @@ public abstract class FieldDecorator implements Field {
     @Override
     public void placePawn(Pawn pawn) {
         this.decoratedField.placePawn(pawn);
+    }
+
+    @Override
+    public Point getPosition() {
+        return this.decoratedField.getPosition();
     }
 }

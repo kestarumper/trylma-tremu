@@ -11,4 +11,6 @@ public interface Pawn {
     public String getColor();
     public boolean isOnColor();
     public void setOnColor();
+    public Point getPosition();
+    public boolean checkMove(Point destination, Field[][] board, User currentUser);
 }

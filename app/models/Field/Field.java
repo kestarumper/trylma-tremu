@@ -1,6 +1,7 @@
 package models.Field;
 
 import models.Pawn.Pawn;
+import models.Utility.Point;
 
 /*
     Interface which is needed for creating decorated fields.
@@ -19,4 +20,5 @@ public interface Field {
     public void setType(String type);
     public Pawn getPawn();
     public void placePawn(Pawn pawn);
+    public Point getPosition();
 }
