@@ -179,10 +179,9 @@ $(document).ready(() => {
         }
 
         if(data.type === 'move'){
-            console.log(data);
             if(!data.cond){
                 console.log("jamnik");
-                connection.send(JSON.stringify({'type' : "repaint"}));
+                connection.send(JSON.stringify({'type' : "repaint", username: $("#username").val()}));
             }
         }
 
@@ -192,7 +191,12 @@ $(document).ready(() => {
 
         if(data.type === 'status'){
             isMoving = data.canMove;
-            connection.send(JSON.stringify({'type' : "repaint"}));
+            connection.send(JSON.stringify({'type' : "repaint", username: $("#username").val()}));
+        }
+
+        if(data.type === 'finish'){
+            stage.destroy();
+            alert("You win!");
         }
 
         if(isMoving){
@@ -204,7 +208,7 @@ $(document).ready(() => {
         $("#passButton").click(function(){
             $("#passButton").prop('disabled', true);
             isMoving = false;
-            connection.send(JSON.stringify({'type' : "pass"}));
+            connection.send(JSON.stringify({'type' : "pass", username: $("#username").val()}));
         });
 
         var cordsPawn = { "x" : 0, "y" : 0};

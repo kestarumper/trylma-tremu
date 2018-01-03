@@ -28,9 +28,9 @@ public class BasicMove implements MoveStrategy {
             if(desired.getX() != currentUser.getLastMove().getX() || desired.getY() != currentUser.getLastMove().getY()) {
                 if (board[desired.getX()][desired.getY()].getPawn() == null) {
                     if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
-                        return doMoveOnColor(start, desired, board);
+                        return doMoveOnColor(start, desired, board, currentUser);
                     } else {
-                        return doMoveNormal(start, desired, board);
+                        return doMoveNormal(start, desired, board, currentUser);
                     }
                 } else {
                     return start;
@@ -40,9 +40,9 @@ public class BasicMove implements MoveStrategy {
         else{
             if (board[desired.getX()][desired.getY()].getPawn() == null) {
                 if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
-                    return doMoveOnColor(start, desired, board);
+                    return doMoveOnColor(start, desired, board, currentUser);
                 } else {
-                    return doMoveNormal(start, desired, board);
+                    return doMoveNormal(start, desired, board, currentUser);
                 }
             } else {
                 return start;
@@ -52,22 +52,22 @@ public class BasicMove implements MoveStrategy {
         return start;
     }
 
-    protected Point doMoveOnColor(Point start, Point desired, Field[][] board){
+    protected Point doMoveOnColor(Point start, Point desired, Field[][] board, User currentUser){
         Pawn tempPawn = board[start.getX()][start.getY()].getPawn();
 
         if(board[desired.getX()][desired.getY()].getType().equals(tempPawn.getDesiredColor())){
-            return doMoveNormal(start, desired, board);
+            return doMoveNormal(start, desired, board, currentUser);
         }
 
         return start;
     }
 
-    protected Point doMoveNormal(Point start, Point desired, Field[][] board){
+    protected Point doMoveNormal(Point start, Point desired, Field[][] board, User currentUser){
         if(start.getX() != desired.getX() && start.getY() == desired.getY()){
             if(abs(start.getX() - desired.getX()) == 2 && this.firstPawn){
                 //Normal move on cross plan
                 if(board[desired.getX()][desired.getY()].getPawn() == null){
-                        if(hasColorChanged(start, desired, board)){
+                        if(hasColorChanged(start, desired, board, currentUser)){
                             board[start.getX()][start.getY()].getPawn().setOnColor();
                         }
                         this.hasFirstMoved = true;
@@ -78,7 +78,7 @@ public class BasicMove implements MoveStrategy {
             else if(abs(start.getX() - desired.getX()) == 4 && !this.hasFirstMoved){
                 //Longer move on cross plan
                 if(hasPawnInMiddle(start, desired, board)){
-                    if(hasColorChanged(start, desired, board)){
+                    if(hasColorChanged(start, desired, board, currentUser)){
                         board[start.getX()][start.getY()].getPawn().setOnColor();
                     }
                     return desired;
@@ -90,7 +90,7 @@ public class BasicMove implements MoveStrategy {
             if(abs(start.getX() - desired.getX()) == 1 && abs(start.getY() - desired.getY()) == 1 && this.firstPawn){
                 //Short move on X plane
                 if(board[desired.getX()][desired.getY()].getPawn() == null){
-                        if(hasColorChanged(start, desired, board)){
+                        if(hasColorChanged(start, desired, board, currentUser)){
                             board[start.getX()][start.getY()].getPawn().setOnColor();
                         }
                         this.hasFirstMoved = true;
@@ -101,7 +101,7 @@ public class BasicMove implements MoveStrategy {
             else if(abs(start.getX() - desired.getX()) == 2 && abs(start.getY() - desired.getY()) == 2 && !this.hasFirstMoved){
                 //Long move on X plane
                 if(hasPawnInMiddle(start, desired, board)){
-                    if(hasColorChanged(start, desired, board)){
+                    if(hasColorChanged(start, desired, board, currentUser)){
                         board[start.getX()][start.getY()].getPawn().setOnColor();
                     }
 
@@ -113,12 +113,19 @@ public class BasicMove implements MoveStrategy {
         return start;
     }
 
-    protected Boolean hasColorChanged(Point start, Point desired, Field[][] board){
+    protected Boolean hasColorChanged(Point start, Point desired, Field[][] board, User currentUser){
         Pawn tempPawn = board[start.getX()][start.getY()].getPawn();
         String color = board[desired.getX()][desired.getY()].getType();
 
         if(tempPawn.getDesiredColor().equals(color)){
             //Decrement user pawn needed to transport to win
+            if(!tempPawn.isOnColor()) {
+                currentUser.decrementPawns();
+                if (currentUser.getPawnsLeft() == 0) {
+                    System.out.println("robie z niego winnera");
+                    currentUser.setAsWinner();
+                }
+            }
             return true;
         }
 

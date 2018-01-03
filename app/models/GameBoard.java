@@ -40,6 +40,15 @@ public class GameBoard {
         return this.colors;
     }
 
+    public int getPawnsNumber(){
+        int sum = 0;
+        for(int i = 1; i <= this.sizeOfPoints; i++){
+            sum += i;
+        }
+
+        return sum;
+    }
+
     public boolean makeAMove(Point start, Point end, User currentUser){
         Pawn tempPawn = this.gameBoardArray[start.getX()][start.getY()].getPawn();
         boolean condition = false;

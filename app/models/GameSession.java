@@ -2,6 +2,7 @@ package models;
 
 import akka.actor.ActorRef;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -11,12 +12,14 @@ public class GameSession {
     private Queue<User> playerQueue;
     private Queue<String> colors;
     private ActorRef gameSessionActor;
+    private ArrayList<User> wonUsers;
 
     public GameSession(GameBoard gameBoard, Room room) {
         this.gameBoard = gameBoard;
         this.room = room;
         this.playerQueue = new LinkedList<>();
         this.colors = gameBoard.getInGameColors();
+        this.wonUsers = new ArrayList<>();
     }
 
     public void setGameSessionActor(ActorRef gameSessionActor) {
@@ -31,24 +34,38 @@ public class GameSession {
         return gameBoard;
     }
 
+    public ArrayList<User> getWonUsers() {
+        return wonUsers;
+    }
+
     public Room getRoom() {
         return room;
     }
 
     public void passToNext(){
         User tempUser = this.playerQueue.remove();
-        tempUser.setActivity(false);
+        tempUser.changeActivity();
         tempUser.setLastMove(null);
-        this.playerQueue.add(tempUser);
+        System.out.println("USer: " + tempUser.getName() + " has pawns left: " + tempUser.getPawnsLeft());
+
+        if(!tempUser.isWinner()) {
+            System.out.println("nie wygral jeszcze");
+            this.playerQueue.add(tempUser);
+        }
+        else{
+            System.out.println("juz wygral");
+            this.wonUsers.add(tempUser);
+        }
 
         tempUser = this.playerQueue.element();
-        tempUser.setActivity(true);
+        tempUser.changeActivity();
     }
 
     public void addToQueue(User u){
         if(!playerQueue.contains(u)) {
+            u.setPawnsNumber(this.gameBoard.getPawnsNumber());
             if (playerQueue.size() == 0) {
-                u.setActivity(true);
+                u.changeActivity();
                 u.setColor(this.colors.remove());
                 playerQueue.add(u);
             } else {
