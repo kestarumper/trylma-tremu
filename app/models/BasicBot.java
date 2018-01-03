@@ -48,7 +48,9 @@ public class BasicBot extends User {
                 point.setX(x+i);
                 point.setY(y+j);
 
-                pawn.makeMove(point, gameBoard.getGameBoardArray(), this);
+                if(pawn.checkMove(point, gameBoard.getGameBoardArray(), this)) {
+                    result.add(gameBoard.getField(point.getX(), point.getY()));
+                }
             }
         }
 
