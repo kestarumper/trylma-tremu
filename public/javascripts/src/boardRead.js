@@ -195,6 +195,7 @@ $(document).ready(() => {
             stage.destroy();
             $("#status_bar").hide();
             $("#scores").show();
+            $("#scores ul").empty();
             for(i = 0; i < data.users.length; i++){
                 $("#scores ul").append('<li class="list-group-item">' + data.users[i]
                     + '<span class="badge">' + (i + 1) + '</span></li>');

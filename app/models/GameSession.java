@@ -57,7 +57,9 @@ public class GameSession {
             this.playerQueue.add(tempUser);
         }
         else{
-            this.wonUsers.add(tempUser);
+            if(!this.wonUsers.contains(tempUser)){
+                this.wonUsers.add(tempUser);
+            }
         }
 
         if(this.playerQueue.size() == 1){

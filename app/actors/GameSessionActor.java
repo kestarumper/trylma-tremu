@@ -75,7 +75,8 @@ public class GameSessionActor extends AbstractActor {
                             tempUser.setActorRef(browser);
                             //Wywal uzyktownikowi utabele wynikow jesli jest juz wygral xd
                             if(gameSession.getWonUsers().contains(username)){
-
+                                String response = generateWinnersResponse();
+                                tempUser.tell(response, self());
                             }
                             else {
                                 gameSession.addToQueue(tempUser);
@@ -92,23 +93,7 @@ public class GameSessionActor extends AbstractActor {
                             // tell the room
                             gameSession.getRoom().tell("{ \"type\" : \"refresh\" }", self());
                             if(tempUser.isWinner() || this.gameSession.isGameOver()){
-                                String response = "{ \"type\" : \"finish\", \"users\" : [";
-                                ArrayList<User> tempList = this.gameSession.getWonUsers();
-                                boolean first = true;
-
-                                for(User u : tempList){
-                                    if(first){
-                                       first = false;
-                                    }
-                                    else{
-                                        response += ",";
-                                    }
-
-                                    response += " \"" + u.getName() + "\"";
-                                }
-
-                                response += " ] }";
-
+                                String response = generateWinnersResponse();
                                 tempUser.tell(response, self());
                             }
 
@@ -118,9 +103,15 @@ public class GameSessionActor extends AbstractActor {
                             String username = jn.findPath("username").asText();
                             User tempUser = gameSession.getRoom().getUsers().get(username);
 
-                            browser.tell("{ \"type\" : \"status\", \"canMove\" : "
-                                    + tempUser.getActivity()
-                                    + "}", self());
+                            if(!gameSession.isGameOver()) {
+                                browser.tell("{ \"type\" : \"status\", \"canMove\" : "
+                                        + tempUser.getActivity()
+                                        + "}", self());
+                            }
+                            else{
+                                String res = generateWinnersResponse();
+                                browser.tell(res, self());
+                            }
                         }
 
                         if(type.equals("exit")){
@@ -141,5 +132,25 @@ public class GameSessionActor extends AbstractActor {
 
                 })
                 .build();
+    }
+
+    private String generateWinnersResponse(){
+        String res = "{ \"type\" : \"finish\", \"users\" : [";
+        ArrayList<User> tempList = this.gameSession.getWonUsers();
+        boolean first = true;
+
+        for(User u : tempList){
+            if(first){
+                first = false;
+            }
+            else{
+                res += ",";
+            }
+
+            res += " \"" + u.getName() + "\"";
+        }
+
+        res += " ] }";
+        return res;
     }
 }
