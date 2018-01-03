@@ -2,6 +2,7 @@ package models;
 
 import models.Field.Field;
 import models.Pawn.Pawn;
+import models.Utility.Point;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,28 @@ public class BasicBot extends User {
     private ArrayList<Field> calculateAvailableMoves(Pawn pawn) {
         ArrayList<Field> result = new ArrayList<>();
 
+        int x = pawn.getPosition().getX();
+        int y = pawn.getPosition().getY();
+        Point point = new Point(x, y);
 
+        for(int i = -2; i <= 2; i++) {
+            // continue if bad position
+            if(x+i < 0 || x+i >= gameBoard.getSizeOfX()) {
+                continue;
+            }
+
+            for(int j = -2; j <= 2; j++) {
+                // continue if bad position
+                if(y+j < 0 || y+j >= gameBoard.getSizeOfY()) {
+                    continue;
+                }
+
+                point.setX(x+i);
+                point.setY(y+j);
+
+                pawn.makeMove(point, gameBoard.getGameBoardArray(), this);
+            }
+        }
 
         return result;
     }

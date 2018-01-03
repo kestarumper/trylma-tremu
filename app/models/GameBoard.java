@@ -130,4 +130,15 @@ public class GameBoard {
         return gameBoardArray[x][y];
     }
 
+    public Field[][] getGameBoardArray() {
+        return gameBoardArray;
+    }
+
+    public int getSizeOfX() {
+        return sizeOfX;
+    }
+
+    public int getSizeOfY() {
+        return sizeOfY;
+    }
 }
