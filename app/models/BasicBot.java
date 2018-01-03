@@ -16,9 +16,6 @@ public class BasicBot extends User {
         super(name.concat("Bot"), csrf);
         this.gameBoard = gameBoard;
         this.initialized = false;
-
-
-
     }
 
     private void initializeBot(){
@@ -26,6 +23,13 @@ public class BasicBot extends User {
         this.fieldsToAcheive = calculateFieldsToAcheive();
     }
 
+
+    /**
+     * Generates {@link ArrayList<Field>} containing
+     * possible moves ({@link Field}s to which {@link Pawn} can be moved)
+     * @param pawn {@link Pawn} around who we are calculating
+     * @return {@link ArrayList<Field>} of possible moves
+     */
     private ArrayList<Field> calculateAvailableMoves(Pawn pawn) {
         ArrayList<Field> result = new ArrayList<>();
 
