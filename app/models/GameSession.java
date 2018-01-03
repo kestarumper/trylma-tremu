@@ -13,6 +13,7 @@ public class GameSession {
     private Queue<String> colors;
     private ActorRef gameSessionActor;
     private ArrayList<User> wonUsers;
+    private boolean isGameOver = false;
 
     public GameSession(GameBoard gameBoard, Room room) {
         this.gameBoard = gameBoard;
@@ -20,6 +21,10 @@ public class GameSession {
         this.playerQueue = new LinkedList<>();
         this.colors = gameBoard.getInGameColors();
         this.wonUsers = new ArrayList<>();
+    }
+
+    public boolean isGameOver(){
+        return this.isGameOver;
     }
 
     public void setGameSessionActor(ActorRef gameSessionActor) {
@@ -49,16 +54,20 @@ public class GameSession {
         System.out.println("USer: " + tempUser.getName() + " has pawns left: " + tempUser.getPawnsLeft());
 
         if(!tempUser.isWinner()) {
-            System.out.println("nie wygral jeszcze");
             this.playerQueue.add(tempUser);
         }
         else{
-            System.out.println("juz wygral");
             this.wonUsers.add(tempUser);
         }
 
-        tempUser = this.playerQueue.element();
-        tempUser.changeActivity();
+        if(this.playerQueue.size() == 1){
+            tempUser = this.playerQueue.remove();
+            this.isGameOver = true;
+        }
+        if(this.playerQueue.size() > 0) {
+            tempUser = this.playerQueue.element();
+            tempUser.changeActivity();
+        }
     }
 
     public void addToQueue(User u){

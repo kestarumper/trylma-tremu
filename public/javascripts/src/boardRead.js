@@ -1,5 +1,5 @@
-var width = window.innerWidth-200;
-var height = window.innerHeight-200;
+var width = 900;
+var height = 1000;
 const OFFSETX = 45;
 const OFFSETY = 45;
 const XWIDTH = 32;
@@ -124,6 +124,7 @@ $(document).ready(() => {
 
     let connection = new WS($("#container").data("ws-url"));
 
+    $("#scores").hide();
     console.log(connection);
 
     connection.onopen = function (event) {
@@ -160,10 +161,6 @@ $(document).ready(() => {
 
         };
 
-        connection.onclose = function (event) {
-            location.reload(true);
-        };
-
         if(data.type === 'map' && initialized){
             console.log("repainting");
             fieldsLayer.remove();
@@ -196,17 +193,37 @@ $(document).ready(() => {
 
         if(data.type === 'finish'){
             stage.destroy();
-            alert("You win!");
+            $("#status_bar").hide();
+            $("#scores").show();
+            for(i = 0; i < data.users.length; i++){
+                $("#scores ul").append('<li class="list-group-item">' + data.users[i]
+                    + '<span class="badge">' + (i + 1) + '</span></li>');
+            }
+        }
+
+        if(data.type === 'color'){
+            $('#player-color').css('background-color', decodeColor(data.color));
         }
 
         if(isMoving){
+            $("#status_text").text("Youre move!");
             $("#passButton").prop('disabled', false);
         }
 
     };
 
+    connection.onclose = function (event) {
+        location.reload(true);
+    };
+
+        $('#exit-button').click(function(){
+           connection.send(JSON.stringify({'type' : 'exit', 'username' : $("#username").val()}));
+            window.location.replace("/");
+        });
+
         $("#passButton").click(function(){
             $("#passButton").prop('disabled', true);
+            $("#status_text").text("You'r waiting!");
             isMoving = false;
             connection.send(JSON.stringify({'type' : "pass", username: $("#username").val()}));
         });
