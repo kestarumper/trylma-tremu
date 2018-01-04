@@ -24,7 +24,7 @@ public class BasicBot extends User {
     }
 
     private Pawn getReadyPawn() {
-        return botPawns.get((int)Math.round(Math.random()*botPawns.size()));
+        return botPawns.get((int)Math.round(Math.random()*(botPawns.size()-1)));
     }
 
 
@@ -79,13 +79,28 @@ public class BasicBot extends User {
         );
     }
 
+
+    /**
+     * Calculates minimal position of the furthest field
+     * @param start
+     * @param destFields
+     * @return
+     */
     private double calculateBestDistance(Field start, ArrayList<Field> destFields) {
-        // TODO: tudududududu wonsz
-        return 0;
+        double min = -1;
+
+        double fieldResult;
+        for(Field destField : destFields) {
+            fieldResult = calculateDistance(start, destField);
+            if(fieldResult < min || min == -1) {
+                min = fieldResult;
+            }
+        }
+
+        return min;
     }
 
     private Field getMoveDesicion(ArrayList<Field> availableMoves, ArrayList<Field> destinationFields){
-        //TODO: oblicz dystans dla kazdego i zwroc najlepszego
         double min = -1;
         Field best = null;
 
@@ -147,19 +162,27 @@ public class BasicBot extends User {
             this.initialized = true;
         }
 
-        Pawn pawn = getReadyPawn();
+        Field moveHere;
+        Pawn pawn;
+        ArrayList<Field> availableMoves;
+        do {
+            pawn = getReadyPawn();
+            availableMoves = calculateAvailableMoves(pawn);
+        } while (availableMoves.size() == 0);
 
-        getMoveDesicion(calculateAvailableMoves(pawn), fieldsToAcheive);
+        moveHere = getMoveDesicion(availableMoves, fieldsToAcheive);
 
-//        var moves = {
-//                'type' : "move",
-//                'x1' : -1,
-//                'y1' : -1,
-//                'x2' : -1,
-//                'y2' : -1,
-//                username: $("#username").val()
-//};
+        String response = "{\"type\" : \"move\"" +
+                ", \"x1\" : "+ pawn.getPosition().getX() +
+                ", \"y1\" : "+ pawn.getPosition().getY() +
+                ", \"x2\" : "+ moveHere.getPosition().getX() +
+                ", \"y2\" : "+ moveHere.getPosition().getY() +
+                ", \"username\": \""+ getName() +"\"}";
 
-        return "{ \"type\" : \"pass\" }";
+        return response;
+    }
+
+    public String pass() {
+        return "{\"type\" : \"pass\", \"username\" : \""+ getName() +"\"}";
     }
 }
