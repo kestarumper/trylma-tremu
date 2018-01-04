@@ -23,9 +23,20 @@ public class BasicMove implements MoveStrategy {
         if(currentUser.getLastMove() == null){
             this.hasFirstMoved = false;
         }
-
-        if(currentUser.getLastMove() != null) {
-            if(desired.getX() != currentUser.getLastMove().getX() || desired.getY() != currentUser.getLastMove().getY()) {
+        if(!board[desired.getX()][desired.getY()].getType().equals("UNV")) {
+            if (currentUser.getLastMove() != null) {
+                if (desired.getX() != currentUser.getLastMove().getX() || desired.getY() != currentUser.getLastMove().getY()) {
+                    if (board[desired.getX()][desired.getY()].getPawn() == null) {
+                        if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
+                            return doMoveOnColor(start, desired, board, currentUser);
+                        } else {
+                            return doMoveNormal(start, desired, board, currentUser);
+                        }
+                    } else {
+                        return start;
+                    }
+                }
+            } else {
                 if (board[desired.getX()][desired.getY()].getPawn() == null) {
                     if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
                         return doMoveOnColor(start, desired, board, currentUser);
@@ -35,17 +46,6 @@ public class BasicMove implements MoveStrategy {
                 } else {
                     return start;
                 }
-            }
-        }
-        else{
-            if (board[desired.getX()][desired.getY()].getPawn() == null) {
-                if (board[start.getX()][start.getY()].getPawn().isOnColor()) {
-                    return doMoveOnColor(start, desired, board, currentUser);
-                } else {
-                    return doMoveNormal(start, desired, board, currentUser);
-                }
-            } else {
-                return start;
             }
         }
 
