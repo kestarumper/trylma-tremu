@@ -23,6 +23,10 @@ public class BasicBot extends User {
         this.fieldsToAcheive = calculateFieldsToAcheive();
     }
 
+    private Pawn getReadyPawn() {
+        return botPawns.get((int)Math.round(Math.random()*botPawns.size()));
+    }
+
 
     /**
      * Generates {@link ArrayList<Field>} containing
@@ -61,15 +65,39 @@ public class BasicBot extends User {
         return result;
     }
 
+
+    /**
+     * Returns distance between two fields.
+     * @param candidate
+     * @param destination
+     * @return Cartesian distance
+     */
     private double calculateDistance(Field candidate, Field destination) {
-        // TODO: dystans
+        return Math.sqrt(
+               Math.pow(destination.getPosition().getX() - candidate.getPosition().getX(), 2) +
+               Math.pow(destination.getPosition().getY() - candidate.getPosition().getY(), 2)
+        );
+    }
+
+    private double calculateBestDistance(Field start, ArrayList<Field> destFields) {
+        // TODO: tudududududu wonsz
         return 0;
     }
 
-    private Field getDestinationField(ArrayList<Field> winingFields){
+    private Field getMoveDesicion(ArrayList<Field> availableMoves, ArrayList<Field> destinationFields){
         //TODO: oblicz dystans dla kazdego i zwroc najlepszego
+        double min = -1;
+        Field best = null;
 
-        return null;
+        for (Field availableField : availableMoves) {
+            double fieldResult = calculateBestDistance(availableField, destinationFields);
+            if(fieldResult < min || min == -1) {
+                min = fieldResult;
+                best = availableField;
+            }
+        }
+
+        return best;
     }
 
     private ArrayList<Pawn> calculateSelfPawns(){
@@ -119,6 +147,9 @@ public class BasicBot extends User {
             this.initialized = true;
         }
 
+        Pawn pawn = getReadyPawn();
+
+        getMoveDesicion(calculateAvailableMoves(pawn), fieldsToAcheive);
 
 //        var moves = {
 //                'type' : "move",
