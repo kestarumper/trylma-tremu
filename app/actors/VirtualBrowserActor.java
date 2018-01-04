@@ -63,7 +63,7 @@ public class VirtualBrowserActor extends AbstractActor {
 
                     if(jmsg.type.equals("move")) {
                         if(jn.findPath("cond").asBoolean()) {
-                            sender().tell("{ \"type\" : \"pass\" }", self());
+                            sender().tell(bot.pass(), self());
                         } else {
                             sender().tell(bot.action(gameSession.getGameBoard()), self());
                         }
