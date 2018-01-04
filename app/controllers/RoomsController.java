@@ -118,7 +118,7 @@ public class RoomsController extends Controller {
         }
         else{
             //TODO: Tell user that room is full
-            //user.tell("{ \"type\" : \"full\"}", user.getActorRef());
+            flash("joinerr", "Room is full");
         }
         Logger.info("{} joins room {} of {}", session("username"), room.getName(), room.getOwner());
         return redirect(routes.RoomsController.room(sessionId));

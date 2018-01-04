@@ -1,6 +1,5 @@
 $(document).ready(() => {
     console.log("wsconn.js init");
-$("#full").hide();
 
 let WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
 
@@ -11,9 +10,6 @@ connection.onmessage = function (event) {
 
     console.log(data);
 
-    if (data.cond === 'full') {
-        $("#full").show();
-    }
 
         $("#player_list").empty();
         for (let user in data.users) {
