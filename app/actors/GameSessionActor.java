@@ -123,6 +123,12 @@ public class GameSessionActor extends AbstractActor {
                             }
                         }
 
+                        if(type.equals("startGame")) {
+                            for(User u : gameSession.getRoom().getUsers().values()) {
+                                u.tell("{\"type\":\"redirect\", \"url\":\"/\"}", self());
+                            }
+                        }
+
                         // Send back to room WHOLE Game Session
                         //gameSession.getRoom().tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
 

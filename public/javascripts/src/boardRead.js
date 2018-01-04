@@ -140,6 +140,10 @@ $(document).ready(() => {
         let data = JSON.parse(event.data);
         console.log(data);
 
+        if(data.type === 'redirect') {
+            window.location.replace(data.url);
+        }
+
         if(data.type === 'map' && !initialized){
             stage.destroyChildren()
             console.log('succ');

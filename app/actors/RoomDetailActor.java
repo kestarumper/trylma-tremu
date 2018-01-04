@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Room;
+import models.User;
 import play.Logger;
 import play.libs.Json;
 
@@ -32,6 +33,12 @@ public class RoomDetailActor extends AbstractActor {
                     JsonMsg jmsg = Json.fromJson(jn, JsonMsg.class);
 
                     ObjectMapper mapper = new ObjectMapper();
+
+                    if(jmsg.type.equals("startGame")) {
+                        for(User u : room.getUsers().values()) {
+                            u.tell("{\"type\":\"redirect\", \"url\":\"/\"}", self());
+                        }
+                    }
 
                     browser.tell( mapper.writeValueAsString(room), self());
                 })
