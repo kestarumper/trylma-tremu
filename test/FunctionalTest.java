@@ -1,12 +1,14 @@
 import org.junit.Before;
 import org.junit.Test;
 import play.Application;
+import play.Logger;
 import play.api.test.FakeRequest;
 import play.mvc.Http;
 import play.test.WithApplication;
 import play.twirl.api.Content;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,14 +24,17 @@ public class FunctionalTest extends WithApplication {
 
     @Before
     public void setUp() throws Exception {
-        Http.Request mockRequest = mock(Http.Request.class);
-        when(mockRequest.remoteAddress()).thenReturn("127.0.0.1");
-        when(mockRequest.header("User-Agent")).thenReturn(java.util.Optional.of("mocked user-agent"));
+        Logger.warn("@Before Generuje nowy Http.Context");
 
-        // ... and so on. Mock precisely what you need, then add it to your mocked Context
+        Map<String, String> sessionMap = new HashMap<>();
 
-        Http.Context mockContext = mock(Http.Context.class);
-        when(mockContext.request()).thenReturn(mockRequest);
+        sessionMap.put("username", "ZalogowanyWczesniej");
+        sessionMap.put("csrf", "b3cbabb0dbe767fdce51773a3e18ba45abeb5709-1515066120235-7022df3ee0fdd1105c24515a");
+
+        Http.RequestBuilder requestBuilder = new Http.RequestBuilder();
+        requestBuilder.session(sessionMap);
+        Http.Context context = new Http.Context(requestBuilder, null);
+        Http.Context.current.set(context);
     }
 
     @Test
