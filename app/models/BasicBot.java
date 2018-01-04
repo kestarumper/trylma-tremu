@@ -3,8 +3,10 @@ package models;
 import models.Field.Field;
 import models.Pawn.Pawn;
 import models.Utility.Point;
+import play.Logger;
 
 import java.util.ArrayList;
+
 
 public class BasicBot extends User {
     private final GameBoard gameBoard;
@@ -187,12 +189,15 @@ public class BasicBot extends User {
                 ", \"y2\" : "+ moveHere.getPosition().getY() +
                 ", \"username\": \""+ getName() +"\"}";
 
+        Logger.info("{} generated response {}", getName(), response);
+
         return response;
     }
 
 
 
     public String pass() {
+        Logger.info("{} passes", getName());
         return "{\"type\" : \"pass\", \"username\" : \""+ getName() +"\"}";
     }
 }
