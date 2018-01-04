@@ -51,9 +51,10 @@ public class VirtualBrowserActor extends AbstractActor {
 
                     Logger.info("{} received: {}", bot.getName(), message);
 
-                    if(jmsg.type.equals("status")) {
+                    if(jmsg.type.equals("refresh")) {
                         if(bot.getActivity()) {
                             sender().tell(bot.action(gameSession.getGameBoard()), self());
+                            sender().tell(bot.pass(), self());
                         }
                     }
 
