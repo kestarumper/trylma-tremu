@@ -6,6 +6,7 @@ import models.Field.UnavailableField;
 import models.GameBoard;
 import models.GameBoardGenerators.SixPlayerBoard;
 import models.PawnMove.BasicMove;
+import models.Utility.Point;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -39,7 +40,7 @@ public class GameBoardTest {
     @Test
     public void zeroCordSHouldBeUnavilable(){
         GameBoard board = new GameBoard(2, new BasicMove(), new SixPlayerBoard());
-        Field test = new UnavailableField(new BasicField());
+        Field test = new UnavailableField(new BasicField(new Point(0,0)));
         assertEquals(board.getFieldType(0, 0), test.getType());
     }
 
