@@ -146,6 +146,7 @@ public class BasicBot extends User {
         ArrayList<Field> tempArray = new ArrayList<>();
 
         String desiredColor = this.botPawns.get(0).getDesiredColor();
+        System.out.println(desiredColor);
         int x = this.gameBoard.sizeOfX;
         int y = this.gameBoard.sizeOfY;
 
@@ -154,6 +155,7 @@ public class BasicBot extends User {
                 String fieldColor = gameBoard.getFieldType(i, j);
                 if(fieldColor.equals(desiredColor)){
                     tempArray.add(gameBoard.getField(i, j));
+                    System.out.println("Desired field in color: " +gameBoard.getField(i, j).getType() + " at x: " + i + " at y: " + j);
                 }
             }
         }

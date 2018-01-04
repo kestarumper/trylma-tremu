@@ -56,6 +56,9 @@ public class VirtualBrowserActor extends AbstractActor {
                             sender().tell(bot.action(gameSession.getGameBoard()), self());
                             sender().tell(bot.pass(), self());
                         }
+                        if(gameSession.isGameOver()){
+                            gameSession.getRoom().leaveRoom(bot);
+                        }
                     }
 
                     if(jmsg.type.equals("move")) {
