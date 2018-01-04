@@ -190,6 +190,8 @@ public class BasicBot extends User {
         return response;
     }
 
+
+
     public String pass() {
         return "{\"type\" : \"pass\", \"username\" : \""+ getName() +"\"}";
     }
