@@ -59,4 +59,21 @@ public class BasicPawn implements Pawn {
     public void setOnColor() {
         this.isOnColor = true;
     }
+
+    @Override
+    public Point getPosition() {
+        return this.position;
+    }
+
+    @Override
+    public boolean checkMove(Point destination, Field[][] board, User currentUser) {
+        Point tempPoint = moveStrategy.doMove(this.position, destination, board, currentUser);
+
+        if(position.getX() != tempPoint.getX() || position.getY() != tempPoint.getY()){
+            currentUser.setLastMove(tempPoint);
+            return true;
+        }
+        return false;
+
+    }
 }

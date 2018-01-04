@@ -106,7 +106,7 @@ public class GameBoard {
         return concreteBuilder.getResult();
     }
     
-    public String getField(int x, int y){
+    public String getFieldType(int x, int y){
         if(x < 0 || y < 0){
             throw new IllegalArgumentException();
         }
@@ -118,4 +118,27 @@ public class GameBoard {
         return gameBoardArray[x][y].getType();
     }
 
+    public Field getField(int x, int y){
+        if(x < 0 || y < 0){
+            throw new IllegalArgumentException();
+        }
+
+        if( x >= this.sizeOfX || y >= this.sizeOfY){
+            throw new IllegalArgumentException();
+        }
+
+        return gameBoardArray[x][y];
+    }
+
+    public Field[][] getGameBoardArray() {
+        return gameBoardArray;
+    }
+
+    public int getSizeOfX() {
+        return sizeOfX;
+    }
+
+    public int getSizeOfY() {
+        return sizeOfY;
+    }
 }

@@ -17,52 +17,52 @@ public class TwoPlayerBoard implements BoardGenerationStrategy{
 
         for(int i = 0; i < sizeX; i++){
             for(int j = 0; j < sizeY; j++){
-                tempBoard[i][j] = new UnavailableField( new BasicField() );
+                tempBoard[i][j] = new UnavailableField( new BasicField(new Point(i, j)) );
             }
         }
 
         ArrayList<Point> tempList = generateBluePoints(size, sizeX);
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new BlueField(new BasicField() );
+            tempBoard[p.getX()][p.getY()] = new BlueField(new BasicField(p) );
             tempBoard[p.getX()][p.getY()].placePawn(new BluePawn(new BasicPawn(p, pawnStrategy)));
         }
 
         tempList = generateBlackPoints(size, sizeX);
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new BlackField( new BasicField() );
+            tempBoard[p.getX()][p.getY()] = new BlackField( new BasicField(p) );
         }
 
         tempList = generateGreenPoints(size, sizeX);
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new GreenField( new BasicField() );
+            tempBoard[p.getX()][p.getY()] = new GreenField( new BasicField(p) );
         }
 
         tempList = generateRedPoints(size, sizeX, sizeY);
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new RedField( new BasicField() );
+            tempBoard[p.getX()][p.getY()] = new RedField( new BasicField(p) );
             tempBoard[p.getX()][p.getY()].placePawn(new RedPawn( new BasicPawn(p, pawnStrategy)));
         }
 
         tempList = generateWhitePoints(size);
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new WhiteField( new BasicField() );
+            tempBoard[p.getX()][p.getY()] = new WhiteField( new BasicField(p) );
         }
 
         tempList = generateYellowPoints(size);
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new YellowFIeld( new BasicField() );
+            tempBoard[p.getX()][p.getY()] = new YellowFIeld( new BasicField(p) );
         }
 
         tempList = generateNeutralPoints(size);
 
         for(Point p : tempList){
-            tempBoard[p.getX()][p.getY()] = new BasicField();
+            tempBoard[p.getX()][p.getY()] = new BasicField(p);
         }
 
         return tempBoard;

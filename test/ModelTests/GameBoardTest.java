@@ -6,7 +6,7 @@ import models.Field.UnavailableField;
 import models.GameBoard;
 import models.GameBoardGenerators.SixPlayerBoard;
 import models.PawnMove.BasicMove;
-import org.junit.Before;
+import models.Utility.Point;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -28,20 +28,20 @@ public class GameBoardTest {
     @Test(expected = IllegalArgumentException.class)
     public void negativeCordShouldRaiseError(){
         GameBoard board = new GameBoard(3, new BasicMove(), new SixPlayerBoard());
-        String test = board.getField(-15, 20);
+        String test = board.getFieldType(-15, 20);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void toBigNumberOutOfBoundsOfArrayRaiseException(){
         GameBoard board = new GameBoard(3, new BasicMove(), new SixPlayerBoard());
-        String test = board.getField(5433, 543);
+        String test = board.getFieldType(5433, 543);
     }
 
     @Test
     public void zeroCordSHouldBeUnavilable(){
         GameBoard board = new GameBoard(2, new BasicMove(), new SixPlayerBoard());
-        Field test = new UnavailableField(new BasicField());
-        assertEquals(board.getField(0, 0), test.getType());
+        Field test = new UnavailableField(new BasicField(new Point(0,0)));
+        assertEquals(board.getFieldType(0, 0), test.getType());
     }
 
 }

@@ -43,4 +43,12 @@ public abstract class PawnDecorator implements Pawn{
     public void setOnColor() {
         this.decoratedPawn.setOnColor();
     }
+
+    @Override
+    public Point getPosition() { return this.decoratedPawn.getPosition(); }
+
+    @Override
+    public boolean checkMove(Point destination, Field[][] board, User currentUser) {
+        return this.decoratedPawn.checkMove(destination, board, currentUser);
+    }
 }

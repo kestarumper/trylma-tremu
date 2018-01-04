@@ -16,16 +16,16 @@ import static org.junit.Assert.*;
 public class PawnTest {
     public Pawn testPawn;
     public Field[][] testBoard;
-    public User testUser;
+    private User testUser;
 
     @Before
     public void setUp() throws Exception {
         testBoard = new Field[][]{
-                {new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new RedField(new BasicField()), new UnavailableField(new BasicField()), new RedField(new BasicField())},
-                {new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new RedField(new BasicField()), new UnavailableField(new BasicField())},
-                {new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new RedField(new BasicField())},
-                {new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField())},
-                {new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new BasicField(), new UnavailableField(new BasicField()), new BasicField()}
+                {new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new RedField(new BasicField(new Point(0,0))), new UnavailableField(new BasicField(new Point(0,0))), new RedField(new BasicField(new Point(0,0)))},
+                {new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new RedField(new BasicField(new Point(0,0))), new UnavailableField(new BasicField(new Point(0,0)))},
+                {new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new RedField(new BasicField(new Point(0,0)))},
+                {new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0)))},
+                {new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0)), new UnavailableField(new BasicField(new Point(0,0))), new BasicField(new Point(0,0))}
         };
         testPawn = new BluePawn(new BasicPawn(new Point(2, 4), new BasicMove()));
         testBoard[2][4].placePawn(testPawn);
@@ -210,9 +210,9 @@ public class PawnTest {
 
     @Test
     public void canMoveOnOtherColors(){
-        testBoard[3][3] = new BlueField(new BasicField());
-        testBoard[2][2] = new BlackField(new BasicField());
-        testBoard[1][1] = new YellowFIeld(new BasicField());
+        testBoard[3][3] = new BlueField(new BasicField(new Point(3,3)));
+        testBoard[2][2] = new BlackField(new BasicField(new Point(2,2)));
+        testBoard[1][1] = new YellowFIeld(new BasicField(new Point(1,1)));
         Boolean result1, result2, result3, result4;
 
         Point tempPoint = new Point(3,3);

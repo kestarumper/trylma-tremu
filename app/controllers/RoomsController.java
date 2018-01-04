@@ -144,9 +144,10 @@ public class RoomsController extends Controller {
         trylmaApp.validateUserSession(session());
         // find room and add session user to it
         User user = trylmaApp.getUsers().get(session("username"));
-        BasicBot bot = new BasicBot(user.getName(), user.getCsrf());
 
         GameSession gameSession = trylmaApp.getGameSessions().get(sessionId);
+
+        BasicBot bot = new BasicBot(user.getName(), user.getCsrf(), gameSession.getGameBoard());
         Room room = gameSession.getRoom();
 
         // create virtual browser that will resemble normal user
