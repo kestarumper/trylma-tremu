@@ -113,7 +113,13 @@ public class RoomsController extends Controller {
         // find room and add session user to it
         User user = trylmaApp.getUsers().get(session("username"));
         Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
-        room.joinRoom(user);
+        if(room.getUsers().size() < room.getMaxUsers()) {
+            room.joinRoom(user);
+        }
+        else{
+            //TODO: Tell user that room is full
+            //user.tell("{ \"type\" : \"full\"}", user.getActorRef());
+        }
         Logger.info("{} joins room {} of {}", session("username"), room.getName(), room.getOwner());
         return redirect(routes.RoomsController.room(sessionId));
     }
@@ -153,7 +159,8 @@ public class RoomsController extends Controller {
         // create virtual browser that will resemble normal user
         ActorRef virtualBrowser = actorSystem.actorOf(VirtualBrowserActor.props(gameSession, bot));
         bot.setActorRef(virtualBrowser);
-        gameSession.addToQueue(bot);
+        //TODO: Add option to initialize alle players into quque whene game starts
+        //gameSession.addToQueue(bot);
 
         room.joinRoom(bot);
 

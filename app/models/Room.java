@@ -46,6 +46,19 @@ public class Room {
             }
             return new SixPlayerBoard();
         }
+        public int getMaxPlayers(){
+            switch(this){
+                case PLAYERS2:
+                    return 2;
+                case PLAYERS4:
+                    return 4;
+                case PLAYERS6:
+                    return 6;
+                case PLAYERS3:
+                    return 3;
+            }
+            return 6;
+        }
     }
     private String name;
     private User owner;
@@ -73,6 +86,10 @@ public class Room {
         if(!users.containsKey(user.getName())) {
             users.put(user.getName(), user);
         }
+    }
+
+    public int getMaxUsers(){
+        return mode.getMaxPlayers();
     }
 
     /**

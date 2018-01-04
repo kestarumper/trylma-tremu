@@ -45,6 +45,10 @@ public class User {
         this.actorRef = actorRef;
     }
 
+    public ActorRef getActorRef(){
+        return this.actorRef;
+    }
+
     public void tell(Object msg, ActorRef sender) {
         if(actorRef != null) {
             actorRef.tell(msg, sender);
