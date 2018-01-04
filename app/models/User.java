@@ -1,6 +1,7 @@
 package models;
 
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import models.States.PlayerContext;
 import models.States.PlayerMovingState;
 import models.States.PlayerWinState;
@@ -11,7 +12,7 @@ import java.util.Objects;
 public class User {
     protected final String name;
     protected final String csrf;
-    protected ActorRef actorRef;
+    @JsonIgnore protected ActorRef actorRef;
     protected PlayerContext stateContext;
     protected String color;
     protected Point currentPawn;

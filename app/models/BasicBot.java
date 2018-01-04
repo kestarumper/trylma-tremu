@@ -27,7 +27,6 @@ public class BasicBot extends User {
         return botPawns.get((int)Math.round(Math.random()*(botPawns.size()-1)));
     }
 
-
     /**
      * Generates {@link ArrayList<Field>} containing
      * possible moves ({@link Field}s to which {@link Pawn} can be moved)
@@ -100,7 +99,14 @@ public class BasicBot extends User {
         return min;
     }
 
-    private Field getMoveDesicion(ArrayList<Field> availableMoves, ArrayList<Field> destinationFields){
+
+    /**
+     * From possible moves, calculates
+     * @param availableMoves
+     * @param destinationFields
+     * @return
+     */
+    private Field getMoveDecision(ArrayList<Field> availableMoves, ArrayList<Field> destinationFields){
         double min = -1;
         Field best = null;
 
@@ -170,7 +176,7 @@ public class BasicBot extends User {
             availableMoves = calculateAvailableMoves(pawn);
         } while (availableMoves.size() == 0);
 
-        moveHere = getMoveDesicion(availableMoves, fieldsToAcheive);
+        moveHere = getMoveDecision(availableMoves, fieldsToAcheive);
 
         String response = "{\"type\" : \"move\"" +
                 ", \"x1\" : "+ pawn.getPosition().getX() +
