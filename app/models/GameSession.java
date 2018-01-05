@@ -14,6 +14,7 @@ public class GameSession {
     private ActorRef gameSessionActor;
     private ArrayList<User> wonUsers;
     private boolean isGameOver = false;
+    private boolean isGameStarted = false;
 
     public GameSession(GameBoard gameBoard, Room room) {
         this.gameBoard = gameBoard;
@@ -25,6 +26,14 @@ public class GameSession {
 
     public boolean isGameOver(){
         return this.isGameOver;
+    }
+
+    public boolean isGameStarted() {
+        return isGameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        isGameStarted = gameStarted;
     }
 
     public void setGameSessionActor(ActorRef gameSessionActor) {

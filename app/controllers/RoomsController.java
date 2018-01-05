@@ -14,6 +14,7 @@ import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
+import views.html.board;
 import views.html.newroom;
 import views.html.room;
 
@@ -43,6 +44,11 @@ public class RoomsController extends Controller {
         if(trylmaApp.getGameSessions().get(username) == null) {
             return notFound("Room your are accessing does not exist");
         }
+
+        // redirect to game if it has started already
+//        if(trylmaApp.getGameSessions().get(username).isGameStarted()) {
+//            return redirect(routes.BoardDrawController.index(username));
+//        }
 
         return ok(room.render(username, trylmaApp.getGameSessions().get(username).getRoom()));
     }
@@ -175,7 +181,7 @@ public class RoomsController extends Controller {
         trylmaApp.validateUserSession(session());
 
         return WebSocket.Text.accept(request ->
-                ActorFlow.actorRef((ActorRef browser) -> RoomDetailActor.props(browser, trylmaApp.getGameSessions().get(sessionId).getRoom()),
+                ActorFlow.actorRef((ActorRef browser) -> RoomDetailActor.props(browser, trylmaApp.getGameSessions().get(sessionId)),
                         actorSystem, materializer
                 )
         );
