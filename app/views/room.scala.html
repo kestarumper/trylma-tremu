@@ -16,8 +16,12 @@
             <p>Mode: @room.getMode</p>
             <a href="@routes.RoomsController.joinRoom(sessionId)"><button>Join</button></a>
             <a href="@routes.RoomsController.leaveRoom(sessionId)"><button>Leave</button></a>
-            <a href="@routes.BoardDrawController.index(sessionId)"><button id="startGameBtn">Enter game</button></a>
-            <a href="@routes.RoomsController.addBot(sessionId)"><button>Add Bot</button></a>
+
+            <!-- Show only if user is owner -->
+            @if(session.get("username").equals(room.getOwner.getName)) {
+                <a href="@routes.BoardDrawController.index(sessionId)"><button id="startGameBtn">Enter game</button></a>
+                <a href="@routes.RoomsController.addBot(sessionId)"><button>Add Bot</button></a>
+            }
 
             <ul id="player_list" class="list-group">
                 <!-- Dynamically filled with WebSocket JS -->
