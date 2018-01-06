@@ -128,14 +128,6 @@ public class GameSessionActor extends AbstractActor {
                                 u.tell("{\"type\":\"redirect\", \"url\":\"/\"}", self());
                             }
                         }
-
-                        // Send back to room WHOLE Game Session
-                        //gameSession.getRoom().tell(gameSession.getGameBoard().buildMap(new JSONBuilder()), self());
-
-
-                    // TODO: Process Client move request
-
-
                 })
                 .build();
     }

@@ -168,7 +168,6 @@ public class BasicBot extends User {
     }
 
     public String action(GameBoard gameBoard) {
-        // TODO: make bot decide and return what to do
         if(!initialized){
             initializeBot();
             this.initialized = true;

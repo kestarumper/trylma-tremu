@@ -123,7 +123,6 @@ public class RoomsController extends Controller {
             room.joinRoom(user);
         }
         else{
-            //TODO: Tell user that room is full
             flash("joinerr", "Room is full");
         }
         Logger.info("{} joins room {} of {}", session("username"), room.getName(), room.getOwner());
@@ -164,9 +163,9 @@ public class RoomsController extends Controller {
 
         // create virtual browser that will resemble normal user
         ActorRef virtualBrowser = actorSystem.actorOf(VirtualBrowserActor.props(gameSession, bot));
+        gameSession.addToQueue(bot);
         bot.setActorRef(virtualBrowser);
         //TODO: Add option to initialize all players into quque whene game starts
-        gameSession.addToQueue(bot);
 
         room.joinRoom(bot);
 
