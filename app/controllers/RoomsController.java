@@ -160,14 +160,15 @@ public class RoomsController extends Controller {
 
         BasicBot bot = new BasicBot(user.getName(), user.getCsrf(), gameSession.getGameBoard());
         Room room = gameSession.getRoom();
+        room.joinRoom(bot);
 
         // create virtual browser that will resemble normal user
         ActorRef virtualBrowser = actorSystem.actorOf(VirtualBrowserActor.props(gameSession, bot));
-        gameSession.addToQueue(bot);
         bot.setActorRef(virtualBrowser);
-        //TODO: Add option to initialize all players into quque whene game starts
 
-        room.joinRoom(bot);
+        gameSession.addToQueue(bot);
+
+        //TODO: Add option to initialize all players into quque whene game starts
 
         Logger.info("{} joins room {} of {}", bot.getName(), room.getName(), room.getOwner().getName());
         return redirect(routes.RoomsController.room(sessionId));
