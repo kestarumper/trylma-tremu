@@ -28,6 +28,9 @@ public class VirtualBrowserActor extends AbstractActor {
         this.gameSession = gameSession;
         this.bot = bot;
         Logger.info("{} started", this.getClass().getSimpleName());
+
+        gameSession.tell("{\"type\":\"WebSocketInit\", \"username\":\""+ bot.getName() +"\"}", self());
+        Logger.info("{} entered game \"{}\" and sent WebSocketInit", bot.getName(), gameSession.getRoom().getName());
     }
 
     @Override
@@ -51,7 +54,7 @@ public class VirtualBrowserActor extends AbstractActor {
 
                     Logger.info("{} received: {}", bot.getName(), message);
 
-                    if(jmsg.type.equals("refresh")) {
+                    if(jmsg.type.equals("refresh") || jmsg.type.equals("color")) {
                         if(bot.getActivity()) {
                             sender().tell(bot.action(gameSession.getGameBoard()), self());
                             sender().tell(bot.pass(), self());

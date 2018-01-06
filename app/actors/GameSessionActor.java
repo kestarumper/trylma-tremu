@@ -47,6 +47,8 @@ public class GameSessionActor extends AbstractActor {
                         // Mapowanie JsonNode na obiekt klasy JsonMsg
                         String type = jn.findPath("type").textValue();
 
+                        Logger.info("{}[{}] received {}", this.getClass(), gameSession.getRoom().getName(), message);
+
                         if(type.equals("move")){
                             Point pointA = new Point(jn.findPath("x1").asInt(), jn.findPath("y1").asInt());
                             Point pointB = new Point(jn.findPath("x2").asInt(), jn.findPath("y2").asInt());

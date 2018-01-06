@@ -164,9 +164,9 @@ public class RoomsController extends Controller {
 
         // create virtual browser that will resemble normal user
         ActorRef virtualBrowser = actorSystem.actorOf(VirtualBrowserActor.props(gameSession, bot));
-        bot.setActorRef(virtualBrowser);
 
-        gameSession.addToQueue(bot);
+//        bot.setActorRef(virtualBrowser);
+//        gameSession.addToQueue(bot);
 
         //TODO: Add option to initialize all players into quque whene game starts
 
