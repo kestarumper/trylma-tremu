@@ -5,6 +5,8 @@ import models.GameBoardGenerators.FourPlayerBoard;
 import models.GameBoardGenerators.SixPlayerBoard;
 import models.GameBoardGenerators.ThreePlayerBoard;
 import models.GameBoardGenerators.TwoPlayerBoard;
+import models.States.GameSessionContext;
+import models.States.GameSessionState;
 import models.Strategies.BoardGenerationStrategy;
 
 import java.util.HashMap;
@@ -64,6 +66,7 @@ public class Room {
     private User owner;
     private Mode mode;
     private Map<String, User> users;
+    private GameSessionContext state;
 
     public User getOwner() {
         return owner;
@@ -73,6 +76,7 @@ public class Room {
         this.name = name;
         this.mode = mode;
         this.owner = owner;
+        this.state = new GameSessionContext();
         users = new HashMap<>();
     }
 
@@ -115,6 +119,12 @@ public class Room {
         return users;
     }
 
+    public void beginGame(){
+        this.state.nextState();
+    }
+    public GameSessionState getState() {
+        return state.getState();
+    }
 
     /**
      * Sends message msg to every {@link User} in {@link Room}
