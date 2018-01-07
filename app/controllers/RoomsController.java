@@ -93,7 +93,7 @@ public class RoomsController extends Controller {
             User user = trylmaApp.getUsers().get(session("username"));
             Room room = new Room(roomname, user, mode);
 
-            GameBoard gameBoard = new GameBoard(mode.getNum(), new BasicMove(), mode.getStrategy());
+            GameBoard gameBoard = new GameBoard(4, new BasicMove(), mode.getStrategy());
             GameSession gameSession = new GameSession(actorSystem, gameBoard, room);
             ActorRef gameSessionActor = actorSystem.actorOf(GameSessionActor.props(gameSession));
             gameSession.setGameSessionActor(gameSessionActor);
