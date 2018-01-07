@@ -305,21 +305,19 @@ $(document).ready(() => {
                 }, true);
             }
             previousShape = undefined;
+            console.log(moves);
+            e.target.moveTo(pawnsLayer);
+            e.target.move({
+                x: cordsField.x - e.target.x(),
+                y: cordsField.y - e.target.y()
+            });
 
             moves.x2 = Math.round((e.target.x() - OFFSETX) / XWIDTH);
             moves.y2 = Math.round((e.target.y() - OFFSETY) / YWIDTH);
             moves.x1 = Math.round((cordsPawn.x - OFFSETX) / XWIDTH);
             moves.y1 = Math.round((cordsPawn.y - OFFSETY) / YWIDTH);
 
-            console.log(moves);
-
             connection.send(JSON.stringify(moves));
-
-            e.target.moveTo(pawnsLayer);
-            e.target.move({
-                x: cordsField.x - e.target.x(),
-                y: cordsField.y - e.target.y()
-            });
 
             pawnsLayer.draw();
             fieldsLayer.draw();
