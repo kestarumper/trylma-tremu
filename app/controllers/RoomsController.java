@@ -158,8 +158,14 @@ public class RoomsController extends Controller {
 
         GameSession gameSession = trylmaApp.getGameSessions().get(sessionId);
 
-        BasicBot bot = new BasicBot(user.getName(), user.getCsrf(), gameSession.getGameBoard());
         Room room = gameSession.getRoom();
+
+        if(room.getUsers().size() >= room.getMaxUsers()) {
+            Logger.warn("Bot cannot be added because room {} is full", room.getName());
+            return redirect(routes.RoomsController.room(sessionId));
+        }
+
+        BasicBot bot = new BasicBot(user.getName(), user.getCsrf(), gameSession.getGameBoard());
         room.joinRoom(bot);
 
         gameSession.addBotToCreationList(bot);
