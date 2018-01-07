@@ -1,6 +1,8 @@
 package models;
 
+import actors.VirtualBrowserActor;
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,16 +14,20 @@ public class GameSession {
     private Queue<User> playerQueue;
     private Queue<String> colors;
     private ActorRef gameSessionActor;
+    private ActorSystem actorSystem;
     private ArrayList<User> wonUsers;
     private boolean isGameOver = false;
     private boolean isGameStarted = false;
+    private ArrayList<BasicBot> botsToBeAdded;
 
-    public GameSession(GameBoard gameBoard, Room room) {
+    public GameSession(ActorSystem actorSystem, GameBoard gameBoard, Room room) {
+        this.actorSystem = actorSystem;
         this.gameBoard = gameBoard;
         this.room = room;
         this.playerQueue = new LinkedList<>();
         this.colors = gameBoard.getInGameColors();
         this.wonUsers = new ArrayList<>();
+        this.botsToBeAdded = new ArrayList<>();
     }
 
     public boolean isGameOver(){
@@ -88,11 +94,27 @@ public class GameSession {
                 u.changeActivity();
                 u.setColor(this.colors.remove());
                 playerQueue.add(u);
+
+                createAndAddBotsToQueue();
             } else {
                 u.setColor(this.colors.remove());
                 playerQueue.add(u);
             }
             System.out.println("Added user: " + u.getName() + " to room: " + room.getName());
+        }
+    }
+
+    public void addBotToCreationList(BasicBot bot) {
+        if(!botsToBeAdded.contains(bot)) {
+            this.botsToBeAdded.add(bot);
+        }
+    }
+
+    private void createAndAddBotsToQueue() {
+        for (BasicBot basicBot : botsToBeAdded) {
+            // create virtual browser that will resemble normal user
+            ActorRef virtualBrowser = actorSystem.actorOf(VirtualBrowserActor.props(this, basicBot));
+            basicBot.setActorRef(virtualBrowser);
         }
     }
 }
