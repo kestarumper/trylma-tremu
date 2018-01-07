@@ -124,12 +124,12 @@ public class GameSessionActor extends AbstractActor {
                                 trylmaApp.destroyGameSession(gameSession.getRoom().getOwner());
                             }
                         }
-
-                        if(type.equals("startGame")) {
-                            for(User u : gameSession.getRoom().getUsers().values()) {
-                                u.tell("{\"type\":\"redirect\", \"url\":\"/\"}", self());
-                            }
-                        }
+//
+//                        if(type.equals("startGame")) {
+//                            for(User u : gameSession.getRoom().getUsers().values()) {
+//                                u.tell("{\"type\":\"redirect\", \"url\":\"/\"}", self());
+//                            }
+//                        }
                 })
                 .build();
     }

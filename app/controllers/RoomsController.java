@@ -94,7 +94,7 @@ public class RoomsController extends Controller {
             Room room = new Room(roomname, user, mode);
 
             GameBoard gameBoard = new GameBoard(mode.getNum(), new BasicMove(), mode.getStrategy());
-            GameSession gameSession = new GameSession(gameBoard, room);
+            GameSession gameSession = new GameSession(actorSystem, gameBoard, room);
             ActorRef gameSessionActor = actorSystem.actorOf(GameSessionActor.props(gameSession));
             gameSession.setGameSessionActor(gameSessionActor);
 
@@ -162,11 +162,7 @@ public class RoomsController extends Controller {
         Room room = gameSession.getRoom();
         room.joinRoom(bot);
 
-        // create virtual browser that will resemble normal user
-        ActorRef virtualBrowser = actorSystem.actorOf(VirtualBrowserActor.props(gameSession, bot));
-
-//        bot.setActorRef(virtualBrowser);
-//        gameSession.addToQueue(bot);
+        gameSession.addBotToCreationList(bot);
 
         //TODO: Add option to initialize all players into quque whene game starts
 

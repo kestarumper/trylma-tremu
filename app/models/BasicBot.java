@@ -6,16 +6,35 @@ import models.Utility.Point;
 import play.Logger;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class BasicBot extends User {
+    private static ArrayList<String> names = new ArrayList<>();
     private final GameBoard gameBoard;
     private boolean initialized;
     private ArrayList<Pawn> botPawns;
     private ArrayList<Field> fieldsToAcheive;
 
+    static {
+        names.add("Lech Kaczyński");
+        names.add("Profesor Cichoń");
+        names.add("Jakub Lempiesz");
+        names.add("Jan Paweł Długi");
+        names.add("xXDamianoXxPL99");
+        names.add("Rick Sanchez");
+        names.add("Bojack Horseman");
+        names.add("Homer Simpson");
+        names.add("Austriacki Akwarelista");
+        names.add("Józef Stalin");
+        names.add("Adolf Hitler");
+    }
+
     public BasicBot(String name, String csrf, GameBoard gameBoard) {
-        super(name.concat("Bot"), csrf);
+        super((name.concat("Bot#").concat(names.get((int)Math.floor(Math.random()*(names.size()-1))))
+                + (int)Math.floor(Math.random()*Integer.MAX_VALUE/10000)),
+                csrf);
         this.gameBoard = gameBoard;
         this.initialized = false;
     }
