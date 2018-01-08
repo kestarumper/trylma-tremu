@@ -41,7 +41,7 @@ public class TrylmaApp {
         if(users.containsKey(s.get("username"))) {
             // check if saved in hashmap is the same
             if(!users.get(s.get("username")).getCsrf().equals(s.get("csrf"))) {
-                Logger.error("CSRF Mismatch({}) - {} != {}", s.get("username"), users.get(s.get("username")).getCsrf(), s.get("csrf"));
+                Logger.warn("CSRF Mismatch({}) - {} != {}", s.get("username"), users.get(s.get("username")).getCsrf(), s.get("csrf"));
                 s.remove("username");
                 s.remove("csrf");
             }

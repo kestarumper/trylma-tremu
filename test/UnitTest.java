@@ -17,12 +17,6 @@ import static play.test.Helpers.contentAsString;
  */
 public class UnitTest {
 
-    @Test
-    public void simpleCheck() {
-        int a = 1 + 1;
-        assertThat(a).isEqualTo(2);
-    }
-
     // Unit test a controller with async return
     @Test
     public void testAsync() {
