@@ -10,6 +10,7 @@ import models.Builders.JSONBuilder;
 import models.GameBoard;
 import models.GameBoardGenerators.FourPlayerBoard;
 import models.GameBoardGenerators.SixPlayerBoard;
+import models.GameSession;
 import models.PawnMove.BasicMove;
 import models.TrylmaApp;
 import play.Logger;
@@ -40,8 +41,37 @@ public class BoardDrawController extends Controller {
         if(trylmaApp.getGameSessions().get(sessionId) == null) {
             return notFound("That game session does not exist");
         }
-        trylmaApp.getGameSessions().get(sessionId).getRoom().beginGame();
+        trylmaApp.validateUserSession(session());
+
+        GameSession gameSession = trylmaApp.getGameSessions().get(sessionId);
+
+        if(!gameSession.isGameStarted()) {
+            return redirect(routes.RoomsController.room(sessionId));
+        }
+
         return ok(board.render(sessionId, trylmaApp.getGameSessions().get(sessionId).getRoom()));
+    }
+
+    public Result startGame(String sessionId) {
+        if(trylmaApp.getGameSessions().get(sessionId) == null) {
+            return notFound("That game session does not exist");
+        }
+
+        GameSession gameSession = trylmaApp.getGameSessions().get(sessionId);
+
+        if(gameSession.isGameStarted()) {
+            return redirect(routes.RoomsController.room(sessionId));
+        }
+
+        if(gameSession.getRoom().getUsers().size() != gameSession.getRoom().getMaxUsers()) {
+            flash("gameEnterErr", "There is not enough players to start :(");
+            return redirect(routes.RoomsController.room(sessionId));
+        } else {
+            gameSession.getRoom().beginGame();
+            gameSession.setGameStarted(true);
+        }
+
+        return redirect(routes.BoardDrawController.index(sessionId));
     }
 
     public WebSocket board(String sessionId) {

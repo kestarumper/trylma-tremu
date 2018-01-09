@@ -43,7 +43,7 @@ $(document).ready(() => {
         }))
     });
 
-    $("#startGameBtn").click(function () {
-        connection.send(JSON.stringify({type: "startGame"}));
-    });
+    // $("#startGameBtn").click(function () {
+    //     connection.send(JSON.stringify({type: "startGame"}));
+    // });
 });

@@ -90,7 +90,14 @@ public class RoomsController extends Controller {
                     break;
             }
 
+
             User user = trylmaApp.getUsers().get(session("username"));
+
+            if(trylmaApp.getGameSessions().containsKey(session("username"))) {
+                Logger.warn("replacing game {}", trylmaApp.getGameSessions().get(session("username")).getRoom().getName());
+                trylmaApp.destroyGameSession(user);
+            }
+
             Room room = new Room(roomname, user, mode);
 
             GameBoard gameBoard = new GameBoard(4, new BasicMove(), mode.getStrategy());
@@ -101,6 +108,8 @@ public class RoomsController extends Controller {
             // add creator
             room.joinRoom(user);
             // associate user with it's newly created room
+
+
             trylmaApp.getGameSessions().put(session("username"), gameSession);
 
             Logger.info("{} created new game session for room '{}'", session("username"), room.getName());

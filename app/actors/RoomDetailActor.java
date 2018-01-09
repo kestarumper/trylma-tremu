@@ -44,10 +44,6 @@ public class RoomDetailActor extends AbstractActor {
 
                     ObjectMapper mapper = new ObjectMapper();
 
-                    if(jmsg.type.equals("startGame")) {
-                        gameSession.setGameStarted(true);
-                    }
-
                     if(gameSession.isGameStarted() && !gameSession.isGameOver()) {
                         redirectUsersTo(controllers.routes.BoardDrawController.index(gameSession.getRoom().getOwner().getName()).url());
                     }
