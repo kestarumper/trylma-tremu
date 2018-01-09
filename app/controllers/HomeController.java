@@ -50,8 +50,8 @@ public class HomeController extends Controller {
             String username = map.get("username")[0];
             String csrf = map.get("csrfToken")[0];
             User user = new User(username, csrf);
-            if(trylmaApp.getUsers().containsKey(username)) {
-                flash("loginerr", "That username is already taken");
+            if(trylmaApp.getUsers().containsKey(username) || username.equals("")) {
+                flash("loginerr", "That username is already taken or forbidden :/");
             } else {
                 Logger.info("PUT {}", user);
                 trylmaApp.getUsers().put(username, user);

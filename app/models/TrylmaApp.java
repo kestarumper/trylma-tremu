@@ -57,6 +57,7 @@ public class TrylmaApp {
     }
 
     public void destroyGameSession(User user) {
+        gameSessions.get(user.getName()).getRoom().getUsers().clear();
         gameSessions.remove(user.getName());
     }
 }

@@ -94,8 +94,7 @@ public class RoomsController extends Controller {
             User user = trylmaApp.getUsers().get(session("username"));
 
             if(trylmaApp.getGameSessions().containsKey(session("username"))) {
-                Logger.warn("replacing game {}", trylmaApp.getGameSessions().get(session("username")).getRoom().getName());
-                trylmaApp.destroyGameSession(user);
+                return redirect(routes.RoomsController.room(session("username")));
             }
 
             Room room = new Room(roomname, user, mode);
@@ -144,8 +143,9 @@ public class RoomsController extends Controller {
         }
         trylmaApp.validateUserSession(session());
 
+        GameSession gameSession = trylmaApp.getGameSessions().get(sessionId);
         User user = trylmaApp.getUsers().get(session("username"));
-        Room room = trylmaApp.getGameSessions().get(sessionId).getRoom();
+        Room room = gameSession.getRoom();
         room.leaveRoom(user);
 
         // destroy game session if owner left
@@ -154,7 +154,7 @@ public class RoomsController extends Controller {
         }
 
         Logger.info("{} leaves room {} of {}", session("username"), room.getName(), room.getOwner());
-        return redirect(routes.RoomsController.room(sessionId));
+        return redirect(routes.HomeController.index());
     }
 
     public Result addBot(String sessionId) {
