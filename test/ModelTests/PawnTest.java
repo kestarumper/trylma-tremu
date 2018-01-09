@@ -33,7 +33,7 @@ public class PawnTest {
     }
 
     @Test
-    public void pawnShouldMoveUp(){
+    public void pawnShouldNotMoveUp(){
         printBoard();
 
         Point testMove = new Point(2, 2);
@@ -41,11 +41,11 @@ public class PawnTest {
 
         printBoard();
 
-//        assertTrue(result);
+       assertTrue(!result);
     }
 
     @Test
-    public void pawnShouldMoveDown(){
+    public void pawnShouldNotMoveDown(){
         printBoard();
 
         Point testMove = new Point(2, 6);
@@ -53,7 +53,7 @@ public class PawnTest {
 
         printBoard();
 
-//        assertTrue(result);
+        assertTrue(!result);
     }
 
     @Test
@@ -128,7 +128,7 @@ public class PawnTest {
     }
 
     @Test
-    public void canMoveLongOnCrossPlane(){
+    public void canNotMoveLongOnCrossPlane(){
         testBoard[2][2].placePawn(new RedPawn(new BasicPawn(new Point(2, 2), new BasicMove())));
         printBoard();
 
@@ -137,7 +137,7 @@ public class PawnTest {
         Boolean result = testPawn.makeMove(testMove, testBoard, testUser);
 
         printBoard();
-//        assertTrue(result);
+        assertTrue(!result);
     }
 
     @Test
