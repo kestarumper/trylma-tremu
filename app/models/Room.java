@@ -15,9 +15,9 @@ import java.util.Map;
 public class Room {
     public static enum Mode {
         PLAYERS2("Two players", 2),
-        PLAYERS3("Three players", 4),
+        PLAYERS3("Three players", 3),
         PLAYERS4("Four players", 4),
-        PLAYERS6("Six players", 4);
+        PLAYERS6("Six players", 6);
 
         private final String name;
         private final int num;
