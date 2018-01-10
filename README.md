@@ -1,3 +1,6 @@
+## Thanks to
+I made this project with collaboration of my friend <a href="https://github.com/Adimus11">Adimus11</a>, go checkout his github page!
+
 [![CodeFactor](https://www.codefactor.io/repository/github/kestarumper/trylma-tremu/badge)](https://www.codefactor.io/repository/github/kestarumper/trylma-tremu)
 
 # Trylma TreMu
