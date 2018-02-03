@@ -4,6 +4,7 @@ I made this project with collaboration of my friend <a href="https://github.com/
 [![CodeFactor](https://www.codefactor.io/repository/github/kestarumper/trylma-tremu/badge)](https://www.codefactor.io/repository/github/kestarumper/trylma-tremu)
 
 # Trylma TreMu
+Play online at: http://trylma-tremu.herokuapp.com/
 
 This app uses [Play](https://www.playframework.com/) framework with the use of [Akka](https://akka.io/) actors and [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/)
 
